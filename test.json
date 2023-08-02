@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "Jason", "salary": 12000, "dept_id": "1" },
+  { "id": 2, "name": "Robin", "salary": 15000, "dept_id": "1" },
+  { "id": 3, "name": "Xavier", "salary": 20000, "dept_id": "2" }
+]
