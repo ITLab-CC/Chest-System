@@ -1,43 +1,38 @@
+from typing import Optional, List
+
+from sqlalchemy import ForeignKey
+from sqlalchemy import Integer
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import mapped_column, Mapped, relationship, Session
-from sqlalchemy import *
+from sqlalchemy.orm import relationship
 
 
 class Base(DeclarativeBase):
     pass
 
 
-class Zuordnung(Base):
-    __tablename__ = "zuordnung"
-
-    KID: Mapped[int] = mapped_column(Integer, ForeignKey("kiste.KID"), primary_key=True)
-    GID: Mapped[int] = mapped_column(
-        Integer, ForeignKey("gegenstand.GID"), primary_key=True
+class ItemKiste(Base):
+    __tablename__ = "itemkiste"
+    kiste_id: Mapped[int] = mapped_column(ForeignKey("kiste.id"), primary_key=True)
+    item_id: Mapped[int] = mapped_column(
+        ForeignKey("item.id"), primary_key=True
     )
-    Anzahl: Mapped[int] = mapped_column(Integer)
-
-    def __repr__(self):
-        return f"Zuordnung({self.KID}, {self.GID})"
+    anzahl: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+    item: Mapped["Item"] = relationship(back_populates="kistes")
+    kiste: Mapped["Kiste"] = relationship(back_populates="items")
 
 
 class Kiste(Base):
     __tablename__ = "kiste"
-
-    KID: Mapped[str] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    Name: Mapped[str] = mapped_column(String)
-    Zuordnungen_Gegenstaende = relationship(
-        "Gegenstand", secondary="zuordnung", back_populates="Zuordnungen_Kisten"
-    )
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column()
+    items: Mapped[List["ItemKiste"]] = relationship(back_populates="kiste")
 
 
-class Gegenstand(Base):
-    __tablename__ = "gegenstand"
-
-    GID: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    Name: Mapped[int] = mapped_column(String)
-    Zuordnungen_Kisten = relationship(
-        "Kiste", secondary="zuordnung", back_populates="Zuordnungen_Gegenstaende"
-    )
-
-    def __repr__(self):
-        return f"Gegenstand({self.GID}, {self.Name})"
+class Item(Base):
+    __tablename__ = "item"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column()
+    description: Mapped[Optional[str]] = mapped_column()
+    kistes: Mapped[List["ItemKiste"]] = relationship(back_populates="item")

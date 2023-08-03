@@ -4,9 +4,10 @@ from typing import Optional
 import json
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine
-
+from sqlalchemy import *
 from sqlalchemy.orm import mapped_column, Mapped, relationship, Session
-from models.models import Base, Kiste, Gegenstand, Zuordnung
+from models.models import Base, ItemKiste, Kiste, Item
+import uvicorn
 
 engine = create_engine(
     "postgresql+psycopg2://root:root@127.0.0.1/test_db",
@@ -26,106 +27,182 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-def db_fill():
-    with Session(engine) as session:
-        kiste1 = Kiste(Name="Kiste1")
-        gegenstand1 = Gegenstand(Name="Gegenstand1")
-        zuordnung1 = Zuordnung(KID=1, GID=1, Anzahl=1)
-        session.add_all([kiste1, gegenstand1])
-        session.commit()
-        session.add(zuordnung1)
-        session.commit()
-
-
 # Create all tables and fill them with data
 with engine.connect() as con:
     print("Dropping all tables and creating new ones...")
     # Drop all tables
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
-    db_fill()
 
+def db_prep():
+    with Session(engine) as session:
+        # create parent, append a child via association
+        p = Kiste(name="Kiste1")
+        a = ItemKiste(anzahl=5)
+        a.item = Item(name="Item1")
+        p.items.append(a)
+        session.add(p)
+        session.commit()
+db_prep()
+        
+
+
+
+
+
+apiPrefix = "/api/v1"
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-
-@app.get("/kisten")
-async def get_kisten():
+# GetAllKisten
+@app.get(apiPrefix+"/kisten")
+async def getAllKisten():
     with Session(engine) as session:
         kisten = session.query(Kiste).all()
         return kisten
-
-
-@app.get("/kisten/add/{kiste_name}")
-async def add_kiste(kiste_name: str):
+    
+# GetKisteById
+@app.get(apiPrefix+"/kisten/{id}")
+async def getKisteById(id: int):
     with Session(engine) as session:
-        kiste = Kiste(Name=kiste_name)
-        session.add(kiste)
-        session.commit()
+        kiste = session.query(Kiste).filter(Kiste.id == id).first()
         return kiste
-
-
-@app.get("/kisten/delete/{kiste_id}")
-async def delete_kiste(kiste_id: int):
+    
+# CreateKiste
+@app.post(apiPrefix+"/kisten")
+async def createKiste(name:str):
     with Session(engine) as session:
-        kiste = session.query(Kiste).get(kiste_id)
+        kNeu = Kiste(name=name)
+        session.add(kNeu)
+        session.commit()
+        return Kiste(name=name, id=kNeu.id)
+    
+    
+# UpdateKiste
+@app.put(apiPrefix+"/kisten/{id}")  
+async def updateKiste(id: int, name: str):
+    with Session(engine) as session:
+        kiste = session.query(Kiste).filter(Kiste.id == id).first()
+        kiste.name = name
+        session.commit()
+        return Kiste(name=name, id=kiste.id)
+    
+# DeleteKiste
+@app.delete(apiPrefix+"/kisten/{id}")
+async def deleteKiste(id: int, force: bool = False):
+    with Session(engine) as session:
+        if force:
+            kiste = session.query(Kiste).filter(Kiste.id == id).first()
+            for item in kiste.items:
+                session.delete(item)
+        kiste = session.query(Kiste).filter(Kiste.id == id).first()
         session.delete(kiste)
         session.commit()
-        return kiste
-
-
-@app.get("/gegenstaende")
-async def get_gegenstaende():
+        return {"success": "true"}
+    
+# GetAllItems
+@app.get(apiPrefix+"/items")
+async def getAllItems():
     with Session(engine) as session:
-        gegenstaende = session.query(Gegenstand).all()
-        return gegenstaende
+        items = session.query(Item).all()
+        return items
 
-
-@app.get("/gegenstaende/add/{gegenstand_name}")
-async def add_gegenstand(gegenstand_name: str):
+# GetItemById
+@app.get(apiPrefix+"/items/{id}")   
+async def getItemById(id: int):
     with Session(engine) as session:
-        gegenstand = Gegenstand(Name=gegenstand_name)
-        session.add(gegenstand)
+        item = session.query(Item).filter(Item.id == id).first()
+        return item
+    
+# CreateItem
+@app.post(apiPrefix+"/items")
+async def createItem(name: str, description: str):
+    with Session(engine) as session:
+        iNeu = Item(name=name, description=description)
+        session.add(iNeu)
         session.commit()
-        return gegenstand
+        return Item(name=name, description=description, id=iNeu.id)
 
-
-@app.get("/gegenstaende/delete/{gegenstand_id}")
-async def delete_gegenstand(gegenstand_id: int):
+# UpdateItem   
+@app.put(apiPrefix+"/items/{id}")
+async def updateItem(id: int, name: str, description: str):
     with Session(engine) as session:
-        gegenstand = session.query(Gegenstand).get(gegenstand_id)
-        session.delete(gegenstand)
+        item = session.query(Item).filter(Item.id == id).first()
+        item.name = name
+        item.description = description
         session.commit()
-        return gegenstand
-
-
-@app.get("/zuordnungen")
-async def get_zuordnungen():
+        return Item(name=name, description=description, id=item.id)
+    
+# DeleteItem
+@app.delete(apiPrefix+"/items/{id}")    
+async def deleteItem(id: int, force: bool = False):
     with Session(engine) as session:
-        zuordnungen = session.query(Zuordnung).all()
-        return zuordnungen
+        if force:
+            # Delete ItemKiste
+            itemKisten = session.query(ItemKiste).filter(ItemKiste.item_id == id).all()
+            for itemKiste in itemKisten:
+                session.delete(itemKiste)
+        item = session.query(Item).filter(Item.id == id).first()
+        if item is None:
+            return {"success": "false", "error": "Item not found"}
+        session.delete(item)
+        try:
+            session.commit()
+            return {"success": "true"}
+        # Catch IntegrityError
+        except:
+            return {"success": "false", "message": "Item is in use. Use force to delete it anyway"}
+    
 
 
-@app.get("/zuordnungen/add/{kiste_id}/{gegenstand_id}/{anzahl}")
-async def add_zuordnung(kiste_id: int, gegenstand_id: int, anzahl: int):
+# GetAllItemsInKiste
+@app.get(apiPrefix+"/kisten/{id}/items")
+async def getAllItemsInKiste(id: int):
     with Session(engine) as session:
-        zuordnung = Zuordnung(KID=kiste_id, GID=gegenstand_id, Anzahl=anzahl)
-        session.add(zuordnung)
+        # Add Anzahl to Item
+        items = session.query(Item).join(ItemKiste).filter(ItemKiste.kiste_id == id).all()
+        for item in items:
+            item.anzahl = session.query(ItemKiste).filter(ItemKiste.kiste_id == id).filter(ItemKiste.item_id == item.id).first().anzahl
+        return items
+    
+# GetAllKistenByItemId
+@app.get(apiPrefix+"/items/{id}/kisten")
+async def getAllKistenByItemId(id: int):
+    with Session(engine) as session:
+        kisten = session.query(Kiste).join(ItemKiste).filter(ItemKiste.item_id == id).all()
+        # Add Anzahl to Kiste
+        for kiste in kisten:
+            kiste.anzahl = session.query(ItemKiste).filter(ItemKiste.kiste_id == kiste.id).filter(ItemKiste.item_id == id).first().anzahl
+        return kisten
+
+# AddItemToKiste
+@app.post(apiPrefix+"/kisten/{id}/items")   
+async def addItemToKiste(id: int, item_id: int, anzahl: int):
+    with Session(engine) as session:
+        # Check if Item is already in Kiste
+        itemKiste = session.query(ItemKiste).filter(ItemKiste.kiste_id == id).filter(ItemKiste.item_id == item_id).first()
+        if itemKiste:
+            itemKiste.anzahl += anzahl
+            session.commit()
+            return itemKiste
+        # Create new ItemKiste
+        itemKiste = ItemKiste(anzahl=anzahl)
+        itemKiste.item_id = item_id
+        itemKiste.kiste_id = id
+        session.add(itemKiste)
         session.commit()
-        return zuordnung
+        return itemKiste
 
-
-@app.get("/zuordnungen/delete/{kiste_id}/{gegenstand_id}")
-async def delete_zuordnung_by_kiste_gegenstand(kiste_id: int, gegenstand_id: int):
+# RemoveItemFromKiste
+@app.delete(apiPrefix+"/kisten/{id}/items/{item_id}")
+async def removeItemFromKiste(id: int, item_id: int):
     with Session(engine) as session:
-        zuordnung = (
-            session.query(Zuordnung)
-            .filter(Zuordnung.KID == kiste_id, Zuordnung.GID == gegenstand_id)
-            .first()
-        )
-        session.delete(zuordnung)
+        itemKiste = session.query(ItemKiste).filter(ItemKiste.kiste_id == id).filter(ItemKiste.item_id == item_id).first()
+        session.delete(itemKiste)
         session.commit()
-        return zuordnung
+        return {"success": "true"}
+
+if __name__=="__main__":
+    uvicorn.run("main:app",host='127.0.0.1', port=8000, reload=True)
