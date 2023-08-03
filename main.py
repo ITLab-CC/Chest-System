@@ -123,9 +123,9 @@ async def getItemById(id: int):
         return item
 
 
-# CreateItem
+# CreateItem description: Optional[str] = None
 @app.post(apiPrefix + "/items")
-async def createItem(name: str, description: str):
+async def createItem(name: str, description: str = None):
     with Session(engine) as session:
         iNeu = Item(name=name, description=description)
         session.add(iNeu)

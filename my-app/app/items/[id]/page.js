@@ -10,11 +10,12 @@ async function getItem(itemID) {
 export default function Page({ params }) {
   const [item, setItem] = useState(null);
   useEffect(() => {
-    getItem(params.slug).then((item) => {
+    getItem(params.id).then((item) => {
       console.log(item);
       setItem(item);
     });
-  }, [params.slug]);
+  }, [params.id]);
+
   if (!item) {
     return <div>Loading...</div>;
   }

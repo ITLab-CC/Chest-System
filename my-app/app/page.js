@@ -1,76 +1,87 @@
-"use client";
-import Image from "next/image";
-import styles from "./page.module.css";
-import { useState, useEffect } from "react";
-
+'use client';
+import Image from 'next/image';
+import styles from './page.module.css';
+import { useState, useEffect } from 'react';
+import { apiURL } from '../utils/constants';
+import KistenList from '../components/KistenList';
+import ItemList from '../components/ItemList';
 export default function Home() {
-  const [gegenstaende, setGegenstaende] = useState([]);
-  const [nameGegenstand, setNameGegenstand] = useState("");
-  const [nameKiste, setNameKiste] = useState("");
+  const [items, setItems] = useState([]);
+  const [kisten, setKisten] = useState([]);
+  const [nameGegenstand, setNameGegenstand] = useState('');
+  const [descriptionGegenstand, setDescriptionGegenstand] = useState('');
+  const [nameKiste, setNameKiste] = useState('');
 
-  async function getGegenstaende() {
-    const res = await fetch("http://localhost:8000/gegenstaende");
+  async function getData() {
+    const resKisten = await fetch(apiURL + '/kisten');
+    const kisten = await resKisten.json();
+    setKisten(kisten);
+    const res = await fetch(apiURL + '/items');
     const data = await res.json();
-    setGegenstaende(data);
+    setItems(data);
   }
   useEffect(() => {
-    getGegenstaende();
+    getData();
   }, []);
 
   return (
     <div>
-      {gegenstaende.map((gegenstand) => (
-        <div key={gegenstand.GID}>
-          <h1>{gegenstand.GID}</h1>
-          <p>{gegenstand.Name}</p>
-          <button
-            onClick={() => {
-              fetch(
-                "http://localhost:8000/gegenstaende/delete/" + gegenstand.GID
-              );
-              getGegenstaende();
-            }}
-          >
-            Delete
-          </button>
-        </div>
-      ))}
-
+      <h1>--Kisten--</h1>
+      <KistenList kisten={kisten} />
       <input
-        type="text"
-        value={nameGegenstand}
-        onChange={(e) => setNameGegenstand(e.target.value)}
-      />
-      <button
-        onClick={() => {
-          fetch("http://localhost:8000/gegenstaende/add/" + nameGegenstand);
-          setNameGegenstand("");
-          getGegenstaende();
-        }}
-      >
-        Add Gegenstand
-      </button>
-      <input
-        type="text"
+        type='text'
         value={nameKiste}
         onChange={(e) => setNameKiste(e.target.value)}
       />
       <button
-        onClick={() => {
-          fetch("http://localhost:8000/kisten/add/" + nameKiste);
-          setNameKiste("");
+        onClick={async () => {
+          // Post to /kisten with query params
+          await fetch(
+            apiURL + '/kisten?' + new URLSearchParams({ name: nameKiste }),
+            {
+              method: 'POST',
+            }
+          );
+          setNameKiste('');
+          getData();
         }}
       >
         Add Kiste
       </button>
+      <h1>--Gegenstände--</h1>
+      <ItemList items={items} />
+      <input
+        type='text'
+        value={nameGegenstand}
+        onChange={(e) => setNameGegenstand(e.target.value)}
+      />
+      <input
+        type='text'
+        value={descriptionGegenstand}
+        onChange={(e) => setDescriptionGegenstand(e.target.value)}
+      />
+      <button
+        onClick={async () => {
+          await fetch(
+            apiURL +
+              '/items?' +
+              new URLSearchParams({
+                name: nameGegenstand,
+                description: descriptionGegenstand,
+              }),
+            {
+              method: 'POST',
+            }
+          );
+          setNameGegenstand('');
+          setDescriptionGegenstand('');
+          getData();
+        }}
+      >
+        Add Gegenstand
+      </button>
     </div>
   );
-
-
-
-
-
-
 
   return (
     <main className={styles.main}>
@@ -81,14 +92,14 @@ export default function Home() {
         </p>
         <div>
           <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href='https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
+            target='_blank'
+            rel='noopener noreferrer'
           >
-            By{" "}
+            By{' '}
             <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
+              src='/vercel.svg'
+              alt='Vercel Logo'
               className={styles.vercelLogo}
               width={100}
               height={24}
@@ -101,8 +112,8 @@ export default function Home() {
       <div className={styles.center}>
         <Image
           className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
+          src='/next.svg'
+          alt='Next.js Logo'
           width={180}
           height={37}
           priority
@@ -111,10 +122,10 @@ export default function Home() {
 
       <div className={styles.grid}>
         <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href='https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
           className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          target='_blank'
+          rel='noopener noreferrer'
         >
           <h2>
             Docs <span>-&gt;</span>
@@ -123,10 +134,10 @@ export default function Home() {
         </a>
 
         <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href='https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
           className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          target='_blank'
+          rel='noopener noreferrer'
         >
           <h2>
             Learn <span>-&gt;</span>
@@ -135,10 +146,10 @@ export default function Home() {
         </a>
 
         <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href='https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
           className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          target='_blank'
+          rel='noopener noreferrer'
         >
           <h2>
             Templates <span>-&gt;</span>
@@ -147,10 +158,10 @@ export default function Home() {
         </a>
 
         <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href='https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
           className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          target='_blank'
+          rel='noopener noreferrer'
         >
           <h2>
             Deploy <span>-&gt;</span>
