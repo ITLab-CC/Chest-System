@@ -21,7 +21,8 @@ export default function Page() {
         <div key={kiste.KID}>
           <h3>{kiste.KID}</h3>
           <p>{kiste.Name}</p>
-          <button
+          <button style={{color: "black",
+                  padding:"10px 20px",}}
             onClick={() => {
               fetch("http://localhost:8000/kisten/delete/" + kiste.KID);
               getKisten();

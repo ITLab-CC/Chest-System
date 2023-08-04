@@ -11,7 +11,8 @@ export default function KistenList({ kisten }) {
           <a href={'/kisten/' + kiste.id}>
             <h3>{kiste.id}</h3>
             <p>{kiste.name}</p>
-            <button
+            <button style={{color: "black",
+                            padding:"10px 20px",}}
               onClick={() => {
                 fetch(apiURL + '/kisten/' + kiste.id, {
                   method: 'DELETE',

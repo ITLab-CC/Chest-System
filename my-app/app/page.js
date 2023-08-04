@@ -28,12 +28,14 @@ export default function Home() {
     <div>
       <h1>--Kisten--</h1>
       <KistenList kisten={kisten} />
-      <input
+      <input style={{padding:"10px 20px",}}
         type='text'
         value={nameKiste}
         onChange={(e) => setNameKiste(e.target.value)}
       />
-      <button
+      <button style={{color: "black",
+            padding:"10px 20px",}}
+
         onClick={async () => {
           // Post to /kisten with query params
           await fetch(
@@ -50,17 +52,18 @@ export default function Home() {
       </button>
       <h1>--Gegenstände--</h1>
       <ItemList items={items} />
-      <input
+      <input style={{padding:"10px 20px",}}
         type='text'
         value={nameGegenstand}
         onChange={(e) => setNameGegenstand(e.target.value)}
       />
-      <input
+      <input style={{padding:"10px 20px",}}
         type='text'
         value={descriptionGegenstand}
         onChange={(e) => setDescriptionGegenstand(e.target.value)}
       />
-      <button
+      <button style={{color: "black", 
+                      padding:"10px 20px",}}
         onClick={async () => {
           await fetch(
             apiURL +

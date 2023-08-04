@@ -11,7 +11,8 @@ export default function ItemList({ items }) {
           <a href={'/items/' + item.id}>
             <h3>{item.id}</h3>
             <p>{item.name}</p>
-            <button
+            <button style={{color: "black",
+                            padding:"10px 20px",}}
               onClick={() => {
                 fetch(apiURL + '/items/' + item.id, {
                   method: 'DELETE',
