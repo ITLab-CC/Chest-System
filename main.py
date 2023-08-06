@@ -8,9 +8,26 @@ from sqlalchemy import *
 from sqlalchemy.orm import mapped_column, Mapped, relationship, Session
 from models.models import Base, ItemKiste, Kiste, Item
 import uvicorn
+import os
+# Get DB Connection from env
+POSTGRES_USER = "root"
+POSTGRES_PASSWORD = "root"
+POSTGRES_HOST = "127.0.0.1"
+POSTGRES_DB = "test_db"
+# ENV
+POSTGRES_USER = os.environ.get("POSTGRES_USER") or POSTGRES_USER
+POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD") or POSTGRES_PASSWORD
+POSTGRES_HOST = os.environ.get("POSTGRES_HOST") or POSTGRES_HOST
+POSTGRES_DB = os.environ.get("POSTGRES_DB") or POSTGRES_DB
+
+connectionString = (
+    f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}/{POSTGRES_DB}"
+)
+
+print("Connecting to DB: " + connectionString)
 
 engine = create_engine(
-    "postgresql+psycopg2://root:root@127.0.0.1/test_db",
+    connectionString,
     echo=False,
     connect_args={"options": "-csearch_path=public"},
 )
