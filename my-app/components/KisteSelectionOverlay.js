@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
 import { apiURL } from '@/utils/constants';
 
-async function getProducts() {
-  const res = await fetch(apiURL + '/items');
+// async function getProducts() {
+//   const res = await fetch(apiURL + '/items');
+//   const data = await res.json();
+//   return data;
+// }
+
+async function getKisten() {
+  const res = await fetch(apiURL + '/kisten');
   const data = await res.json();
   return data;
 }
@@ -20,34 +26,34 @@ async function addProductToKiste(kisteId, productId, anzahl) {
   );
 }
 
-export default function ProductSelectionOverlay({
-  kiste,
-  setShowProductOverlay,
+export default function KisteSelectionOverlay({
+  item,
+  setShowKisteOverlay,
   loadData,
 }) {
-  const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [kisten, setKisten] = useState([]);
+  const [selectedKiste, setSelectedKiste] = useState(null);
   const [anzahl, setAnzahl] = useState(1);
 
   useEffect(() => {
-    getProducts().then((products) => {
-      setProducts(products);
+    getKisten().then((products) => {
+      setKisten(products);
     });
   }, []);
 
   return (
     <div>
-      <h2>Select Product</h2>
+      <h2>Select Kiste</h2>
       <ul>
-        {products.map((product) => (
+        {kisten.map((product) => (
           <li
             key={product.id}
             onClick={() => {
-              setSelectedProduct(product);
+              setSelectedKiste(product);
             }}
             style={{
               backgroundColor:
-                selectedProduct && selectedProduct.id === product.id
+                selectedKiste && selectedKiste.id === product.id
                   ? 'green'
                   : 'transparent',
             }}
@@ -66,13 +72,13 @@ export default function ProductSelectionOverlay({
       />
       <button
         onClick={() => {
-          if (selectedProduct) {
-            addProductToKiste(kiste.id, selectedProduct.id, anzahl).then(() => {
+          if (selectedKiste) {
+            addProductToKiste(selectedKiste.id, item.id, anzahl).then(() => {
               loadData();
-              setShowProductOverlay(false);
+              setShowKisteOverlay(false);
             });
           } else {
-            alert('Please select a product');
+            window.alert('Please select a Kiste');
           }
         }}
       >
