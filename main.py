@@ -219,6 +219,10 @@ async def addItemToKiste(id: int, item_id: int, anzahl: int):
         )
         if itemKiste:
             itemKiste.anzahl += anzahl
+            if itemKiste.anzahl <= 0:
+                session.delete(itemKiste)
+                session.commit()
+                return {"success": "true"}
             session.commit()
             return itemKiste
         # Create new ItemKiste
