@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import ProductSelectionOverlay from '../../../components/ProductSelectionOverlay';
+import { Loader } from '../../../components/loader';
 
 async function getKiste(kistenID) {
   const res = await fetch('http://localhost:8000/api/v1/kisten/' + kistenID);
@@ -20,8 +21,10 @@ export default function Page({ params }) {
   const [kiste, setKiste] = useState(null);
   const [itemsInKiste, setItemsInKiste] = useState([]);
   const [showProductOverlay, setShowProductOverlay] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   async function loadData() {
+    setLoading(true);
     getKiste(params.id).then((item) => {
       console.log(item);
       setKiste(item);
@@ -30,6 +33,7 @@ export default function Page({ params }) {
       console.log(items);
       setItemsInKiste(items);
     });
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -37,7 +41,7 @@ export default function Page({ params }) {
   }, [params.id]);
 
   if (!kiste) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
   return (
     <div>

@@ -1,6 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import KisteSelectionOverlay from '../../../components/KisteSelectionOverlay';
+import { Loader } from '../../../components/loader';
+
 async function getItem(itemID) {
   const res = await fetch('http://localhost:8000/api/v1/items/' + itemID);
   const data = await res.json();
@@ -19,8 +21,10 @@ export default function Page({ params }) {
   const [item, setItem] = useState(null);
   const [kisten, setKisten] = useState([]);
   const [showKisteOverlay, setShowKisteOverlay] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   async function loadData() {
+    setLoading(true);
     getItem(params.id).then((item) => {
       console.log(item);
       setItem(item);
@@ -29,13 +33,14 @@ export default function Page({ params }) {
       console.log(kisten);
       setKisten(kisten);
     });
+    setLoading(false);
   }
   useEffect(() => {
     loadData();
   }, [params.id]);
 
   if (!item) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
   return (
     <div>

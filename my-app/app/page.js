@@ -5,37 +5,47 @@ import { useState, useEffect } from 'react';
 import { apiURL } from '../utils/constants';
 import KistenList from '../components/KistenList';
 import ItemList from '../components/ItemList';
+
+import { Loader } from '../components/loader';
+
 export default function Home() {
   const [items, setItems] = useState([]);
   const [kisten, setKisten] = useState([]);
   const [nameGegenstand, setNameGegenstand] = useState('');
   const [descriptionGegenstand, setDescriptionGegenstand] = useState('');
   const [nameKiste, setNameKiste] = useState('');
+  const [loading, setLoading] = useState(true);
 
   async function getData() {
+    setLoading(true);
     const resKisten = await fetch(apiURL + '/kisten');
     const kisten = await resKisten.json();
     setKisten(kisten);
     const res = await fetch(apiURL + '/items');
     const data = await res.json();
     setItems(data);
+    setLoading(false);
   }
   useEffect(() => {
     getData();
   }, []);
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <div>
       <h1>--Kisten--</h1>
       <KistenList kisten={kisten} />
-      <input style={{padding:"10px 20px",}}
+      <input
+        style={{ padding: '10px 20px' }}
         type='text'
         value={nameKiste}
         onChange={(e) => setNameKiste(e.target.value)}
       />
-      <button style={{color: "black",
-            padding:"10px 20px",}}
-
+      <button
+        style={{ color: 'black', padding: '10px 20px' }}
         onClick={async () => {
           // Post to /kisten with query params
           await fetch(
@@ -52,18 +62,20 @@ export default function Home() {
       </button>
       <h1>--Gegenstände--</h1>
       <ItemList items={items} />
-      <input style={{padding:"10px 20px",}}
+      <input
+        style={{ padding: '10px 20px' }}
         type='text'
         value={nameGegenstand}
         onChange={(e) => setNameGegenstand(e.target.value)}
       />
-      <input style={{padding:"10px 20px",}}
+      <input
+        style={{ padding: '10px 20px' }}
         type='text'
         value={descriptionGegenstand}
         onChange={(e) => setDescriptionGegenstand(e.target.value)}
       />
-      <button style={{color: "black", 
-                      padding:"10px 20px",}}
+      <button
+        style={{ color: 'black', padding: '10px 20px' }}
         onClick={async () => {
           await fetch(
             apiURL +
