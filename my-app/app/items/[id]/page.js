@@ -2,17 +2,16 @@
 import { useState, useEffect } from 'react';
 import KisteSelectionOverlay from '../../../components/KisteSelectionOverlay';
 import { Loader } from '../../../components/loader';
+import { apiURL } from '../../../utils/constants';
 
 async function getItem(itemID) {
-  const res = await fetch('http://localhost:8000/api/v1/items/' + itemID);
+  const res = await fetch(apiURL + '/items/' + itemID);
   const data = await res.json();
   return data;
 }
 
 async function getItemsInKiste(itemID) {
-  const res = await fetch(
-    'http://localhost:8000/api/v1/items/' + itemID + '/kisten'
-  );
+  const res = await fetch(apiURL + '/items/' + itemID + '/kisten');
   const data = await res.json();
   return data;
 }

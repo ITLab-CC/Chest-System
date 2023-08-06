@@ -119,9 +119,15 @@ async def deleteKiste(id: int, force: bool = False):
             for item in kiste.items:
                 session.delete(item)
         kiste = session.query(Kiste).filter(Kiste.id == id).first()
+        if kiste is None:
+            return {"success": "false", "error": "Kiste not found"}
         session.delete(kiste)
-        session.commit()
-        return {"success": "true"}
+        try:
+            session.commit()
+            return {"success": "true"}
+        except:
+            # Status 409: Conflict
+            raise HTTPException(status_code=409, detail="Kiste is not empty")
 
 
 # GetAllItems
@@ -179,10 +185,8 @@ async def deleteItem(id: int, force: bool = False):
             return {"success": "true"}
         # Catch IntegrityError
         except:
-            return {
-                "success": "false",
-                "message": "Item is in use. Use force to delete it anyway",
-            }
+            # Status 409: Conflict
+            raise HTTPException(status_code=409, detail="Item is not empty")
 
 
 # GetAllItemsInKiste

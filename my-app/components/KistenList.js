@@ -11,17 +11,31 @@ export default function KistenList({ kisten }) {
           <a href={'/kisten/' + kiste.id}>
             <h3>{kiste.id}</h3>
             <p>{kiste.name}</p>
-            <button style={{color: "black",
-                            padding:"10px 20px",}}
-              onClick={() => {
-                fetch(apiURL + '/kisten/' + kiste.id, {
-                  method: 'DELETE',
-                });
-              }}
-            >
-              Delete
-            </button>
           </a>
+          <button
+            style={{ color: 'black', padding: '10px 20px' }}
+            onClick={async () => {
+              fetch(apiURL + '/kisten/' + kiste.id, {
+                method: 'DELETE',
+              })
+                .then((res) => {
+                  if (res.status === 409) {
+                    alert(
+                      'Error deleting kiste. Probably still has items in it.'
+                    );
+                    return;
+                  }
+                  window.location.reload();
+                })
+                .catch((err) => {
+                  alert(
+                    'Error deleting kiste. Probably still has items in it.'
+                  );
+                });
+            }}
+          >
+            Delete
+          </button>
         </div>
       ))}
     </div>
