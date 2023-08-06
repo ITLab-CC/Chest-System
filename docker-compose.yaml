@@ -19,6 +19,8 @@ services:
     build:
       context: ./my-app
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost:8000
     environment:
       NODE_ENV: production
     ports:
