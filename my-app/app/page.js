@@ -144,7 +144,6 @@ export default function Home() {
     <li> Use the search bar above to find chests by name. Type in the chest name, and the list will automatically filter.</li>
     <li>To add a new chest, enter the chest name in the input field and click the "Add Chests" button. The chest will be added to the list.</li>
   </ul>
-
   <h3>Items:</h3>
   <ul>
     <li>Use the search bar above to find items by name. Type in the item name, and the list will automatically filter.</li>
