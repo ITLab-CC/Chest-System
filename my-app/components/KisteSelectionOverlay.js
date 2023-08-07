@@ -64,6 +64,8 @@ export default function KisteSelectionOverlay({
       </ul>
       <h2>Amount</h2>
       <input
+        placeholder='amount'
+        style={{padding: '10px 20px' }}
         type='number'
         value={anzahl}
         onChange={(e) => {
@@ -71,6 +73,7 @@ export default function KisteSelectionOverlay({
         }}
       />
       <button
+        style={{ color: 'black', padding: '10px 20px' }}
         onClick={() => {
           if (selectedKiste) {
             addProductToKiste(selectedKiste.id, item.id, anzahl).then(() => {
@@ -82,7 +85,7 @@ export default function KisteSelectionOverlay({
           }
         }}
       >
-        Add Product
+        Add or remove Product
       </button>
     </div>
   );

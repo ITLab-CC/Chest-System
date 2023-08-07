@@ -46,7 +46,7 @@ export default function Page({ params }) {
     <div>
       <h1>{kiste.id}</h1>
       <p>{kiste.name}</p>
-      <h2>--Items in Kiste--</h2>
+      <h1 style={{fontSize: "40px"}}>Items in Kiste</h1>
       <ul>
         {itemsInKiste.map((item) => (
           <li key={item.id}>
@@ -55,6 +55,7 @@ export default function Page({ params }) {
         ))}
       </ul>
       <button
+        style={{ color: 'black', padding: '10px 20px'}}
         onClick={() => {
           setShowProductOverlay(true);
         }}

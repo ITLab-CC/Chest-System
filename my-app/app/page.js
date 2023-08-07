@@ -36,16 +36,17 @@ export default function Home() {
 
   return (
     <div>
-      <h1>--Kisten--</h1>
+      <h1 style={{fontSize: "40px"}}>Kisten</h1>
       <KistenList kisten={kisten} />
       <input
+        placeholder='chestname'
         style={{ padding: '10px 20px' }}
         type='text'
         value={nameKiste}
         onChange={(e) => setNameKiste(e.target.value)}
       />
       <button
-        style={{ color: 'black', padding: '10px 20px' }}
+        style={{ color: 'black', padding: '10px 20px' , marginBottom: '50px'}}
         onClick={async () => {
           // Post to /kisten with query params
           await fetch(
@@ -60,15 +61,17 @@ export default function Home() {
       >
         Add Kiste
       </button>
-      <h1>--Gegenstände--</h1>
+      <h1 style={{fontSize: "40px"}}>Gegenstände</h1>
       <ItemList items={items} />
       <input
-        style={{ padding: '10px 20px' }}
+        placeholder='itemname'
+        style={{ padding: '10px 20px'}}
         type='text'
         value={nameGegenstand}
         onChange={(e) => setNameGegenstand(e.target.value)}
       />
       <input
+        placeholder='item-id'
         style={{ padding: '10px 20px' }}
         type='text'
         value={descriptionGegenstand}

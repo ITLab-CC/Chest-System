@@ -43,9 +43,9 @@ export default function Page({ params }) {
   }
   return (
     <div>
-      <h1>{item.name}</h1>
+      <h1 style={{fontSize: "50px", color: 'red'}}>{item.name}</h1>
       <p>{item.description}</p>
-      <h2>--In Kisten--</h2>
+      <h1 style={{fontSize: "30px"}}>In Kisten</h1>
       <ul>
         {kisten.map((kiste) => (
           <li key={kiste.id}>
@@ -54,11 +54,12 @@ export default function Page({ params }) {
         ))}
       </ul>
       <button
+        style={{ color: 'black', padding: '10px 20px' }}
         onClick={() => {
           setShowKisteOverlay(true);
         }}
       >
-        Add Item to Kiste
+        Add or remove Item to Kiste
       </button>
       <br></br>
       {showKisteOverlay && (
