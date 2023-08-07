@@ -140,25 +140,20 @@ export default function Home() {
     <div style={{textAlign: 'center',  marginTop: '150px'}}>
   <h2>How to use the website:</h2>
   <h3>Chests:</h3>
-  <p>
-    - Use the search bar above to find chests by name. Type in the chest name, and the list will automatically filter.
-  </p>
-  <p>
-    - To add a new chest, enter the chest name in the input field and click the "Add Chests" button. The chest will be added to the list.
-  </p>
+  <ul>
+    <li> Use the search bar above to find chests by name. Type in the chest name, and the list will automatically filter.</li>
+    <li>To add a new chest, enter the chest name in the input field and click the "Add Chests" button. The chest will be added to the list.</li>
+  </ul>
 
   <h3>Items:</h3>
-  <p>
-    - Use the search bar above to find items by name. Type in the item name, and the list will automatically filter.
-  </p>
-  <p>
-    - To add a new item, enter the item name and item description in the respective input fields, and click the "Add Item" button. The item will be added to the list.
-  </p>
-
+  <ul>
+    <li>Use the search bar above to find items by name. Type in the item name, and the list will automatically filter.</li>
+    <li>To add a new item, enter the item name and item description in the respective input fields, and click the "Add Item" button. The item will be added to the list.</li>
+  </ul>
   <h3>Navigation:</h3>
-  <p>
-    - Use the menu bar at the top to navigate between different sections of the website.
-  </p>
+  <ul>
+    <li>Use the menu bar at the top to navigate between different sections of the website.</li>
+  </ul>
 </div>
     </div>
   );
