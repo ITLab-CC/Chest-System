@@ -53,7 +53,7 @@ export default function Home() {
         <a href="#">Chests</a> |
         <a href="#">Items</a>
       </div>
-    <div>
+    <div style={{ width: 'fit-content', height: 'fit-content', textAlign: 'center' }}>
       <h1 style={{fontSize: "40px", color: "green"}}>Chests</h1>
       <input
       placeholder='Search chests...'
@@ -88,7 +88,7 @@ export default function Home() {
       </button>
     </div>
 
-    <div>
+    <div style={{textAlign: 'center'}}> 
       <h1 style={{fontSize: "40px", color: "red"}}>Items</h1>
 
        <input
