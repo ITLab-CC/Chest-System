@@ -15,7 +15,6 @@ export default function Home() {
   const [descriptionGegenstand, setDescriptionGegenstand] = useState('');
   const [nameKiste, setNameKiste] = useState('');
   const [loading, setLoading] = useState(true);
-
   const [searchTerm, setSearchTerm] = useState(''); //Suche möglich
   const [searchChestTerm, setSearchChestTerm] = useState(''); //Suche Kisten möglich
 
@@ -54,7 +53,7 @@ export default function Home() {
         <a href="#">Chests</a> |
         <a href="#">Items</a>
       </div>
-    
+    <div>
       <h1 style={{fontSize: "40px", color: "green"}}>Chests</h1>
       <input
       placeholder='Search chests...'
@@ -79,7 +78,7 @@ export default function Home() {
           await fetch(
             apiURL + '/kisten?' + new URLSearchParams({ name: nameKiste }),
             {
-              method: 'POST',
+              method: 'POST', 
             }
           );
           setNameKiste('');
@@ -88,6 +87,9 @@ export default function Home() {
       >
         Add Chests
       </button>
+    </div>
+
+    <div>
       <h1 style={{fontSize: "40px", color: "red"}}>Items</h1>
 
        <input
@@ -133,7 +135,9 @@ export default function Home() {
         }}
       >
         Add Item
-      </button>
+        
+      </button> 
+    </div>
     </div>
   );
 }

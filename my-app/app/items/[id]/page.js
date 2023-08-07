@@ -42,7 +42,7 @@ export default function Page({ params }) {
     return <Loader />;
   }
   return (
-    <div>
+    <div style={{textAlign: 'center'}}>
       <h1 style={{ fontSize: "50px", color: "red" }}>{item.name}</h1>
       <p>{item.description}</p>
       <h1 style={{ fontSize: "30px", color: "green"}}>In Chests</h1>
