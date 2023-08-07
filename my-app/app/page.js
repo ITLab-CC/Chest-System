@@ -16,6 +16,10 @@ export default function Home() {
   const [nameKiste, setNameKiste] = useState('');
   const [loading, setLoading] = useState(true);
 
+  const [searchTerm, setSearchTerm] = useState(''); //Suche möglich
+  const [searchChestTerm, setSearchChestTerm] = useState(''); //Suche Kisten möglich
+
+
   async function getData() {
     setLoading(true);
     const resKisten = await fetch(apiURL + '/kisten');
@@ -26,6 +30,7 @@ export default function Home() {
     setItems(data);
     setLoading(false);
   }
+
   useEffect(() => {
     getData();
   }, []);
@@ -34,10 +39,32 @@ export default function Home() {
     return <Loader />;
   }
 
+  const filteredItems = items.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const filteredKisten = kisten.filter(kiste =>
+    kiste.name.toLowerCase().includes(searchChestTerm.toLowerCase())
+  );
+
   return (
     <div>
+      {/* Menu Bar */}
+      <div style={{ backgroundColor: 'black', color: 'white', padding: '10px 0', textAlign: 'center' }}>
+        <a href="#">Main</a> |
+        <a href="#">Chests</a> |
+        <a href="#">Items</a>
+      </div>
+    
       <h1 style={{fontSize: "40px", color: "green"}}>Chests</h1>
-      <KistenList kisten={kisten} />
+      <input
+      placeholder='Search chests...'
+      style={{ padding: '10px 20px', marginBottom: '20px' }}
+      type='text'
+      value={searchChestTerm}
+      onChange={(e) => setSearchChestTerm(e.target.value)}
+      />
+      <KistenList kisten={filteredKisten} />
+      
       <input
         placeholder='chestname'
         style={{ padding: '10px 20px' }}
@@ -62,7 +89,16 @@ export default function Home() {
         Add Chests
       </button>
       <h1 style={{fontSize: "40px", color: "red"}}>Items</h1>
-      <ItemList items={items} />
+
+       <input
+        placeholder='Search items...'
+        style={{ padding: '10px 20px', marginBottom: '20px'}}
+        type='text'
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <ItemList items={filteredItems} />
+
       <input
         placeholder='itemname'
         style={{ padding: '10px 20px'}}
