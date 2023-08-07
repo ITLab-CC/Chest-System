@@ -1,17 +1,17 @@
-'use client';
-import { useState, useEffect } from 'react';
-import KisteSelectionOverlay from '../../../components/KisteSelectionOverlay';
-import { Loader } from '../../../components/loader';
-import { apiURL } from '../../../utils/constants';
+"use client";
+import { useState, useEffect } from "react";
+import KisteSelectionOverlay from "../../../components/KisteSelectionOverlay";
+import { Loader } from "../../../components/loader";
+import { apiURL } from "../../../utils/constants";
 
 async function getItem(itemID) {
-  const res = await fetch(apiURL + '/items/' + itemID);
+  const res = await fetch(apiURL + "/items/" + itemID);
   const data = await res.json();
   return data;
 }
 
 async function getItemsInKiste(itemID) {
-  const res = await fetch(apiURL + '/items/' + itemID + '/kisten');
+  const res = await fetch(apiURL + "/items/" + itemID + "/kisten");
   const data = await res.json();
   return data;
 }
@@ -43,9 +43,9 @@ export default function Page({ params }) {
   }
   return (
     <div>
-      <h1 style={{fontSize: "50px", color: 'red'}}>{item.name}</h1>
+      <h1 style={{ fontSize: "50px", color: "red" }}>{item.name}</h1>
       <p>{item.description}</p>
-      <h1 style={{fontSize: "30px"}}>In Kisten</h1>
+      <h1 style={{ fontSize: "30px", color: "green"}}>In Chests</h1>
       <ul>
         {kisten.map((kiste) => (
           <li key={kiste.id}>
@@ -54,12 +54,12 @@ export default function Page({ params }) {
         ))}
       </ul>
       <button
-        style={{ color: 'black', padding: '10px 20px' }}
+        style={{ color: "black", padding: "10px 20px" }}
         onClick={() => {
           setShowKisteOverlay(true);
         }}
       >
-        Add or remove Item to Kiste
+        Add or remove Item to Chest
       </button>
       <br></br>
       {showKisteOverlay && (

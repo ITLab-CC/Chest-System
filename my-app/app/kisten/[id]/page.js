@@ -1,17 +1,17 @@
-'use client';
-import { useState, useEffect } from 'react';
-import ProductSelectionOverlay from '../../../components/ProductSelectionOverlay';
-import { Loader } from '../../../components/loader';
-import { apiURL } from '../../../utils/constants';
+"use client";
+import { useState, useEffect } from "react";
+import ProductSelectionOverlay from "../../../components/ProductSelectionOverlay";
+import { Loader } from "../../../components/loader";
+import { apiURL } from "../../../utils/constants";
 
 async function getKiste(kistenID) {
-  const res = await fetch(apiURL + '/kisten/' + kistenID);
+  const res = await fetch(apiURL + "/kisten/" + kistenID);
   const data = await res.json();
   return data;
 }
 
 async function getItemsInKiste(kistenID) {
-  const res = await fetch(apiURL + '/kisten/' + kistenID + '/items');
+  const res = await fetch(apiURL + "/kisten/" + kistenID + "/items");
   const data = await res.json();
   return data;
 }
@@ -46,7 +46,7 @@ export default function Page({ params }) {
     <div>
       <h1>{kiste.id}</h1>
       <p>{kiste.name}</p>
-      <h1 style={{fontSize: "40px"}}>Items in Kiste</h1>
+      <h1 style={{ fontSize: "30px", color: "green"}}>Items in Chest</h1>
       <ul>
         {itemsInKiste.map((item) => (
           <li key={item.id}>
@@ -55,7 +55,7 @@ export default function Page({ params }) {
         ))}
       </ul>
       <button
-        style={{ color: 'black', padding: '10px 20px'}}
+        style={{ color: "black", padding: "10px 20px" }}
         onClick={() => {
           setShowProductOverlay(true);
         }}

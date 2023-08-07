@@ -21,13 +21,13 @@ export default function ItemList({ items }) {
               })
                 .then((res) => {
                   if (res.status === 409) {
-                    alert('Error deleting item. Probably still in a kiste.');
+                    alert('Error deleting item. Probably still in a chest.');
                     return;
                   }
                   window.location.reload();
                 })
                 .catch((err) => {
-                  alert('Error deleting item. Probably still in a kiste.');
+                  alert('Error deleting item. Probably still in a chest.');
                 });
             }}
           >

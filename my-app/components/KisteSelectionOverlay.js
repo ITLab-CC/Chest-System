@@ -43,7 +43,7 @@ export default function KisteSelectionOverlay({
 
   return (
     <div>
-      <h2>Select Kiste</h2>
+      <h2 style={{ fontSize: "30px", color: "green" }}>Select Chest</h2>
       <ul>
         {kisten.map((product) => (
           <li
@@ -81,11 +81,11 @@ export default function KisteSelectionOverlay({
               setShowKisteOverlay(false);
             });
           } else {
-            window.alert('Please select a Kiste');
+            window.alert('Please select a Chest');
           }
         }}
       >
-        Add or remove Product
+        Add or remove Item
       </button>
     </div>
   );

@@ -21,7 +21,7 @@ export default function KistenList({ kisten }) {
                 .then((res) => {
                   if (res.status === 409) {
                     alert(
-                      'Error deleting kiste. Probably still has items in it.'
+                      'Error deleting chest. Probably still has items in it.'
                     );
                     return;
                   }
@@ -29,7 +29,7 @@ export default function KistenList({ kisten }) {
                 })
                 .catch((err) => {
                   alert(
-                    'Error deleting kiste. Probably still has items in it.'
+                    'Error deleting chest. Probably still has items in it.'
                   );
                 });
             }}
