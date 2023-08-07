@@ -24,8 +24,8 @@ export const Loader = () => {
       <svg
         id='templatesarea.com'
         xmlns='http://www.w3.org/2000/svg'
-        width='282'
-        height='282'
+        width='582'
+        height='582'
         viewBox='0 0 282 282'
       >
         <g id='SPLINE'>
