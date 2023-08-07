@@ -20,7 +20,7 @@
 
 export const Loader = () => {
   return (
-    <div>
+    <div style={{textAlign: "center"}}>
       <svg
         id='templatesarea.com'
         xmlns='http://www.w3.org/2000/svg'
