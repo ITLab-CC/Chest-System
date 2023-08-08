@@ -42,33 +42,40 @@ export default function Page({ params }) {
     return <Loader />;
   }
   return (
-    <div style={{textAlign: 'center'}}>
-      <h1 style={{ fontSize: "50px", color: "red" , marginBottom: '20px'}}>{item.name}</h1>
-      <p>{item.description}</p>
-      <h1 style={{ fontSize: "30px", color: "#19e619", marginBottom: '20px'}}>In Chests</h1>
-      <ul>
-        {kisten.map((kiste) => (
-          <li key={kiste.id}>
-            {kiste.name} {kiste.anzahl}x
-          </li>
-        ))}
-      </ul>
-      <button
-        style={{ color: "black", padding: "10px 20px" , marginBottom: '20px'}}
-        onClick={() => {
-          setShowKisteOverlay(true);
-        }}
-      >
-        Add or remove Item to Chest
-      </button>
-      <br></br>
-      {showKisteOverlay && (
-        <KisteSelectionOverlay
-          item={item}
-          setShowKisteOverlay={setShowKisteOverlay}
-          loadData={loadData}
-        />
-      )}
-    </div>
+    <div>
+      <div style={{ backgroundColor: 'black', color: 'white', padding: '10px 0', textAlign: 'center' }}>
+        <a href="#">Main</a> |
+        <a href="#"> Chests</a> |
+        <a href="#"> Items</a>
+      </div>
+      <div style={{textAlign: 'center'}}>
+        <h1 style={{ fontSize: "50px", color: "red" , marginBottom: '20px'}}>{item.name}</h1>
+        <p>{item.description}</p>
+        <h1 style={{ fontSize: "30px", color: "#19e619", marginBottom: '20px'}}>In Chests</h1>
+        <ul>
+          {kisten.map((kiste) => (
+            <li key={kiste.id}>
+              {kiste.name} {kiste.anzahl}x
+            </li>
+          ))}
+        </ul>
+        <button
+          style={{ color: "black", padding: "10px 20px" , marginBottom: '20px'}}
+          onClick={() => {
+            setShowKisteOverlay(true);
+          }}
+        >
+          Add or remove Item to Chest
+        </button>
+        <br></br>
+        {showKisteOverlay && (
+          <KisteSelectionOverlay
+            item={item}
+            setShowKisteOverlay={setShowKisteOverlay}
+            loadData={loadData}
+          />
+        )}
+      </div>
+    </div>  
   );
 }
