@@ -50,93 +50,99 @@ export default function Home() {
       {/* Menu Bar */}
       <div style={{ backgroundColor: 'black', color: 'white', padding: '10px 0', textAlign: 'center' }}>
         <a href="#">Main</a> |
-        <a href="#">Chests</a> |
-        <a href="#">Items</a>
+        <a href="#"> Chests</a> |
+        <a href="#"> Items</a>
       </div>
-    <div style={{ width: 'fit-content', height: 'fit-content', textAlign: 'center' }}>
-      <h1 style={{fontSize: "40px", color: "green"}}>Chests</h1>
-      <input
-      placeholder='Search chests...'
-      style={{ padding: '10px 20px', marginBottom: '20px' }}
-      type='text'
-      value={searchChestTerm}
-      onChange={(e) => setSearchChestTerm(e.target.value)}
-      />
-      <KistenList kisten={filteredKisten} />
-      <input
-        placeholder='chestname'
-        style={{ padding: '10px 20px' }}
-        type='text'
-        value={nameKiste}
-        onChange={(e) => setNameKiste(e.target.value)}
-      />
-      <button
-        style={{ color: 'black', padding: '10px 20px' , marginBottom: '50px'}}
-        onClick={async () => {
-          // Post to /kisten with query params
-          await fetch(
-            apiURL + '/kisten?' + new URLSearchParams({ name: nameKiste }),
-            {
-              method: 'POST', 
-            }
-          );
-          setNameKiste('');
-          getData();
-        }}
-      >
-        Add Chests
-      </button>
-    </div>
 
-    <div style={{textAlign: 'center'}}> 
-      <h1 style={{fontSize: "40px", color: "red"}}>Items</h1>
+    <div style={{display: 'flex', justifyContent: 'space-around'}}>
 
-       <input
-        placeholder='Search items...'
-        style={{ padding: '10px 20px', marginBottom: '20px'}}
-        type='text'
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <ItemList items={filteredItems} />
+      <div style={{ width: 'fit-content', height: 'fit-content', textAlign: 'center' }}>
 
-      <input
-        placeholder='itemname'
-        style={{ padding: '10px 20px'}}
+        <h1 style={{fontSize: "40px", color: "green"}}>Chests</h1>
+
+        <input
+        placeholder='Search chests...'
+        style={{ padding: '10px 20px', marginBottom: '20px' }}
         type='text'
-        value={nameGegenstand}
-        onChange={(e) => setNameGegenstand(e.target.value)}
-      />
-      <input
-        placeholder='item-id'
-        style={{ padding: '10px 20px' }}
-        type='text'
-        value={descriptionGegenstand}
-        onChange={(e) => setDescriptionGegenstand(e.target.value)}
-      />
-      <button
-        style={{ color: 'black', padding: '10px 20px' }}
-        onClick={async () => {
-          await fetch(
-            apiURL +
-              '/items?' +
-              new URLSearchParams({
-                name: nameGegenstand,
-                description: descriptionGegenstand,
-              }),
-            {
-              method: 'POST',
-            }
-          );
-          setNameGegenstand('');
-          setDescriptionGegenstand('');
-          getData();
-        }}
-      >
-        Add Item
+        value={searchChestTerm}
+        onChange={(e) => setSearchChestTerm(e.target.value)}
+        />
+        <KistenList kisten={filteredKisten} />
         
-      </button> 
-    </div>
+        <input
+          placeholder='chestname'
+          style={{ padding: '10px 20px' }}
+          type='text'
+          value={nameKiste}
+          onChange={(e) => setNameKiste(e.target.value)}
+        />
+        <button
+          style={{ color: 'black', padding: '10px 20px' , marginBottom: '50px'}}
+          onClick={async () => {
+            // Post to /kisten with query params
+            await fetch(
+              apiURL + '/kisten?' + new URLSearchParams({ name: nameKiste }),
+              {
+                method: 'POST', 
+              }
+            );
+            setNameKiste('');
+            getData();
+          }}
+        >
+          Add Chests
+        </button>
+      </div>   
+      <div style={{width: 'fit-content', height: 'fit-content', textAlign: 'center'}}> 
+        <h1 style={{fontSize: "40px", color: "red"}}>Items</h1>
+
+        <input
+          placeholder='Search items...'
+          style={{ padding: '10px 20px', marginBottom: '20px'}}
+          type='text'
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <ItemList items={filteredItems} />
+
+        <input
+          placeholder='itemname'
+          style={{ padding: '10px 20px'}}
+          type='text'
+          value={nameGegenstand}
+          onChange={(e) => setNameGegenstand(e.target.value)}
+        />
+        <input
+          placeholder='item-id'
+          style={{ padding: '10px 20px' }}
+          type='text'
+          value={descriptionGegenstand}
+          onChange={(e) => setDescriptionGegenstand(e.target.value)}
+        />
+        <button
+          style={{ color: 'black', padding: '10px 20px' }}
+          onClick={async () => {
+            await fetch(
+              apiURL +
+                '/items?' +
+                new URLSearchParams({
+                  name: nameGegenstand,
+                  description: descriptionGegenstand,
+                }),
+              {
+                method: 'POST',
+              }
+            );
+            setNameGegenstand('');
+            setDescriptionGegenstand('');
+            getData();
+          }}
+        >
+          Add Item
+          
+        </button> 
+      </div>
+    </div>  
     <div style={{textAlign: 'center',  marginTop: '150px'}}>
   <h2>How to use the website:</h2>
   <h3>Chests:</h3>

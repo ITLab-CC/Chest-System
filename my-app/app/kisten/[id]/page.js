@@ -43,6 +43,7 @@ export default function Page({ params }) {
     return <Loader />;
   }
   return (
+    
     <div style={{textAlign: "center"}}>
       <h1>{kiste.id}</h1>
       <p>{kiste.name}</p>
