@@ -37,7 +37,7 @@ export default function ProductSelectionOverlay({
 
   return (
     <div>
-      <h2 style={{ fontSize: "30px", color: "orange" }}>Select Product</h2>
+      <h2 style={{ fontSize: "30px", color: "orange", marginBottom: '20px' }}>Select Product</h2>
       <ul>
         {products.map((product) => (
           <li
@@ -46,6 +46,7 @@ export default function ProductSelectionOverlay({
               setSelectedProduct(product);
             }}
             style={{
+              marginBottom: '15px',
               backgroundColor:
                 selectedProduct && selectedProduct.id === product.id
                   ? 'green'
@@ -58,7 +59,7 @@ export default function ProductSelectionOverlay({
       </ul>
       <h2>Amount</h2>
       <input
-        style={{padding: "10px 20px" }}
+        style={{padding: "10px 20px" , marginTop: '20px'}}
         type='number'
         value={anzahl}
         onChange={(e) => {
@@ -66,7 +67,7 @@ export default function ProductSelectionOverlay({
         }}
       />
       <button
-        style={{ color: "black", padding: "10px 20px" }}
+        style={{ color: "black", padding: "10px 20px" , marginTop: '20px'}}
         onClick={() => {
           if (selectedProduct) {
             addProductToKiste(kiste.id, selectedProduct.id, anzahl).then(() => {

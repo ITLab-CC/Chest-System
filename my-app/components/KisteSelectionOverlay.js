@@ -43,7 +43,7 @@ export default function KisteSelectionOverlay({
 
   return (
     <div>
-      <h2 style={{ fontSize: "30px", color: "green" }}>Select Chest</h2>
+      <h2 style={{ fontSize: "30px", color: "#19e619", marginBottom: '20px' }}>Select Chest</h2>
       <ul>
         {kisten.map((product) => (
           <li
@@ -52,6 +52,7 @@ export default function KisteSelectionOverlay({
               setSelectedKiste(product);
             }}
             style={{
+              marginBottom: '20px',
               backgroundColor:
                 selectedKiste && selectedKiste.id === product.id
                   ? 'green'
@@ -65,7 +66,7 @@ export default function KisteSelectionOverlay({
       <h2>Amount</h2>
       <input
         placeholder='amount'
-        style={{padding: '10px 20px' }}
+        style={{padding: '10px 20px' , marginTop: '20px'}}
         type='number'
         value={anzahl}
         onChange={(e) => {

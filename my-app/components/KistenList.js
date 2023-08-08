@@ -13,7 +13,7 @@ export default function KistenList({ kisten }) {
             <p>{kiste.name}</p>
           </a>
           <button
-            style={{ color: 'black', padding: '10px 20px' }}
+            style={{ color: 'black', padding: '10px 20px', marginBottom: '20px' }}
             onClick={async () => {
               fetch(apiURL + '/kisten/' + kiste.id, {
                 method: 'DELETE',

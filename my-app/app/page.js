@@ -58,7 +58,7 @@ export default function Home() {
 
       <div style={{ width: 'fit-content', height: 'fit-content', textAlign: 'center' }}>
 
-        <h1 style={{fontSize: "40px", color: "green"}}>Chests</h1>
+        <h1 style={{fontSize: "40px", color: "#19e619"}}>Chests</h1>
 
         <input
         placeholder='Search chests...'
@@ -68,7 +68,7 @@ export default function Home() {
         onChange={(e) => setSearchChestTerm(e.target.value)}
         />
         <KistenList kisten={filteredKisten} />
-        
+
         <input
           placeholder='chestname'
           style={{ padding: '10px 20px' }}
