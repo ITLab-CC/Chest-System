@@ -44,23 +44,33 @@ export default function Page({ params }) {
   }
   return (
     <div>
-      <div style={{ backgroundColor: 'black', color: 'white', padding: '10px 0', textAlign: 'center' }}>
-        <a href="#">Main</a> |
-        <a href="#"> Chests</a>
+      <div
+        style={{
+          backgroundColor: "black",
+          color: "white",
+          padding: "10px 0",
+          textAlign: "center",
+        }}
+      >
+        <a href="/">Main</a> |<a href="#"> Chests</a>
       </div>
-      <div style={{textAlign: "center"}}>
+      <div style={{ textAlign: "center" }}>
         <h1>{kiste.id}</h1>
         <p>{kiste.name}</p>
-        <h1 style={{ fontSize: "30px", color: "#19e619", marginBottom: '15px'}}>Items in Chest</h1>
+        <h1
+          style={{ fontSize: "30px", color: "#19e619", marginBottom: "15px" }}
+        >
+          Items in Chest
+        </h1>
         <ul>
           {itemsInKiste.map((item) => (
-            <li style={{padding: '5px'}} key={item.id}>
+            <li style={{ padding: "5px" }} key={item.id}>
               {item.name}: {item.anzahl}x
             </li>
           ))}
         </ul>
         <button
-          style={{ color: "black", padding: "10px 20px", marginBottom: '20px'}}
+          style={{ color: "black", padding: "10px 20px", marginBottom: "20px" }}
           onClick={() => {
             setShowProductOverlay(true);
           }}
