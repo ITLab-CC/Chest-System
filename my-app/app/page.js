@@ -49,9 +49,8 @@ export default function Home() {
     <div>
       {/* Menu Bar */}
       <div style={{ backgroundColor: 'black', color: 'white', padding: '10px 0', textAlign: 'center' }}>
-        <a href="#">Main</a> |
-        <a href="#"> Chests</a> |
-        <a href="#"> Items</a>
+        <a href="#" >Main</a> |
+        <a href="/kisten/1"> Chests</a> 
       </div>
 
     <div style={{display: 'flex', justifyContent: 'space-around'}}>
