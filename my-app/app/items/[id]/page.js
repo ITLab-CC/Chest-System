@@ -44,8 +44,7 @@ export default function Page({ params }) {
   return (
     <div>
       <div style={{ backgroundColor: 'black', color: 'white', padding: '10px 0', textAlign: 'center' }}>
-        <a href="#">Main</a> |
-        <a href="#"> Chests</a> 
+      <a href="/">Main</a> |<a href="/kisten/1"> Chests</a> 
       </div>
       <div style={{textAlign: 'center'}}>
         <h1 style={{ fontSize: "50px", color: "red" , marginBottom: '20px'}}>{item.name}</h1>
