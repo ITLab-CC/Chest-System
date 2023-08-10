@@ -7,16 +7,30 @@ export default function ItemList({ items }) {
   return (
     <div>
       {items.map((item) => (
-        <div key={item.id} style={{display: 'flex', justifyContent: 'center'}}>
-          <div style={{marginRight: '1.25em'}}>
-          <a href={'/items/' + item.id}>
-            <h3>{item.id}</h3>
-            <p>{item.name}</p>
-          </a>
+        <div
+          key={item.id}
+          style={{ display: 'flex', justifyContent: 'center' }}
+        >
+          <div style={{ marginRight: '1.25em' }}>
+            <a href={'/items/' + item.id}>
+              <h3>{item.id}</h3>
+              <p>{item.name}</p>
+            </a>
           </div>
           <button
-            style={{ color: 'black', padding: '0.625em 1.25em', marginBottom: '1.25em'}}
+            style={{
+              color: 'black',
+              padding: '0.625em 1.25em',
+              marginBottom: '1.25em',
+            }}
             onClick={async () => {
+              if (
+                !window.confirm(
+                  'Are you sure you want to delete ' + item.name + '?'
+                )
+              ) {
+                return;
+              }
               fetch(apiURL + '/items/' + item.id, {
                 method: 'DELETE',
               })
