@@ -8,14 +8,14 @@ export default function KistenList({ kisten }) {
     <div>
       {kisten.map((kiste) => (
         <div key={kiste.id} style={{display: 'flex', justifyContent: 'center'}}>
-          <div style={{marginRight: '20px'}}>
+          <div style={{marginRight: '1.25em'}}>
             <a href={'/kisten/' + kiste.id}>
               <h3>{kiste.id}</h3>
               <p>{kiste.name}</p>
             </a>
             </div>
             <button
-              style={{ color: 'black', padding: '10px 20px', marginBottom: '20px' }}
+              style={{ color: 'black', padding: '0.625em 1.25em', marginBottom: '1.25em' }}
               onClick={async () => {
                 fetch(apiURL + '/kisten/' + kiste.id, {
                   method: 'DELETE',

@@ -87,7 +87,7 @@ export default function Home() {
           <button
             style={{
               color: "black",
-              padding: "10px 20px",
+              padding: "0.625em 1.25em",
               marginBottom: "50px",
             }}
             onClick={async () => {
@@ -116,7 +116,7 @@ export default function Home() {
 
           <input
             placeholder="Search items..."
-            style={{ padding: "10px 20px", marginBottom: "20px" }}
+            style={{ padding: "0.625em 1.25em", marginBottom: "1.25em" }}
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -125,20 +125,20 @@ export default function Home() {
 
           <input
             placeholder="itemname"
-            style={{ padding: "10px 20px" }}
+            style={{ padding: "0.625em 1.25em" }}
             type="text"
             value={nameGegenstand}
             onChange={(e) => setNameGegenstand(e.target.value)}
           />
           <input
             placeholder="item-id"
-            style={{ padding: "10px 20px" }}
+            style={{ padding: "0.625em 1.25em" }}
             type="text"
             value={descriptionGegenstand}
             onChange={(e) => setDescriptionGegenstand(e.target.value)}
           />
           <button
-            style={{ color: "black", padding: "10px 20px" }}
+            style={{ color: "black", padding: "0.625em 1.25em" }}
             onClick={async () => {
               await fetch(
                 apiURL +
@@ -160,7 +160,7 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <div style={{ textAlign: "center", marginTop: "150px" }}>
+      <div style={{ textAlign: "center", marginTop: "9.375em" }}>
         <h2>How to use the website:</h2>
         <h3>Chests:</h3>
         <ul>

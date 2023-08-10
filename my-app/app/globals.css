@@ -147,7 +147,7 @@ ul li::before {
 }
 
 button {
-  width: 9em;
+  width: fit-content;
   height: 2.75em;
   background-color: rgb(83, 172, 210);
   border-radius: 20em;
@@ -163,18 +163,18 @@ button {
  
  button::before {
   content: '';
-  width: 0;
+  width:0 ;
   height: 2.75em;
   border-radius: 20em;
   position: absolute;
   top: 0;
   left: 0;
   background-image: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
-  transition: .5s ease;
+  transition: 1.5s ease;
   display: block;
   z-index: -1;
  }
  
  button:hover::before {
-  width: 9em;
+  width: 20em;
  }

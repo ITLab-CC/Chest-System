@@ -8,14 +8,14 @@ export default function ItemList({ items }) {
     <div>
       {items.map((item) => (
         <div key={item.id} style={{display: 'flex', justifyContent: 'center'}}>
-          <div style={{marginRight: '20px'}}>
+          <div style={{marginRight: '1.25em'}}>
           <a href={'/items/' + item.id}>
             <h3>{item.id}</h3>
             <p>{item.name}</p>
           </a>
           </div>
           <button
-            style={{ color: 'black', padding: '10px 20px', marginBottom: '20px'}}
+            style={{ color: 'black', padding: '0.625em 1.25em', marginBottom: '1.25em'}}
             onClick={async () => {
               fetch(apiURL + '/items/' + item.id, {
                 method: 'DELETE',

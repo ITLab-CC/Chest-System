@@ -47,9 +47,9 @@ export default function Page({ params }) {
       <a href="/">Main</a> |<a href="/kisten/1"> Chests</a> 
       </div>
       <div style={{textAlign: 'center'}}>
-        <h1 style={{ fontSize: "50px", color: "red" , marginBottom: '20px'}}>{item.name}</h1>
+        <h1 style={{ fontSize: "3.125em", color: "red" , marginBottom: '0.25em'}}>{item.name}</h1>
         <p>{item.description}</p>
-        <h1 style={{ fontSize: "30px", color: "#19e619", marginBottom: '20px'}}>In Chests</h1>
+        <h1 style={{ fontSize: "1.875em", color: "#19e619", marginBottom: '0.25em'}}>In Chests</h1>
         <ul>
           {kisten.map((kiste) => (
             <li key={kiste.id}>
@@ -58,7 +58,7 @@ export default function Page({ params }) {
           ))}
         </ul>
         <button
-          style={{ color: "black", padding: "10px 20px" , marginBottom: '20px'}}
+          style={{ color: "black", padding: "0.625em 1.25em" , marginBottom: '3.125em', marginTop: '1.25em'}}
           onClick={() => {
             setShowKisteOverlay(true);
           }}

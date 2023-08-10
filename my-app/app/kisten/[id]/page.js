@@ -48,7 +48,7 @@ export default function Page({ params }) {
         style={{
           backgroundColor: "black",
           color: "white",
-          padding: "10px 0",
+          padding: "0.625em",
           textAlign: "center",
         }}
       >
@@ -58,19 +58,19 @@ export default function Page({ params }) {
         <h1>{kiste.id}</h1>
         <p>{kiste.name}</p>
         <h1
-          style={{ fontSize: "30px", color: "#19e619", marginBottom: "15px" }}
+          style={{ fontSize: "1.875em", color: "#19e619", marginBottom: "0.9375em" }}
         >
           Items in Chest
         </h1>
         <ul>
           {itemsInKiste.map((item) => (
-            <li style={{ padding: "5px" }} key={item.id}>
+            <li style={{ padding: "0.3125em" }} key={item.id}>
               {item.name}: {item.anzahl}x
             </li>
           ))}
         </ul>
         <button
-          style={{ color: "black", padding: "10px 20px", marginBottom: "20px" }}
+          style={{ color: "black", padding: "0.625em 1.25em", marginBottom: "1.25em" }}
           onClick={() => {
             setShowProductOverlay(true);
           }}
