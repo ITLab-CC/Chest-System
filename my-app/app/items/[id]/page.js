@@ -50,12 +50,12 @@ export default function Page({ params }) {
       </nav>
       <div style={{textAlign: 'center'}}>
         <h1 style={{ fontSize: "3.125em", color: "red" , marginBottom: '0.25em'}}>{item.name}</h1>
-        <p>{item.description}</p>
+        <p>ID: {item.description}</p>
         <h1 style={{ fontSize: "1.875em", color: "#19e619", marginBottom: '0.25em'}}>In Chests</h1>
         <ul>
           {kisten.map((kiste) => (
             <li key={kiste.id}>
-              {kiste.name} {kiste.anzahl}x
+              {kiste.anzahl}x | {kiste.name}
             </li>
           ))}
         </ul>
