@@ -53,7 +53,7 @@ export default function Home() {
       </ul>
       </nav>
 
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
+      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
         <div
           style={{
             width: "fit-content",

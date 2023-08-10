@@ -56,7 +56,7 @@ export default function Page({ params }) {
         <h1>{kiste.id}</h1>
         <p>{kiste.name}</p>
         <h1
-          style={{ fontSize: "1.875em", color: "#19e619", marginBottom: "0.9375em" }}
+          style={{ fontSize: "1.875em", color: "#19e619", marginBottom: "0.25em" }}
         >
           Items in Chest
         </h1>
