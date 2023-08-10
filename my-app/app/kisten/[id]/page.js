@@ -72,7 +72,7 @@ export default function Page({ params }) {
             setShowProductOverlay(true);
           }}
         >
-          Add Item
+          Add or remove Item
         </button>
         <br></br>
         {showProductOverlay && (
