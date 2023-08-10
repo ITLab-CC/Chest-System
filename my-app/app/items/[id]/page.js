@@ -1,17 +1,17 @@
-"use client";
-import { useState, useEffect } from "react";
-import KisteSelectionOverlay from "../../../components/KisteSelectionOverlay";
-import { Loader } from "../../../components/loader";
-import { apiURL } from "../../../utils/constants";
+'use client';
+import { useState, useEffect } from 'react';
+import KisteSelectionOverlay from '../../../components/KisteSelectionOverlay';
+import { Loader } from '../../../components/loader';
+import { apiURL } from '../../../utils/constants';
 
 async function getItem(itemID) {
-  const res = await fetch(apiURL + "/items/" + itemID);
+  const res = await fetch(apiURL + '/items/' + itemID);
   const data = await res.json();
   return data;
 }
 
 async function getItemsInKiste(itemID) {
-  const res = await fetch(apiURL + "/items/" + itemID + "/kisten");
+  const res = await fetch(apiURL + '/items/' + itemID + '/kisten');
   const data = await res.json();
   return data;
 }
@@ -43,15 +43,29 @@ export default function Page({ params }) {
   }
   return (
     <div>
-      <nav class="menu menu-1">
-      <ul>
-        <li><a href="/">Home</a></li>
-      </ul>
+      <nav class='menu menu-1'>
+        <ul>
+          <li>
+            <a href='/'>Home</a>
+          </li>
+        </ul>
       </nav>
-      <div style={{textAlign: 'center'}}>
-        <h1 style={{ fontSize: "3.125em", color: "red" , marginBottom: '0.25em'}}>{item.name}</h1>
-        <p>ID: {item.description}</p>
-        <h1 style={{ fontSize: "1.875em", color: "#19e619", marginBottom: '0.25em'}}>In Chests</h1>
+      <div style={{ textAlign: 'center' }}>
+        <h1
+          style={{ fontSize: '3.125em', color: 'red', marginBottom: '0.25em' }}
+        >
+          {item.name}
+        </h1>
+        <p>{item.description}</p>
+        <h1
+          style={{
+            fontSize: '1.875em',
+            color: '#19e619',
+            marginBottom: '0.25em',
+          }}
+        >
+          In Chests
+        </h1>
         <ul>
           {kisten.map((kiste) => (
             <li key={kiste.id}>
@@ -60,7 +74,12 @@ export default function Page({ params }) {
           ))}
         </ul>
         <button
-          style={{ color: "black", padding: "0.625em 1.25em" , marginBottom: '3.125em', marginTop: '1.25em'}}
+          style={{
+            color: 'black',
+            padding: '0.625em 1.25em',
+            marginBottom: '3.125em',
+            marginTop: '1.25em',
+          }}
           onClick={() => {
             setShowKisteOverlay(true);
           }}
@@ -76,6 +95,6 @@ export default function Page({ params }) {
           />
         )}
       </div>
-    </div>  
+    </div>
   );
 }
