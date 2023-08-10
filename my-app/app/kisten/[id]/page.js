@@ -44,15 +44,13 @@ export default function Page({ params }) {
   }
   return (
     <div>
-      <div
-        style={{
-          backgroundColor: "black",
-          color: "white",
-          padding: "0.625em",
-          textAlign: "center",
-        }}
-      >
-        <a href="/">Main</a> |<a href="#"> Chests</a>
+      <div>
+        <nav class="menu menu-1">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/kisten/1">Chests</a></li>
+        </ul>
+        </nav>
       </div>
       <div style={{ textAlign: "center" }}>
         <h1>{kiste.id}</h1>

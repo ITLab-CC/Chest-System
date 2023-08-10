@@ -134,16 +134,16 @@ a {
   }
 }
 ul {
-  list-style: none; /* Remove default bullets */
+  list-style-type: none; /* Remove default bullets */
 }
 
 ul li::before {
-  content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
   color: white; /* Change the color */
   font-weight: bold; /* If you want it to be bold */
   display: inline-block; /* Needed to add space between the bullet and the text */
   width: 1em; /* Also needed for space (tweak if needed) */
   margin-left: -1em; /* Also needed for space (tweak if needed) */
+  list-style-type: none;
 }
 
 button {
@@ -186,8 +186,61 @@ button {
   margin-top: 9.375em;
 }
 
-.content {
-  text-align: left;
-  max-width: 50em; /* Adjust as needed */
-  padding: 1.25em;
-} 
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700');
+*{
+  margin: 0;
+  padding: 0;
+}
+.menu{
+  padding: 1em 1.25em;
+  margin-bottom: 1.25em;
+  font-family: 'Open Sans Condensed', sans-serif;
+}
+.menu-1, .menu-5{
+  background: #000000;
+}
+
+.menu ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.menu li{
+  list-style-type: none;
+  display: inline-block;
+  margin: 0 15px;
+}
+
+.menu a{
+  font-size: 22px;
+  list-style-type: none;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  position: relative;
+  padding: 4px 0;
+}
+.menu a::before{
+  content: "";
+  width: 100%;
+  height: 4px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: #fffcfc;
+  transition: 0.5s transform ease;
+  transform: scale3d(0,1,1);
+  transform-origin: 0 50%;
+}
+.menu a:hover::before{
+  transform: scale3d(1,1,1);
+}
+.menu-1 a::before{
+  background: #ffffff;
+  transform-origin: 100% 50%;
+}
+.menu-1 a:hover::before{
+  transform-origin: 0 50%;
+}
