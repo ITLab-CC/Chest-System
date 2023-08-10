@@ -48,7 +48,6 @@ export default function Page({ params }) {
         <nav class="menu menu-1">
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/kisten/1">Chests</a></li>
         </ul>
         </nav>
       </div>
