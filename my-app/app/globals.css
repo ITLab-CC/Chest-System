@@ -178,3 +178,16 @@ button {
  button:hover::before {
   width: 20em;
  }
+
+ .centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 9.375em;
+}
+
+.content {
+  text-align: left;
+  max-width: 50em; /* Adjust as needed */
+  padding: 1.25em;
+} 
