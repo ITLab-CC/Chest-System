@@ -51,7 +51,7 @@ export default function Home() {
         style={{
           backgroundColor: "black",
           color: "white",
-          padding: "10px 0",
+          padding: "0.625em 0",
           textAlign: "center",
         }}
       >
@@ -66,11 +66,11 @@ export default function Home() {
             textAlign: "center",
           }}
         >
-          <h1 style={{ fontSize: "40px", color: "#19e619" }}>Chests</h1>
+          <h1 style={{ fontSize: "2.5em", color: "#19e619" }}>Chests</h1>
 
           <input
             placeholder="Search chests..."
-            style={{ padding: "10px 20px", marginBottom: "20px" }}
+            style={{ padding: "0.625em 1.25em", marginBottom: "1.25em" }}
             type="text"
             value={searchChestTerm}
             onChange={(e) => setSearchChestTerm(e.target.value)}
@@ -79,7 +79,7 @@ export default function Home() {
 
           <input
             placeholder="chestname"
-            style={{ padding: "10px 20px" }}
+            style={{ padding: "0.625em 1.25em" }}
             type="text"
             value={nameKiste}
             onChange={(e) => setNameKiste(e.target.value)}
@@ -88,7 +88,7 @@ export default function Home() {
             style={{
               color: "black",
               padding: "0.625em 1.25em",
-              marginBottom: "50px",
+              marginBottom: "3.125em",
             }}
             onClick={async () => {
               // Post to /kisten with query params
@@ -112,7 +112,7 @@ export default function Home() {
             textAlign: "center",
           }}
         >
-          <h1 style={{ fontSize: "40px", color: "red" }}>Items</h1>
+          <h1 style={{ fontSize: "2.5em", color: "red" }}>Items</h1>
 
           <input
             placeholder="Search items..."
@@ -160,7 +160,8 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <div style={{ textAlign: "center", marginTop: "9.375em" }}>
+      <div class="centered-container">
+        <div class="content">
         <h2>How to use the website:</h2>
         <h3>Chests:</h3>
         <ul>
@@ -193,6 +194,7 @@ export default function Home() {
             of the website.
           </li>
         </ul>
+        </div>
       </div>
     </div>
   );
