@@ -5,8 +5,9 @@ import { useState, useEffect } from 'react';
 import { apiURL } from '../utils/constants';
 import KistenList from '../components/KistenList';
 import ItemList from '../components/ItemList';
-
 import { Loader } from '../components/loader';
+
+
 
 export default function Home() {
   const [items, setItems] = useState([]);
@@ -17,6 +18,14 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(''); //Suche möglich
   const [searchChestTerm, setSearchChestTerm] = useState(''); //Suche Kisten möglich
+
+  const [scrollToEnd, setScrollToEnd] = useState(false)
+
+  useEffect(() => {
+    if (scrollToEnd) {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  }, [scrollToEnd]);
 
   async function getData() {
     setLoading(true);
@@ -153,6 +162,21 @@ export default function Home() {
             }}
           >
             Add Item
+          </button>
+          <button
+            style={{
+              position: "fixed",
+              bottom: "20px",
+              right: "20px",
+              padding: "0.625em 1.25em",
+              backgroundColor: "#19e619",
+              color: "white",
+            }}
+            onClick={() => {
+              setScrollToEnd(true);
+            }}
+            >
+              Scroll To End
           </button>
         </div>
       </div>
