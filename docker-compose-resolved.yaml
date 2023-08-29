@@ -1,0 +1,95 @@
+name: chest-system
+services:
+  client:
+    build:
+      context: /Users/sebastian/Repos/Chest-System/my-app
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+    image: skyface753/chest-system-client:latest
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 3000
+      published: "3000"
+      protocol: tcp
+  db:
+    container_name: pg_container
+    environment:
+      PGUSER: postgres1
+      POSTGRES_DB: postgres3
+      POSTGRES_PASSWORD: postgres2
+      POSTGRES_USER: postgres1
+    healthcheck:
+      test:
+      - CMD
+      - pg_isready
+      - -U
+      - postgres1
+      - -d
+      - postgres3
+      timeout: 5s
+      interval: 10s
+      retries: 5
+    image: postgres
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 5432
+      published: "5432"
+      protocol: tcp
+    restart: always
+    volumes:
+    - type: volume
+      source: db-data
+      target: /var/lib/postgresql/data
+      volume: {}
+  proxy:
+    build:
+      context: /Users/sebastian/Repos/Chest-System/proxy
+      dockerfile: Dockerfile
+    depends_on:
+      client:
+        condition: service_started
+        required: true
+      server:
+        condition: service_started
+        required: true
+    image: skyface753/chest-system-proxy:latest
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 80
+      published: "81"
+      protocol: tcp
+    restart: always
+  server:
+    build:
+      context: /Users/sebastian/Repos/Chest-System
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+        required: true
+    environment:
+      POSTGRES_DB: postgres3
+      POSTGRES_HOST: db
+      POSTGRES_PASSWORD: postgres2
+      POSTGRES_USER: postgres1
+    image: skyface753/chest-system-server:latest
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 8000
+      published: "8000"
+      protocol: tcp
+networks:
+  default:
+    name: chest-system_default
+volumes:
+  db-data:
+    name: chest-system_db-data
