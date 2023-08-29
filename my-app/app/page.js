@@ -7,8 +7,6 @@ import KistenList from '../components/KistenList';
 import ItemList from '../components/ItemList';
 import { Loader } from '../components/loader';
 
-
-
 export default function Home() {
   const [items, setItems] = useState([]);
   const [kisten, setKisten] = useState([]);
@@ -19,7 +17,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState(''); //Suche möglich
   const [searchChestTerm, setSearchChestTerm] = useState(''); //Suche Kisten möglich
 
-  const [scrollToEnd, setScrollToEnd] = useState(false)
+  const [scrollToEnd, setScrollToEnd] = useState(false);
 
   useEffect(() => {
     if (scrollToEnd) {
@@ -55,7 +53,7 @@ export default function Home() {
 
   return (
     <div>
-      <nav class='menu menu-1'>
+      <nav className='menu menu-1'>
         <ul>
           <li>
             <a href='/'>Home</a>
@@ -165,23 +163,23 @@ export default function Home() {
           </button>
           <button
             style={{
-              position: "fixed",
-              bottom: "20px",
-              right: "20px",
-              padding: "0.625em 1.25em",
-              backgroundColor: "#19e619",
-              color: "white",
+              position: 'fixed',
+              bottom: '20px',
+              right: '20px',
+              padding: '0.625em 1.25em',
+              backgroundColor: '#19e619',
+              color: 'white',
             }}
             onClick={() => {
               setScrollToEnd(true);
             }}
-            >
-              Scroll To End
+          >
+            Scroll To End
           </button>
         </div>
       </div>
-      <div class='centered-container'>
-        <div class='content'>
+      <div className='centered-container'>
+        <div className='content'>
           <h2>How to use the website:</h2>
           <h3>Chests:</h3>
           <ul>

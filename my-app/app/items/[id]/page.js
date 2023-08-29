@@ -43,7 +43,7 @@ export default function Page({ params }) {
   }
   return (
     <div>
-      <nav class='menu menu-1'>
+      <nav className='menu menu-1'>
         <ul>
           <li>
             <a href='/'>Home</a>
