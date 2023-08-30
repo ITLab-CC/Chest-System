@@ -31,9 +31,7 @@ docker buildx build --platform linux/amd64,linux/arm64 -t skyface753/chest-syste
 export KUBECONFIG="$(pwd)/minikube-config.yaml"
 minikube start
 
-
-docker-compose -f docker-compose-proxy.yaml config > docker-compose-resolved.yaml
-kompose convert -f docker-compose-resolved.yaml -o kube --namespace chest-system
+# Update the Kube-Files in kube/
 
 kubectl apply -f kube
 minikube service proxy
