@@ -31,10 +31,6 @@ spec:
               value: production
           image: skyface753/chest-system-client:latest
           name: client
-          ports:
-            - containerPort: 3000
-              hostPort: 3000
-              protocol: TCP
           resources: {}
       restartPolicy: Always
 status: {}

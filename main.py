@@ -20,6 +20,8 @@ POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD") or POSTGRES_PASSWORD
 POSTGRES_HOST = os.environ.get("POSTGRES_HOST") or POSTGRES_HOST
 POSTGRES_DB = os.environ.get("POSTGRES_DB") or POSTGRES_DB
 
+DEV = os.environ.get("DEV") or False
+
 connectionString = (
     f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}/{POSTGRES_DB}"
 )
@@ -44,14 +46,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Create all tables and fill them with data
-with engine.connect() as con:
-    print("Dropping all tables and creating new ones...")
-    # Drop all tables
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
-
-
 def db_prep():
     with Session(engine) as session:
         # create parent, append a child via association
@@ -63,7 +57,17 @@ def db_prep():
         session.commit()
 
 
-db_prep()
+# Create all tables and fill them with data
+if DEV:
+    with engine.connect() as con:
+        print("Dropping all tables and creating new ones...")
+        # Drop all tables
+        Base.metadata.drop_all(engine)
+        Base.metadata.create_all(engine)
+        # Fill tables with data
+        db_prep()
+
+
 
 
 apiPrefix = "/api/v1"

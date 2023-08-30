@@ -13,8 +13,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - 8000:8000
 
   # CLIENT
   client:
@@ -24,8 +22,6 @@ services:
       dockerfile: Dockerfile
     environment:
       NODE_ENV: production
-    ports:
-      - 3000:3000
 
   proxy:
     image: skyface753/chest-system-proxy:latest
@@ -53,11 +49,11 @@ services:
       - db-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
-    healthcheck:
-      test:
-        ['CMD', 'pg_isready', '-U', '${POSTGRES_USER}', '-d', '${POSTGRES_DB}']
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # healthcheck:
+    #   test:
+    #     ['CMD', 'pg_isready', '-U', '${POSTGRES_USER}', '-d', '${POSTGRES_DB}']
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
 volumes:
   db-data:
