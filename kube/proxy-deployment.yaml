@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o kube
+    kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o kube --namespace chest-system
     kompose.version: 1.30.0 (HEAD)
   creationTimestamp: null
   labels:
     io.kompose.service: proxy
   name: proxy
-  namespace: default
+  namespace: chest-system
 spec:
   replicas: 1
   selector:
@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o kube
+        kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o kube --namespace chest-system
         kompose.version: 1.30.0 (HEAD)
       creationTimestamp: null
       labels:

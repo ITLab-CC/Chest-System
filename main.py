@@ -48,24 +48,25 @@ app.add_middleware(
 
 def db_prep():
     with Session(engine) as session:
+        # Check if DB is empty
+        if session.query(Kiste).first() is not None:
+            return
         # create parent, append a child via association
-        p = Kiste(name="Kiste1")
+        p = Kiste(name="Kiste1", id=1)
         a = ItemKiste(anzahl=5)
-        a.item = Item(name="Item1")
+        a.item = Item(name="Item1", id=1)
         p.items.append(a)
         session.add(p)
         session.commit()
 
 
 # Create all tables and fill them with data
-if DEV:
-    with engine.connect() as con:
-        print("Dropping all tables and creating new ones...")
-        # Drop all tables
-        Base.metadata.drop_all(engine)
-        Base.metadata.create_all(engine)
-        # Fill tables with data
-        db_prep()
+with engine.connect() as con:
+    print("Creating tables")
+    
+    Base.metadata.create_all(engine)
+    # Fill tables with data
+    db_prep()
 
 
 

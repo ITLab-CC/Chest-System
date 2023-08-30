@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o kube
+    kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o kube --namespace chest-system
     kompose.version: 1.30.0 (HEAD)
   creationTimestamp: null
   labels:
     io.kompose.service: db
   name: db
-  namespace: default
+  namespace: chest-system
 spec:
   replicas: 1
   selector:
@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o kube
+        kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o kube --namespace chest-system
         kompose.version: 1.30.0 (HEAD)
       creationTimestamp: null
       labels:
@@ -40,6 +40,7 @@ spec:
           name: pg-container
           ports:
             - containerPort: 5432
+              hostIP: 127.0.0.1
               hostPort: 5432
               protocol: TCP
           resources: {}

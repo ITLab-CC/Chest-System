@@ -16,6 +16,11 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
+# Entrypoint script to run migrations and start the application.
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
 ARG UID=10001
@@ -46,4 +51,4 @@ COPY . .
 EXPOSE 8000
 
 # Run the application.
-CMD uvicorn 'main:app' --host=0.0.0.0 --port=8000
+ENTRYPOINT ["/entrypoint.sh"]

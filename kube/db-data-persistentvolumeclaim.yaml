@@ -5,7 +5,7 @@ metadata:
   labels:
     io.kompose.service: db-data
   name: db-data
-  namespace: default
+  namespace: chest-system
 spec:
   accessModes:
     - ReadWriteOnce
