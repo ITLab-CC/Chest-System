@@ -27,12 +27,16 @@ docker buildx build --platform linux/amd64,linux/arm64 -t skyface753/chest-syste
 docker buildx build --platform linux/amd64,linux/arm64 -t skyface753/chest-system-proxy -f proxy/Dockerfile ./proxy --push
 ```
 
+## Kubernetes
+
+[IT-Lab Kubernetes Collection](https://github.com/ITLab-CC/kubernetes-collection/tree/main/chest-system)
+
 ```bash
 export KUBECONFIG="$(pwd)/minikube-config.yaml"
 minikube start
 
 # Update the Kube-Files in kube/
 
-kubectl apply -f kube
+kubectl apply -f ITLab-CC/kubernetes-collection/chest-system
 minikube service proxy
 ```
