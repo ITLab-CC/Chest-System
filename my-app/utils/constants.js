@@ -1,4 +1,8 @@
 const apiPrefix = '/api/v1';
 // No apiHost => Just apiPrefix
-const apiHost = process.env.NEXT_PUBLIC_API_URL || '';
+let apiHost = '';
+if (process.env.NEXT_PUBLIC_DEV){
+    apiHost = 
+    'http://localhost:8000'
+}
 export const apiURL = apiHost + apiPrefix;
