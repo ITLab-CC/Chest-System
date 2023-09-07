@@ -95,6 +95,11 @@ export default function Page({ params }) {
           {itemsInKiste.map((item) => (
             <li style={{ padding: '0.3125em' }} key={item.id}>
               <button
+              style={{
+                borderRadius: "50%",
+                fontSize: "1em",
+                width: "2.8125em",
+              }}
                 onClick={() => {
                   removeSingleProductFromKiste(kiste.id, item.id).then(() => {
                     setItemsInKiste(
@@ -112,6 +117,12 @@ export default function Page({ params }) {
               </button>
               {item.name}: {item.anzahl}x
               <button
+              style={{
+                borderRadius: "50%",
+                fontSize: "1em",
+                width: "2.8125em",
+           
+              }}
                 onClick={() => {
                   addSingleProductToKiste(kiste.id, item.id)
                     .then(() => {
