@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { apiURL } from '@/utils/constants';
+import ItemList from '../components/ItemList';
+import { Loader } from '../components/loader';
+
 
 async function getProducts() {
   const res = await fetch(apiURL + '/items');
@@ -28,6 +31,9 @@ export default function ProductSelectionOverlay({
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [anzahl, setAnzahl] = useState(1);
+  const [searchTerm, setSearchTerm] = useState(''); //Suche möglich
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   useEffect(() => {
     getProducts().then((products) => {
@@ -38,8 +44,15 @@ export default function ProductSelectionOverlay({
   return (
     <div>
       <h2 style={{ fontSize: "1.875em", color: "orange", marginBottom: '0.25em' }}>Select Product</h2>
+      <input
+            placeholder='Search items...'
+            style={{ padding: '0.625em 1.25em', marginBottom: '1.25em' }}
+            type='text'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
       <ul>
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <li
             key={product.id}
             onClick={() => {

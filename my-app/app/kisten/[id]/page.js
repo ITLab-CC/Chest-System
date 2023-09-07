@@ -16,6 +16,32 @@ async function getItemsInKiste(kistenID) {
   return data;
 }
 
+async function addSingleProductToKiste(kisteId, productId) {
+  await fetch(
+    apiURL +
+      '/kisten/' +
+      kisteId +
+      '/items?' +
+      new URLSearchParams({ item_id: productId, anzahl: +1}),
+    {
+      method: 'POST',
+    }
+  );
+}
+
+async function removeSingleProductFromKiste(kisteId, productId) {
+  await fetch(
+    apiURL +
+      '/kisten/' +
+      kisteId +
+      '/items?' +
+      new URLSearchParams({ item_id: productId, anzahl: -1}),
+    {
+      method: 'POST',
+    }
+  );
+}
+
 export default function Page({ params }) {
   const [kiste, setKiste] = useState(null);
   const [itemsInKiste, setItemsInKiste] = useState([]);
@@ -68,7 +94,11 @@ export default function Page({ params }) {
         <ul>
           {itemsInKiste.map((item) => (
             <li style={{ padding: '0.3125em' }} key={item.id}>
+              <button
+              onClick={() => {removeSingleProductFromKiste(kiste.id, item.id)}}>-</button>
               {item.name}: {item.anzahl}x
+              <button 
+              onClick={() => {addSingleProductToKiste(kiste.id, item.id)}}>+</button>
             </li>
           ))}
         </ul>
