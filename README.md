@@ -1,6 +1,33 @@
-"Chest-System"
+# "Chest-System"
 
-# Dev
+This is a chestsystem to organize items.
+
+## Install
+Docker provides a install script. Just run:
+```
+curl -sSL https://get.docker.com | sh
+```
+By default, only users who have administrative privileges (root users) can run containers. You could also add your non-root user to the Docker group which will allow it to execute docker commands.
+
+To add the current user to the Docker group run:
+```
+sudo usermod -aG docker ${USER}
+```
+
+## Website 
+- Port: '5050:80'
+- Username: admin@admin.com
+- Password: root
+
+## 
+
+## How to start the programm
+- start docker
+- open two tabs in terminal
+- first tab: ```python3 -m uvicorn main:app --reload```
+- second tab: ```cd .\my-app\```  || ```npm run dev-marcel```
+
+## Dev
 
 ```bash
 export KUBECONFIG="$(pwd)/minikube-config.yaml"
@@ -17,7 +44,7 @@ kubectl apply -f kube
 kubectl run test --rm --tty -i --restart='Never' --image alpine --namespace default --command -- /bin/sh
 ```
 
-# Prod Build
+## Prod Build
 
 The Images need to be in a public registry for the minikube to be able to pull them.
 
