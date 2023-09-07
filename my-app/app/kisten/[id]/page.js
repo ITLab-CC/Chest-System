@@ -22,7 +22,7 @@ async function addSingleProductToKiste(kisteId, productId) {
       '/kisten/' +
       kisteId +
       '/items?' +
-      new URLSearchParams({ item_id: productId, anzahl: +1}),
+      new URLSearchParams({ item_id: productId, anzahl: +1 }),
     {
       method: 'POST',
     }
@@ -35,7 +35,7 @@ async function removeSingleProductFromKiste(kisteId, productId) {
       '/kisten/' +
       kisteId +
       '/items?' +
-      new URLSearchParams({ item_id: productId, anzahl: -1}),
+      new URLSearchParams({ item_id: productId, anzahl: -1 }),
     {
       method: 'POST',
     }
@@ -95,10 +95,42 @@ export default function Page({ params }) {
           {itemsInKiste.map((item) => (
             <li style={{ padding: '0.3125em' }} key={item.id}>
               <button
-              onClick={() => {removeSingleProductFromKiste(kiste.id, item.id)}}>-</button>
+                onClick={() => {
+                  removeSingleProductFromKiste(kiste.id, item.id).then(() => {
+                    setItemsInKiste(
+                      itemsInKiste.map((i) => {
+                        if (i.id === item.id) {
+                          i.anzahl = i.anzahl - 1;
+                        }
+                        return i;
+                      })
+                    );
+                  });
+                }}
+              >
+                -
+              </button>
               {item.name}: {item.anzahl}x
-              <button 
-              onClick={() => {addSingleProductToKiste(kiste.id, item.id)}}>+</button>
+              <button
+                onClick={() => {
+                  addSingleProductToKiste(kiste.id, item.id)
+                    .then(() => {
+                      setItemsInKiste(
+                        itemsInKiste.map((i) => {
+                          if (i.id === item.id) {
+                            i.anzahl = i.anzahl + 1;
+                          }
+                          return i;
+                        })
+                      );
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }}
+              >
+                +
+              </button>
             </li>
           ))}
         </ul>
