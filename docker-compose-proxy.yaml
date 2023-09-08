@@ -1,7 +1,7 @@
 services:
   # SERVER
   server:
-    image: skyface753/chest-system-server:latest
+    image: registry.it-lab.cc/chest-system-server:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -17,7 +17,7 @@ services:
 
   # CLIENT
   client:
-    image: skyface753/chest-system-client:latest
+    image: registry.it-lab.cc/chest-system-client:latest
     build:
       context: ./my-app
       dockerfile: Dockerfile
@@ -27,7 +27,7 @@ services:
       - 127.0.0.1:3000:3000
 
   proxy:
-    image: skyface753/chest-system-proxy:latest
+    image: registry.it-lab.cc/chest-system-proxy:latest
     build:
       context: ./proxy
       dockerfile: Dockerfile
