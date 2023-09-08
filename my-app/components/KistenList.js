@@ -13,7 +13,6 @@ export default function KistenList({ kisten }) {
         >
           <div style={{ marginRight: '1.25em' }}>
             <a href={'/kisten/' + kiste.id}>
-              <h3>{kiste.id}</h3>
               <p>{kiste.name}</p>
             </a>
           </div>
