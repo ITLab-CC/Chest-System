@@ -1,31 +1,47 @@
 # "Chest-System"
 
-This is a chestsystem to organize items.
+A chest system for organizing items typically refers to a method or physical arrangement of storage containers, such as chests, boxes, or drawers, used to categorize and store various items or belongings. This system is commonly employed in homes, businesses, and other environments to maintain order and facilitate easy access to stored items. Here are some key aspects of a chest system for organizing items:
 
-## Install
+- Containers: The main components of the system are the storage containers themselves, which can include chests, cabinets, bins, drawers, shelves, and more. These containers can vary in size, material, and design to suit specific organizational needs.
+
+- Labeling: To enhance organization, it's essential to label the containers or compartments. You can use labels, tags, or even color-coding to quickly identify the contents of each storage space. This is especially helpful when dealing with a large number of items.
+
+- Categorization: Items are grouped together based on similarities, usage frequency, or any other criteria that make sense for your specific needs. For instance, you might have separate containers for kitchen utensils, clothing, office supplies, or tools.
+
+## Install Docker
+
 Docker provides a install script. Just run:
+
 ```
 curl -sSL https://get.docker.com | sh
 ```
+
 By default, only users who have administrative privileges (root users) can run containers. You could also add your non-root user to the Docker group which will allow it to execute docker commands.
 
 To add the current user to the Docker group run:
+
 ```
 sudo usermod -aG docker ${USER}
 ```
 
-## Website 
+## Website
+
 - Port: '5050:80'
 - Username: admin@admin.com
 - Password: root
 
-## 
+## Requirements
 
-## How to start the programm
-- start docker
-- open two tabs in terminal
-- first tab: ```python3 -m uvicorn main:app --reload```
-- second tab: ```cd .\my-app\```  || ```npm run dev-marcel```
+- VSC (Visual Studio Code)
+- React/Next.js framework
+
+## Start
+
+- https://nextjs.org/docs/getting-started/installation
+- created Main.py
+- created docker-compose-dev
+
+## QR-Code
 
 ## Dev
 
