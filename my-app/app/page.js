@@ -22,6 +22,7 @@ export default function Home() {
   useEffect(() => {
     if (scrollToEnd) {
       window.scrollTo(0, document.body.scrollHeight);
+      setScrollToEnd(false);
     }
   }, [scrollToEnd]);
 
