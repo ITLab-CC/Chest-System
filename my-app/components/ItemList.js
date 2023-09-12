@@ -11,9 +11,8 @@ export default function ItemList({ items }) {
           key={item.id}
           style={{ display: 'flex', justifyContent: 'center' }}
         >
-          <div style={{ marginRight: '1.25em' }}>
+          <div style={{ marginRight: '1.25em', paddingTop: '0.4em'  }}>
             <a href={'/items/' + item.id}>
-              <h3>{item.id}</h3>
               <p>{item.name}</p>
             </a>
           </div>
