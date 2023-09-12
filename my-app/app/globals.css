@@ -245,3 +245,25 @@ button {
 .menu-1 a:hover::before{
   transform-origin: 0 50%;
 }
+
+summary {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: 2.75em;
+  background-color: rgb(83, 172, 210);
+  border-radius: 20em;
+  margin-top: 1em;
+  margin-left: 59.5em;
+  margin-right:1em;
+  padding: 1em;
+  font-size: 0.8em;
+  font-family: inherit;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0.375em 0.375em 0.75em #000000;
+  cursor: pointer;
+  list-style: none;
+}

@@ -145,18 +145,12 @@ export default function Page({ params }) {
             </li>
           ))}
         </ul>
-        <button
-          style={{
-            color: 'black',
-            padding: '0.625em 1.25em',
-            marginBottom: '1.25em',
-          }}
+        <details>
+          <summary 
           onClick={() => {
             setShowProductOverlay(true);
-          }}
-        >
-          Add or remove Item
-        </button>
+          }}>Add or remove product</summary>
+        
         <br></br>
         {showProductOverlay && (
           <ProductSelectionOverlay
@@ -165,6 +159,7 @@ export default function Page({ params }) {
             loadData={loadData}
           />
         )}
+        </details>
       </div>
     </div>
   );

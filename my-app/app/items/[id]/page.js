@@ -73,19 +73,11 @@ export default function Page({ params }) {
             </li>
           ))}
         </ul>
-        <button
-          style={{
-            color: 'black',
-            padding: '0.625em 1.25em',
-            marginBottom: '3.125em',
-            marginTop: '1.25em',
-          }}
-          onClick={() => {
+        <details>
+          <summary onClick={() => {
             setShowKisteOverlay(true);
-          }}
-        >
-          Add or remove Item to Chest
-        </button>
+          }}>Add or remove product</summary>
+          
         <br></br>
         {showKisteOverlay && (
           <KisteSelectionOverlay
@@ -94,6 +86,7 @@ export default function Page({ params }) {
             loadData={loadData}
           />
         )}
+        </details>
       </div>
     </div>
   );
