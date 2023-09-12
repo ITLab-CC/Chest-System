@@ -9,9 +9,9 @@ export default function KistenList({ kisten }) {
       {kisten.map((kiste) => (
         <div
           key={kiste.id}
-          style={{ display: 'flex', justifyContent: 'center' }}
+          style={{ display: 'flex', justifyContent: 'center', }}
         >
-          <div style={{ marginRight: '1.25em' }}>
+          <div style={{ marginRight: '1.25em', paddingTop: '0.4em' }}>
             <a href={'/kisten/' + kiste.id}>
               <p>{kiste.name}</p>
             </a>

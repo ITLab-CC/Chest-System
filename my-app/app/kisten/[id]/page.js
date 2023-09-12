@@ -80,11 +80,11 @@ export default function Page({ params }) {
         </nav>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <h1>{kiste.id}</h1>
-        <p>{kiste.name}</p>
+        <h1
+        style={{fontSize: "1.75em"}}>{kiste.name}</h1>
         <h1
           style={{
-            fontSize: '1.875em',
+            fontSize: '1.5em',
             color: '#19e619',
             marginBottom: '0.25em',
           }}
