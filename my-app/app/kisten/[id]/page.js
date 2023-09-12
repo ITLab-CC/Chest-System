@@ -80,8 +80,7 @@ export default function Page({ params }) {
         </nav>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <h1
-        style={{fontSize: "1.75em"}}>{kiste.name}</h1>
+        <h1 style={{ fontSize: '1.75em' }}>{kiste.name}</h1>
         <h1
           style={{
             fontSize: '1.5em',
@@ -95,11 +94,11 @@ export default function Page({ params }) {
           {itemsInKiste.map((item) => (
             <li style={{ padding: '0.3125em' }} key={item.id}>
               <button
-              style={{
-                borderRadius: "50%",
-                fontSize: "1em",
-                width: "2.8125em",
-              }}
+                style={{
+                  borderRadius: '50%',
+                  fontSize: '1em',
+                  width: '2.8125em',
+                }}
                 onClick={() => {
                   removeSingleProductFromKiste(kiste.id, item.id).then(() => {
                     setItemsInKiste(
@@ -117,12 +116,11 @@ export default function Page({ params }) {
               </button>
               {item.name}: {item.anzahl}x
               <button
-              style={{
-                borderRadius: "50%",
-                fontSize: "1em",
-                width: "2.8125em",
-           
-              }}
+                style={{
+                  borderRadius: '50%',
+                  fontSize: '1em',
+                  width: '2.8125em',
+                }}
                 onClick={() => {
                   addSingleProductToKiste(kiste.id, item.id)
                     .then(() => {
@@ -146,19 +144,23 @@ export default function Page({ params }) {
           ))}
         </ul>
         <details>
-          <summary 
-          onClick={() => {
-            setShowProductOverlay(true);
-          }}>Add or remove product</summary>
-        
-        <br></br>
-        {showProductOverlay && (
-          <ProductSelectionOverlay
-            kiste={kiste}
-            setShowProductOverlay={setShowProductOverlay}
-            loadData={loadData}
-          />
-        )}
+          <summary
+            style={{ margin: 'auto', marginTop: '1.25em' }}
+            onClick={() => {
+              setShowProductOverlay(true);
+            }}
+          >
+            Add or remove product
+          </summary>
+
+          <br></br>
+          {showProductOverlay && (
+            <ProductSelectionOverlay
+              kiste={kiste}
+              setShowProductOverlay={setShowProductOverlay}
+              loadData={loadData}
+            />
+          )}
         </details>
       </div>
     </div>

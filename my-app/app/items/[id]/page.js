@@ -74,18 +74,23 @@ export default function Page({ params }) {
           ))}
         </ul>
         <details>
-          <summary onClick={() => {
-            setShowKisteOverlay(true);
-          }}>Add or remove product</summary>
-          
-        <br></br>
-        {showKisteOverlay && (
-          <KisteSelectionOverlay
-            item={item}
-            setShowKisteOverlay={setShowKisteOverlay}
-            loadData={loadData}
-          />
-        )}
+          <summary
+            style={{ margin: 'auto', marginTop: '1.25em' }}
+            onClick={() => {
+              setShowKisteOverlay(true);
+            }}
+          >
+            Add or remove product
+          </summary>
+
+          <br></br>
+          {showKisteOverlay && (
+            <KisteSelectionOverlay
+              item={item}
+              setShowKisteOverlay={setShowKisteOverlay}
+              loadData={loadData}
+            />
+          )}
         </details>
       </div>
     </div>
