@@ -14,6 +14,7 @@ export default function ItemList({ items }) {
           <div style={{ marginRight: '1.25em', paddingTop: '0.4em'  }}>
             <a href={'/items/' + item.id}>
               <p>{item.name}</p>
+              <p>{item.description}</p>
             </a>
           </div>
           <button

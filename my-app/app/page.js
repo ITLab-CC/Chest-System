@@ -46,7 +46,7 @@ export default function Home() {
   }
 
   const filteredItems = items.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    item.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
   const filteredKisten = kisten.filter((kiste) =>
     kiste.name.toLowerCase().includes(searchChestTerm.toLowerCase())
@@ -135,7 +135,7 @@ export default function Home() {
             onChange={(e) => setNameGegenstand(e.target.value)}
           />
           <input
-            placeholder='item-description'
+            placeholder='descriptionGegenstand'
             style={{ padding: '0.625em 1.25em' }}
             type='text'
             value={descriptionGegenstand}
