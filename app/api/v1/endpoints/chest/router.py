@@ -134,3 +134,20 @@ def add_item_to_chest(chest_id: int, item: ChestItemCreateSchema, db: Session = 
     chest_crud.add_item_to_chest(chest_id, item.item_id, item.anzahl, db)
     logging.info('Item {} added to chest {}'.format(item.item_id, chest_id))
     return item
+
+@router.delete('/{chest_id}/items/{item_id}', response_model=None, tags=['chest'])
+def delete_item_from_chest(chest_id: int, item_id: int, db: Session = Depends(get_db)):
+    chest = chest_crud.get_chest_by_id(chest_id, db)
+
+    if not chest:
+        logging.error('Delete: Chest {} not found'.format(chest_id))
+        raise HTTPException(status_code=404)
+
+    item = chest_crud.get_specific_item_in_chest(chest_id, item_id, db)
+    if not item:
+        logging.error('Delete: Item {} not found'.format(item_id))
+        raise HTTPException(status_code=404)
+
+    chest_crud.delete_item_from_chest(chest_id, item_id, db)
+    logging.info('Item {} deleted from chest {}'.format(item_id, chest_id))
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

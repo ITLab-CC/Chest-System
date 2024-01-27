@@ -36,6 +36,16 @@ def test_item_create_read_delete(db):
     # Assert: Correct item was stored in database
     assert read_item.id == created_item_id
     assert read_item.name == new_item_name
+    # Act: Update item
+    updated_item_name = 'test2'
+    updated_item_description = 'test_description2'
+    updated_item = ItemCreateSchema(name=updated_item_name, description=updated_item_description)
+    item_crud.update_item(read_item, updated_item, db)
+    # Assert: Correct item was updated in database
+    updated_item = item_crud.get_item_by_id(created_item_id, db)
+    assert updated_item.id == created_item_id
+    assert updated_item.name == updated_item_name
+    assert updated_item.description == updated_item_description
     # Act: Delete item
     item_crud.delete_item_by_id(created_item_id, db)
     # Assert: Correct number of items in database after deletion

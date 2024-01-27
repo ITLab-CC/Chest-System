@@ -38,11 +38,6 @@ def delete_chest_by_id(chest_id: int, db: Session):
         db.delete(entity)
         db.commit()
         logging.debug('Chest {} deleted'.format(entity.name))
-        
-        
-def get_items_in_chest(chest_id: int, db: Session):
-    items = db.query(Item).join(ItemKiste).filter(ItemKiste.kiste_id == chest_id).all()
-    return items
 
 def get_specific_item_in_chest(chest_id: int, item_id: int, db: Session):
     item = db.query(ItemKiste).filter(ItemKiste.kiste_id == chest_id, ItemKiste.item_id == item_id).first()
@@ -65,3 +60,14 @@ def add_item_to_chest(chest_id: int, item_id: int, quantity: int, db: Session):
         db.commit()
         logging.debug('Item {} added to chest {}'.format(item_id, chest_id))
         return item
+    
+def delete_item_from_chest(chest_id: int, item_id: int, db: Session):
+    item = get_specific_item_in_chest(chest_id, item_id, db)
+    if item:
+        db.delete(item)
+        db.commit()
+        logging.debug('Item {} deleted from chest {}'.format(item_id, chest_id))
+        return item
+    else:
+        logging.error('Item {} not found in chest {}'.format(item_id, chest_id))
+        return None

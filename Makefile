@@ -31,9 +31,9 @@ integration-test:
 	POSTGRES_USER=postgres \
 	POSTGRES_PASSWORD=mysecretpassword \
 	POSTGRES_DB=postgres \
-	PYTHONPATH=. pytest -x --junitxml=report_integration_tests.xml --cov=app --cov-config=.coveragerc --cov-report=xml:integration_coverage.xml tests/integration/
+	PYTHONPATH=. pytest -x --junitxml=report_integration_tests.xml --verbose --cov=app --cov-config=.coveragerc --cov-report=xml:cov.xml tests/integration/
 
 
 
 service-test:
-	API_SERVER=localhost API_PORT=8000 PYTHONPATH=. pytest --pspec --verbose --color=yes --junitxml=report_service_tests.xml tests/service/
+	API_SERVER=localhost API_PORT=8000 PYTHONPATH=. pytest --pspec --verbose --color=yes --junitxml=report_service_tests.xml tests/service/api/v1/chest_items

@@ -3,4 +3,4 @@ name: Common
 description: common test information
 
 variables:
-  chest_name: 'Whole Grain'
+  chest_name: 'A chest name'

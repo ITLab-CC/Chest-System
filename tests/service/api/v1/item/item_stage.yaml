@@ -13,6 +13,7 @@ stages:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items
       json: &item
         name: '{item_name:s}'
+        description: '{item_description:s}'
       method: POST
     response:
       status_code: 201
