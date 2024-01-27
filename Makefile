@@ -23,4 +23,17 @@ migrate-db:
 reinit-db: clear-db migrate-db
 
 integration-test:
+	DATABASE_HOST=localhost \
+	DATABASE_PORT=5432 \
+	DATABASE_USERNAME=postgres \
+	DATABASE_PASSWORD=mysecretpassword \
+	DATABASE_NAME=postgres \
+	POSTGRES_USER=postgres \
+	POSTGRES_PASSWORD=mysecretpassword \
+	POSTGRES_DB=postgres \
+	PYTHONPATH=. pytest -x --junitxml=report_integration_tests.xml --cov=app --cov-config=.coveragerc --cov-report=xml:integration_coverage.xml tests/integration/
+
+
+
+service-test:
 	API_SERVER=localhost API_PORT=8000 PYTHONPATH=. pytest --pspec --verbose --color=yes --junitxml=report_service_tests.xml tests/service/

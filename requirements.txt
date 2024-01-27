@@ -4,3 +4,5 @@ uvicorn
 psycopg2-binary
 alembic
 pytest
+coverage
+pytest-cov

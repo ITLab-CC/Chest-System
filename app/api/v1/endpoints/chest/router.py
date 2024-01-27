@@ -1,13 +1,14 @@
 import logging
 
-from typing import List
+from typing import List, TypeVar
 
 from fastapi import APIRouter, Depends, Request, Response, status, HTTPException
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
 import app.api.v1.endpoints.chest.crud as chest_crud
-from app.api.v1.endpoints.chest.schemas import ChestSchema, ChestCreateSchema, ChestListItemSchema
+import app.api.v1.endpoints.item.crud as item_crud
+from app.api.v1.endpoints.chest.schemas import ChestSchema, ChestCreateSchema, ChestListItemSchema, JoinedChestItemSchema, ChestItemCreateSchema
 from app.database.connection import SessionLocal
 
 router = APIRouter()
@@ -98,3 +99,38 @@ def delete_chest(chest_id: int, db: Session = Depends(get_db)):
     chest_crud.delete_chest_by_id(chest_id, db)
     logging.info('Chest {} deleted'.format(chest.name))
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+
+@router.get('/{chest_id}/items', 
+            # response_model=JoinedChestItemSchema, 
+            tags=['chest'])
+def get_chest_items(chest_id: int, db: Session = Depends(get_db)):
+    chest = chest_crud.get_chest_by_id(chest_id, db)
+
+    if not chest:
+        logging.error('Get: Chest {} not found'.format(chest_id))
+        raise HTTPException(status_code=404)
+
+    items = chest_crud.get_joined_items_by_chest_id(chest_id, db)
+    chest.items = items
+    return chest
+
+@router.post('/{chest_id}/items', response_model=ChestItemCreateSchema,
+             status_code=status.HTTP_201_CREATED, tags=['chest'])
+def add_item_to_chest(chest_id: int, item: ChestItemCreateSchema, db: Session = Depends(get_db)):
+    chest = chest_crud.get_chest_by_id(chest_id, db)
+
+    if not chest:
+        logging.error('Post: Chest {} not found'.format(chest_id))
+        raise HTTPException(status_code=404)
+
+    
+    item_entity = item_crud.get_item_by_id(item.item_id, db)
+    if not item_entity:
+        logging.error('Post: Item {} not found'.format(item.item_id))
+        raise HTTPException(status_code=404)
+    
+    chest_crud.add_item_to_chest(chest_id, item.item_id, item.anzahl, db)
+    logging.info('Item {} added to chest {}'.format(item.item_id, chest_id))
+    return item
