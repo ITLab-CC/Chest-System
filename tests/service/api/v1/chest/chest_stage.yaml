@@ -1,0 +1,32 @@
+---
+name: Chest stage
+
+description: Reusable test stage for creating chests
+
+variables:
+  chest_name: 'classic'
+
+stages:
+  - id: create_chest
+    name: create the test chest
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      json: &chest
+        name: '{chest_name:s}'
+      method: POST
+    response:
+      status_code: 201
+      json:
+        <<: *chest
+        id: !anything
+      save:
+        json:
+          chest_id: id
+
+  - id: delete_chest
+    name: Delete chest with id
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
+      method: DELETE
+    response:
+      status_code: 204

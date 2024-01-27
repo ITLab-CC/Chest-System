@@ -45,20 +45,38 @@ sudo usermod -aG docker ${USER}
 
 ## Dev
 
+### Use a python virtual environment
+
 ```bash
-export KUBECONFIG="$(pwd)/minikube-config.yaml"
-minikube start
-
-
-docker-compose -f docker-compose-proxy.yaml config > docker-compose-resolved.yaml
-kompose convert -f docker-compose-resolved.yaml -o kube
-
-kubectl apply -f kube
-
-
-# Test
-kubectl run test --rm --tty -i --restart='Never' --image alpine --namespace default --command -- /bin/sh
+python3 -m venv venv
+source venv/bin/activate
 ```
+
+### Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Start the dev database and phpmyadmin
+
+```bash
+docker-compose -f docker-compose-dev.yaml up -d
+```
+
+### Bring the dev database to the latest version
+
+```bash
+alembic upgrade head
+```
+
+### Start the dev server
+
+```bash
+uvicorn 'main:app' --host=127.0.0.1 --port=8000 --reload
+```
+
+Now you can access the server at http://127.0.0.1:8000
 
 ## Prod Build
 

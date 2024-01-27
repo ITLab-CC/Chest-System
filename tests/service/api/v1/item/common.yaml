@@ -1,0 +1,7 @@
+---
+name: Common
+description: common test information
+
+variables:
+  item_name: 'Whole Grain'
+  item_description: 'Whole Grain'

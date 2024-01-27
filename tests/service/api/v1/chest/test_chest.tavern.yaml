@@ -1,0 +1,138 @@
+---
+test_name: Make sure server implements crud functionality for chest endpoint
+
+includes:
+  - !include common.yaml
+
+stages:
+  - name: Verify that status code equals 201 when we create a new chest and the chest is returned
+    # max_retries and delay_after needs to be set in first stage of each stage to wait for uvicorn
+    max_retries: 10
+    delay_after: 2
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      json: &chest
+        name: '{chest_name:s}'
+      method: POST
+    response:
+      status_code: 201
+      json:
+        <<: *chest
+        id: !anything
+      save:
+        json:
+          chest_id: id
+
+  - name: Verify that status code equals 303 and we get a redirect to an already existing item, when we create a new chest with a name that already exists
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      json:
+        name: '{chest_name:s}'
+      method: POST
+    response:
+      status_code: 303
+      headers:
+        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}'
+
+  #Get wrong Chest
+  - name: Check for status 404 if we try to get an chest with a wrong id
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/999
+      method: GET
+    response:
+      status_code: 404
+
+  #Get specific Chest
+  - name: Get chest with id
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
+      method: GET
+    response:
+      status_code: 200
+      json:
+        <<: *chest
+        # Chest id as integer
+        id: !int '{chest_id:d}'
+
+  #Get all Chests
+  - name: Get a list of chests
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      method: GET
+    response:
+      status_code: 200
+      json: !anylist
+        id: !int '{chest_id:d}'
+
+  - name: Update chest
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
+      method: PUT
+      json:
+        <<: *chest
+        description: 'My new description'
+    response:
+      status_code: 204
+
+  - name: Check if a new chest is created when chest gets a new name and name does not already exists
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
+      method: PUT
+      json:
+        <<: *chest
+        name: 'Italian Style'
+    response:
+      status_code: 201
+      json:
+        <<: *chest
+        id: !anything
+        name: 'Italian Style'
+      save:
+        json:
+          italian_id: id
+
+  - name: Check for status 303 if we update chest to an already existing name
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
+      method: PUT
+      json:
+        <<: *chest
+        name: 'Italian Style'
+    response:
+      status_code: 303
+      headers:
+        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{italian_id}'
+
+  - name: Check for status 404 if we update with a non existing id
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/999
+      method: PUT
+      json:
+        <<: *chest
+        name: 'Italian Style'
+    response:
+      status_code: 404
+
+  #Delete wrong Chest
+  - name: Check for status 404 when trying to delete a non existent chest
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/999
+      method: DELETE
+    response:
+      status_code: 404
+
+  #----------------------Delete Everything----------------------------
+  #Delete Chest
+  - name: Delete first created chest with id
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
+      method: DELETE
+    response:
+      status_code: 204
+  #Delete Chest
+  - name: Delete second created chest with id
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{italian_id}
+      method: DELETE
+    response:
+      status_code: 204
