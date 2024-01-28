@@ -1,0 +1,33 @@
+---
+name: Item stage
+
+description: Reusable test stage for creating items
+
+variables:
+  item_name: 'classic'
+
+stages:
+  - id: create_item
+    name: create the test item
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items
+      json: &item
+        name: '{item_name:s}'
+        description: '{item_description:s}'
+      method: POST
+    response:
+      status_code: 201
+      json:
+        <<: *item
+        id: !anything
+      save:
+        json:
+          item_id: id
+
+  - id: delete_item
+    name: Delete item with id
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/{item_id}
+      method: DELETE
+    response:
+      status_code: 204

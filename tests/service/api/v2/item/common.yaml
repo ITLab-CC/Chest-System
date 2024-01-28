@@ -1,0 +1,10 @@
+---
+name: Common
+description: common test information
+
+variables:
+  item_name: 'A item name'
+  item_description: 'A item description'
+
+  item_name_2: 'A item name 2'
+  item_description_2: 'A item description 2'
