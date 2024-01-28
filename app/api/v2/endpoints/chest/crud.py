@@ -3,7 +3,7 @@ import logging
 from sqlalchemy.orm import Session
 
 from app.database.models import Kiste, ItemKiste, Item
-from app.api.v1.endpoints.chest.schemas import ChestCreateSchema, ChestItemCreateSchema, JoinedChestItemSchema
+from app.api.v2.endpoints.chest.schemas import ChestCreateSchema, ChestItemQuantityCreateSchema
 
 def create_chest(schema: ChestCreateSchema, db: Session):
     entity = Kiste(**schema.dict())
@@ -45,6 +45,7 @@ def get_specific_item_in_chest(chest_id: int, item_id: int, db: Session):
 
 def get_joined_items_by_chest_id(chest_id: int, db: Session):
     items = db.query(ItemKiste).join(Item).filter(ItemKiste.kiste_id == chest_id).all()
+    # logging.debug('Joined items in chest {}: {}'.format(chest_id, items))
     return items
 
 def add_item_to_chest(chest_id: int, item_id: int, quantity: int, db: Session):

@@ -2,8 +2,8 @@ import logging
 
 from sqlalchemy.orm import Session
 
-from app.database.models import Item
-from app.api.v1.endpoints.item.schemas import ItemCreateSchema
+from app.database.models import Item, ItemKiste, Kiste
+from app.api.v2.endpoints.item.schemas import ItemCreateSchema
 
 def create_item(schema: ItemCreateSchema, db: Session):
     entity = Item(**schema.dict())
@@ -39,4 +39,6 @@ def delete_item_by_id(item_id: int, db: Session):
         db.commit()
         logging.debug('Item {} deleted'.format(entity.name))
         
-        
+def get_joined_chests_by_item_id(item_id: int, db: Session):
+    chests = db.query(ItemKiste).join(Kiste).filter(ItemKiste.item_id == item_id).all()
+    return chests

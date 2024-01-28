@@ -1,9 +1,0 @@
----
-name: Common
-description: common test information
-
-variables:
-  chest_name: 'Whole Grain'
-  item_name: 'A item name'
-  item_description: 'A item description'
-  item_anzahl: 1

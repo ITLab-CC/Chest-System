@@ -17,7 +17,7 @@ stages:
     max_retries: 10
     delay_after: 2
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items
       json: &item
         name: '{item_name:s}'
         description: '{item_description:s}'
@@ -33,7 +33,7 @@ stages:
 
   - name: Verify that status code equals 303 and we get a redirect to an already existing item, when we create a new item with a name that already exists
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items
       json:
         name: '{item_name:s}'
         description: 'ABC'
@@ -41,12 +41,12 @@ stages:
     response:
       status_code: 303
       headers:
-        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{item_id}'
+        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/{item_id}'
 
   #Get wrong Item
   - name: Check for status 404 if we try to get an item with a wrong id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/999
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/999
       method: GET
     response:
       status_code: 404
@@ -54,7 +54,7 @@ stages:
   #Get specific Item
   - name: Get item with id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{item_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/{item_id}
       method: GET
     response:
       status_code: 200
@@ -66,7 +66,7 @@ stages:
   #Get all Items
   - name: Get a list of items
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items
       method: GET
     response:
       status_code: 200
@@ -75,7 +75,7 @@ stages:
 
   - name: Update item
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{item_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/{item_id}
       method: PUT
       json:
         <<: *item
@@ -85,7 +85,7 @@ stages:
 
   - name: Check if a we can update an item with a new name, and the id stays the same
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{item_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/{item_id}
       method: PUT
       json:
         <<: *item
@@ -103,7 +103,7 @@ stages:
   # Verify that 1 item is returned when we get all items
   - name: Get list of items, after we have updated one item => 1 item in list
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items
       method: GET
     response:
       status_code: 200
@@ -114,7 +114,7 @@ stages:
   # Create a second item
   - name: Create a second item, to test that we can not update an item to an already existing name
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items
       json: &item_2
         name: '{item_name_2:s}'
         description: '{item_description_2:s}'
@@ -130,7 +130,7 @@ stages:
 
   - name: Check for status 303 if we update item to an already existing name
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{item_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/{item_id}
       method: PUT
       json:
         <<: *item
@@ -138,11 +138,11 @@ stages:
     response:
       status_code: 303
       headers:
-        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{item_id_2}'
+        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/{item_id_2}'
 
   - name: Check for status 404 if we update with a non existing id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/999
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/999
       method: PUT
       json:
         <<: *item
@@ -153,7 +153,7 @@ stages:
   #Delete wrong Item
   - name: Check for status 404 when trying to delete a non existent item
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/999
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/999
       method: DELETE
     response:
       status_code: 404
@@ -162,14 +162,14 @@ stages:
   #Delete Item
   - name: Delete first created item with id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{item_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/{item_id}
       method: DELETE
     response:
       status_code: 204
   #Delete Item
   - name: Delete second created item with id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{item_id_2}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/items/{item_id_2}
       method: DELETE
     response:
       status_code: 204

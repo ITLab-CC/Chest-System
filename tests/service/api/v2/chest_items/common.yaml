@@ -1,0 +1,16 @@
+---
+name: Common
+description: common test information
+
+variables:
+  chest_name: 'Whole Grain'
+  item_name: 'A item name'
+  item_description: 'A item description'
+  item_anzahl: 1
+  item_anzahl_2: 2
+  item_anzahl_sum: 3
+
+  second_item_name: 'A second item name'
+  second_item_description: 'A second item description'
+  second_item_anzahl: 1
+  second_chest_name: 'A second chest name'

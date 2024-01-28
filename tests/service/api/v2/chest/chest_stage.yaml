@@ -10,7 +10,7 @@ stages:
   - id: create_chest
     name: create the test chest
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests
       json: &chest
         name: '{chest_name:s}'
       method: POST
@@ -26,7 +26,7 @@ stages:
   - id: delete_chest
     name: Delete chest with id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests/{chest_id}
       method: DELETE
     response:
       status_code: 204

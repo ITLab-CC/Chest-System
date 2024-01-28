@@ -17,7 +17,7 @@ stages:
     max_retries: 10
     delay_after: 2
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests
       json: &chest
         name: '{chest_name:s}'
       method: POST
@@ -32,19 +32,19 @@ stages:
 
   - name: Verify that status code equals 303 and we get a redirect to an already existing chest, when we create a new chest with a name that already exists
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests
       json:
         name: '{chest_name:s}'
       method: POST
     response:
       status_code: 303
       headers:
-        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}'
+        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests/{chest_id}'
 
   #Get wrong Chest
   - name: Check for status 404 if we try to get an chest with a wrong id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/999
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests/999
       method: GET
     response:
       status_code: 404
@@ -52,7 +52,7 @@ stages:
   #Get specific Chest
   - name: Get chest with id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests/{chest_id}
       method: GET
     response:
       status_code: 200
@@ -64,7 +64,7 @@ stages:
   #Get all Chests
   - name: Get a list of chests
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests
       method: GET
     response:
       status_code: 200
@@ -73,7 +73,7 @@ stages:
 
   - name: Check if a we can update an chest with a new name, and the id stays the same
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests/{chest_id}
       method: PUT
       json:
         <<: *chest
@@ -91,7 +91,7 @@ stages:
   # Verify that 1 chest is returned when we get all chests
   - name: Get list of chests, after we have updated one chest => 1 chest in list
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests
       method: GET
     response:
       status_code: 200
@@ -102,7 +102,7 @@ stages:
   # Create a second chest
   - name: Create a second chest, to test that we can not update an chest to an already existing name
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests
       json: &chest_2
         name: '{chest_name_2:s}'
       method: POST
@@ -117,7 +117,7 @@ stages:
 
   - name: Check for status 303 if we update chest to an already existing name
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests/{chest_id}
       method: PUT
       json:
         <<: *chest
@@ -125,11 +125,11 @@ stages:
     response:
       status_code: 303
       headers:
-        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id_2}'
+        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests/{chest_id_2}'
 
   - name: Check for status 404 if we update with a non existing id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/999
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests/999
       method: PUT
       json:
         <<: *chest
@@ -140,7 +140,7 @@ stages:
   #Delete wrong Chest
   - name: Check for status 404 when trying to delete a non existent chest
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/999
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests/999
       method: DELETE
     response:
       status_code: 404
@@ -149,14 +149,14 @@ stages:
   #Delete Chest
   - name: Delete first created chest with id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests/{chest_id}
       method: DELETE
     response:
       status_code: 204
   #Delete Chest
   - name: Delete second created chest with id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id_2}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests/{chest_id_2}
       method: DELETE
     response:
       status_code: 204

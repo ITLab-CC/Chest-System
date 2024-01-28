@@ -1,10 +1,10 @@
 import pytest
 import uuid
 
-import app.api.v1.endpoints.chest.crud as chest_crud
-import app.api.v1.endpoints.item.crud as item_crud
-from app.api.v1.endpoints.chest.schemas import ChestCreateSchema
-from app.api.v1.endpoints.item.schemas import ItemCreateSchema
+import app.api.v2.endpoints.chest.crud as chest_crud
+import app.api.v2.endpoints.item.crud as item_crud
+from app.api.v2.endpoints.chest.schemas import ChestCreateSchema
+from app.api.v2.endpoints.item.schemas import ItemCreateSchema
 from app.database.connection import SessionLocal
 
 

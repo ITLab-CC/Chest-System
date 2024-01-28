@@ -6,9 +6,9 @@ from fastapi import APIRouter, Depends, Request, Response, status, HTTPException
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
-import app.api.v1.endpoints.chest.crud as chest_crud
-import app.api.v1.endpoints.item.crud as item_crud
-from app.api.v1.endpoints.chest.schemas import ChestSchema, ChestCreateSchema, ChestListItemSchema, JoinedChestItemSchema, ChestItemCreateSchema
+import app.api.v2.endpoints.chest.crud as chest_crud
+import app.api.v2.endpoints.item.crud as item_crud
+from app.api.v2.endpoints.chest.schemas import ChestSchema, ChestCreateSchema,  ChestItemQuantityCreateSchema, ChestItemJoinedSchema
 from app.database.connection import SessionLocal
 
 router = APIRouter()
@@ -22,7 +22,7 @@ def get_db():
         db.close()
 
 
-@router.get('', response_model=List[ChestListItemSchema], tags=['chest'])
+@router.get('', response_model=List[ChestSchema], tags=['chest'])
 def get_all_chests(db: Session = Depends(get_db)):
     return chest_crud.get_all_chests(db)
 
@@ -97,8 +97,8 @@ def delete_chest(chest_id: int, db: Session = Depends(get_db)):
 
 
 @router.get('/{chest_id}/items', 
-            # response_model=JoinedChestItemSchema, 
-            tags=['chest'])
+            response_model=ChestItemJoinedSchema,
+            tags=['chest-items'])
 def get_chest_items(chest_id: int, db: Session = Depends(get_db)):
     chest = chest_crud.get_chest_by_id(chest_id, db)
 
@@ -106,13 +106,14 @@ def get_chest_items(chest_id: int, db: Session = Depends(get_db)):
         logging.error('Get: Chest {} not found'.format(chest_id))
         raise HTTPException(status_code=404)
 
-    items = chest_crud.get_joined_items_by_chest_id(chest_id, db)
-    chest.items = items
+    kistenItems = chest_crud.get_joined_items_by_chest_id(chest_id, db)
+    logging.info('Get: Items in chest {}: {}'.format(chest_id, kistenItems))
+    chest.items = kistenItems
     return chest
 
-@router.post('/{chest_id}/items', response_model=ChestItemCreateSchema,
-             status_code=status.HTTP_201_CREATED, tags=['chest'])
-def add_item_to_chest(chest_id: int, item: ChestItemCreateSchema, db: Session = Depends(get_db)):
+@router.post('/{chest_id}/items', response_model=ChestItemQuantityCreateSchema,
+             status_code=status.HTTP_201_CREATED, tags=['chest-items'])
+def add_item_to_chest(chest_id: int, item: ChestItemQuantityCreateSchema, db: Session = Depends(get_db)):
     chest = chest_crud.get_chest_by_id(chest_id, db)
 
     if not chest:
@@ -125,11 +126,11 @@ def add_item_to_chest(chest_id: int, item: ChestItemCreateSchema, db: Session = 
         logging.error('Post: Item {} not found'.format(item.item_id))
         raise HTTPException(status_code=404)
     
-    chest_crud.add_item_to_chest(chest_id, item.item_id, item.anzahl, db)
+    updated_quantity = chest_crud.add_item_to_chest(chest_id, item.item_id, item.anzahl, db)
     logging.info('Item {} added to chest {}'.format(item.item_id, chest_id))
-    return item
+    return updated_quantity
 
-@router.delete('/{chest_id}/items/{item_id}', response_model=None, tags=['chest'])
+@router.delete('/{chest_id}/items/{item_id}', response_model=None, tags=['chest-items'])
 def delete_item_from_chest(chest_id: int, item_id: int, db: Session = Depends(get_db)):
     chest = chest_crud.get_chest_by_id(chest_id, db)
 
@@ -146,19 +147,19 @@ def delete_item_from_chest(chest_id: int, item_id: int, db: Session = Depends(ge
     logging.info('Item {} deleted from chest {}'.format(item_id, chest_id))
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-@router.put('/{chest_id}/items/{item_id}', response_model=ChestItemCreateSchema, tags=['chest'])
-def update_item_in_chest(chest_id: int, item_id: int, anzahl: int, db: Session = Depends(get_db)):
+@router.put('/{chest_id}/items', response_model=ChestItemQuantityCreateSchema, tags=['chest-items'])
+def update_item_quantity_in_chest(chest_id: int, updated_quantity: ChestItemQuantityCreateSchema, db: Session = Depends(get_db)):
     chest = chest_crud.get_chest_by_id(chest_id, db)
 
     if not chest:
         logging.error('Put: Chest {} not found'.format(chest_id))
         raise HTTPException(status_code=404)
 
-    item = chest_crud.get_specific_item_in_chest(chest_id, item_id, db)
+    item = chest_crud.get_specific_item_in_chest(chest_id, updated_quantity.item_id, db)
     if not item:
-        logging.error('Put: Item {} not found'.format(item_id))
+        logging.error('Put: Item {} not found'.format(updated_quantity.item_id))
         raise HTTPException(status_code=404)
 
-    chest_crud.update_item_in_chest(chest_id, item_id, anzahl, db)
-    logging.info('Item {} in chest {} updated'.format(item_id, chest_id))
-    return item
+    chest_crud.update_item_in_chest(chest_id, updated_quantity.item_id, updated_quantity.anzahl, db)
+    logging.info('Item {} in chest {} updated'.format(updated_quantity.item_id, chest_id))
+    return updated_quantity

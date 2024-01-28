@@ -1,8 +1,10 @@
 import pytest
 import uuid
 
-import app.api.v1.endpoints.item.crud as item_crud
-from app.api.v1.endpoints.item.schemas import ItemCreateSchema
+import app.api.v2.endpoints.item.crud as item_crud
+import app.api.v2.endpoints.chest.crud as chest_crud
+from app.api.v2.endpoints.item.schemas import ItemCreateSchema
+from app.api.v2.endpoints.chest.schemas import ChestCreateSchema
 from app.database.connection import SessionLocal
 
 
@@ -46,6 +48,24 @@ def test_item_create_read_delete(db):
     assert updated_item.id == created_item_id
     assert updated_item.name == updated_item_name
     assert updated_item.description == updated_item_description
+    # Arrange: Instantiate a new chest object
+    new_chest_name = 'test_chest'
+    new_item_in_chest_anzahl = 10
+    # Act: Add chest to database
+    chest = ChestCreateSchema(name=new_chest_name)
+    db_chest = chest_crud.create_chest(chest, db)
+    created_chest_id = db_chest.id
+    # Act: Add item to chest
+    chest_crud.add_item_to_chest(created_chest_id, created_item_id, new_item_in_chest_anzahl, db)
+    # Assert: Correct item was added to chest
+    full_chest = chest_crud.get_joined_items_by_chest_id(created_chest_id, db)
+    assert len(full_chest) == 1
+    assert full_chest[0].item_id == created_item_id
+    assert full_chest[0].item.name == updated_item_name
+    assert full_chest[0].item.description == updated_item_description
+    assert full_chest[0].anzahl == new_item_in_chest_anzahl
+    
+    
     # Act: Delete item
     item_crud.delete_item_by_id(created_item_id, db)
     # Assert: Correct number of items in database after deletion

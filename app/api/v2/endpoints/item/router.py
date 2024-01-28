@@ -6,8 +6,8 @@ from fastapi import APIRouter, Depends, Request, Response, status, HTTPException
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
-import app.api.v1.endpoints.item.crud as item_crud
-from app.api.v1.endpoints.item.schemas import ItemSchema, ItemCreateSchema, ItemListItemSchema
+import app.api.v2.endpoints.item.crud as item_crud
+from app.api.v2.endpoints.item.schemas import ItemSchema, ItemCreateSchema, ItemListItemSchema, ItemChestJoinedSchema
 from app.database.connection import SessionLocal
 
 router = APIRouter()
@@ -92,3 +92,16 @@ def delete_item(item_id: int, db: Session = Depends(get_db)):
     item_crud.delete_item_by_id(item_id, db)
     logging.info('Item {} deleted'.format(item.name))
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+@router.get('/{item_id}/chests',
+            response_model=ItemChestJoinedSchema,
+            tags=['item'])
+def get_item_chests(item_id: int, db: Session = Depends(get_db)):
+    item = item_crud.get_item_by_id(item_id, db)
+
+    if not item:
+        logging.warning('Get: Item {} not found'.format(item_id))
+        raise HTTPException(status_code=404)
+    chests = item_crud.get_joined_chests_by_item_id(item_id, db)
+    item.chests = chests
+    return item

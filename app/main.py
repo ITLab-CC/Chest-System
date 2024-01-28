@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.router import router as api_v1_router
+from app.api.v2.router import router as api_v2_router
 
 logging.basicConfig(format='%(asctime)s:%(levelname)s:%(message)s', level=logging.DEBUG)  # NOSONAR
 
@@ -24,6 +25,7 @@ app = FastAPI(openapi_tags=tags_metadata)
 origins = [
     'http://localhost',
     'http://localhost:8000',
+    'http://localhost:3000',
 ]
 
 app.add_middleware(
@@ -38,7 +40,13 @@ app.add_middleware(
 # This function routes to version 1 of the REST API /v1/..
 app.include_router(
     api_v1_router,
-    prefix='/v1',
+    prefix='/api/v1',
+)
+
+# This function routes to version 2 of the REST API /v2/..
+app.include_router(
+    api_v2_router,
+    prefix='/api/v2',
 )
 
 if __name__ == '__main__':
