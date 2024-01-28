@@ -3,34 +3,25 @@ import { useState, useEffect } from 'react';
 import KisteSelectionOverlay from '../../../components/KisteSelectionOverlay';
 import { Loader } from '../../../components/loader';
 import { apiURL } from '../../../utils/constants';
+import { PlusOrMinusButton } from '../../../components/PlusOrMinusButton';
 
-async function getItem(itemID) {
-  const res = await fetch(apiURL + '/items/' + itemID);
-  const data = await res.json();
-  return data;
-}
-
-async function getItemsInKiste(itemID) {
-  const res = await fetch(apiURL + '/items/' + itemID + '/kisten');
+async function getItemsJoinedWithKiste(itemID) {
+  const res = await fetch(apiURL + '/items/' + itemID + '/chests');
   const data = await res.json();
   return data;
 }
 
 export default function Page({ params }) {
-  const [item, setItem] = useState(null);
-  const [kisten, setKisten] = useState([]);
+  const [itemJoined, setItemJoined] = useState(null);
+  // const [kisten, setKisten] = useState([]);
   const [showKisteOverlay, setShowKisteOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
 
   async function loadData() {
     setLoading(true);
-    getItem(params.id).then((item) => {
+    getItemsJoinedWithKiste(params.id).then((item) => {
       console.log(item);
-      setItem(item);
-    });
-    getItemsInKiste(params.id).then((kisten) => {
-      console.log(kisten);
-      setKisten(kisten);
+      setItemJoined(item);
     });
     setLoading(false);
   }
@@ -38,9 +29,27 @@ export default function Page({ params }) {
     loadData();
   }, [params.id]);
 
-  if (!item) {
+  if (!itemJoined || loading) {
     return <Loader />;
   }
+
+  function updateItemAnzahlAfterButtonClick(item, plus = false) {
+    let newItemJoined = {
+      ...itemJoined,
+      chests: itemJoined.chests.map((i) => {
+        if (i.kiste_id === item.kiste_id) {
+          if (plus) {
+            i.anzahl = i.anzahl + 1;
+          } else {
+            i.anzahl = i.anzahl - 1;
+          }
+        }
+        return i;
+      }),
+    };
+    setItemJoined(newItemJoined);
+  }
+
   return (
     <div>
       <nav className='menu menu-1'>
@@ -54,9 +63,9 @@ export default function Page({ params }) {
         <h1
           style={{ fontSize: '3.125em', color: 'red', marginBottom: '0.25em' }}
         >
-          {item.name}
+          {itemJoined.name}
         </h1>
-        <p>{item.description}</p>
+        <p>{itemJoined.description}</p>
         <h1
           style={{
             fontSize: '1.875em',
@@ -67,9 +76,25 @@ export default function Page({ params }) {
           In Chests
         </h1>
         <ul>
-          {kisten.map((kiste) => (
-            <li key={kiste.id}>
-              {kiste.anzahl}x | {kiste.name}
+          {itemJoined.chests.map((kiste) => (
+            <li key={kiste.kiste_id}>
+              <PlusOrMinusButton
+                itemId={itemJoined.id}
+                chestId={kiste.kiste_id}
+                plus={false}
+                callback={() => {
+                  updateItemAnzahlAfterButtonClick(kiste, false);
+                }}
+              />
+              {kiste.anzahl}x | {kiste.kiste_name}
+              <PlusOrMinusButton
+                itemId={itemJoined.id}
+                chestId={kiste.kiste_id}
+                plus={true}
+                callback={() => {
+                  updateItemAnzahlAfterButtonClick(kiste, true);
+                }}
+              />
             </li>
           ))}
         </ul>
@@ -86,7 +111,7 @@ export default function Page({ params }) {
           <br></br>
           {showKisteOverlay && (
             <KisteSelectionOverlay
-              item={item}
+              item={itemJoined}
               setShowKisteOverlay={setShowKisteOverlay}
               loadData={loadData}
             />

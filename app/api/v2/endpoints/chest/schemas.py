@@ -7,6 +7,11 @@ class ChestBaseSchema(BaseModel):
 
     class Config:
         orm_mode = True
+        json_schema_extra = {
+            "example": {
+                "name": "Chest Name"
+            }
+        }
         
 class ChestCreateSchema(ChestBaseSchema):
     pass
@@ -17,14 +22,19 @@ class ChestSchema(ChestBaseSchema):
 
         
 class ChestItemQuantityCreateSchema(BaseModel):
-    item_id: int        
+    item_id: int 
+    # item_name: str
+           
     anzahl: int
 
     class Config:
         orm_mode = True
+        
+class ChestItemQuantitySchema(ChestItemQuantityCreateSchema):
+    item_name: str
     
 class ChestItemJoinedSchema(ChestSchema):
-    items: List[ChestItemQuantityCreateSchema]
+    items: List[ChestItemQuantitySchema]
     
     class Config:
         orm_mode = True

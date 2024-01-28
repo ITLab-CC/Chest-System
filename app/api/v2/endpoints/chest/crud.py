@@ -45,7 +45,8 @@ def get_specific_item_in_chest(chest_id: int, item_id: int, db: Session):
 
 def get_joined_items_by_chest_id(chest_id: int, db: Session):
     items = db.query(ItemKiste).join(Item).filter(ItemKiste.kiste_id == chest_id).all()
-    # logging.debug('Joined items in chest {}: {}'.format(chest_id, items))
+    for item in items:
+        item.item_name = item.item.name
     return items
 
 def add_item_to_chest(chest_id: int, item_id: int, quantity: int, db: Session):
@@ -54,6 +55,9 @@ def add_item_to_chest(chest_id: int, item_id: int, quantity: int, db: Session):
         item.anzahl += quantity
         db.commit()
         logging.debug('Item {} added to chest {}'.format(item_id, chest_id))
+        if item.anzahl == 0:
+            logging.debug('Item empty after adding to chest, deleting')
+            delete_item_from_chest(chest_id, item_id, db)
         return item
     else:
         item = ItemKiste(kiste_id=chest_id, item_id=item_id, anzahl=quantity)
@@ -79,6 +83,9 @@ def update_item_in_chest(chest_id: int, item_id: int, quantity: int, db: Session
         item.anzahl = quantity
         db.commit()
         logging.debug('Item {} in chest {} updated'.format(item_id, chest_id))
+        if item.anzahl == 0:
+            logging.debug('Item empty after updating in chest, deleting')
+            delete_item_from_chest(chest_id, item_id, db)
         return item
     else:
         logging.error('Item {} not found in chest {}'.format(item_id, chest_id))

@@ -3,60 +3,24 @@ import { useState, useEffect } from 'react';
 import ProductSelectionOverlay from '../../../components/ProductSelectionOverlay';
 import { Loader } from '../../../components/loader';
 import { apiURL } from '../../../utils/constants';
+import { PlusOrMinusButton } from '../../../components/PlusOrMinusButton';
 
-async function getKiste(kistenID) {
-  const res = await fetch(apiURL + '/kisten/' + kistenID);
+async function getKistenJoinedWithItems(kistenID) {
+  const res = await fetch(apiURL + '/chests/' + kistenID + '/items');
   const data = await res.json();
   return data;
-}
-
-async function getItemsInKiste(kistenID) {
-  const res = await fetch(apiURL + '/kisten/' + kistenID + '/items');
-  const data = await res.json();
-  return data;
-}
-
-async function addSingleProductToKiste(kisteId, productId) {
-  await fetch(
-    apiURL +
-      '/kisten/' +
-      kisteId +
-      '/items?' +
-      new URLSearchParams({ item_id: productId, anzahl: +1 }),
-    {
-      method: 'POST',
-    }
-  );
-}
-
-async function removeSingleProductFromKiste(kisteId, productId) {
-  await fetch(
-    apiURL +
-      '/kisten/' +
-      kisteId +
-      '/items?' +
-      new URLSearchParams({ item_id: productId, anzahl: -1 }),
-    {
-      method: 'POST',
-    }
-  );
 }
 
 export default function Page({ params }) {
-  const [kiste, setKiste] = useState(null);
-  const [itemsInKiste, setItemsInKiste] = useState([]);
+  const [kisteWithItems, setKisteWithItems] = useState(null);
   const [showProductOverlay, setShowProductOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
 
   async function loadData() {
     setLoading(true);
-    getKiste(params.id).then((item) => {
+    getKistenJoinedWithItems(params.id).then((item) => {
       console.log(item);
-      setKiste(item);
-    });
-    getItemsInKiste(params.id).then((items) => {
-      console.log(items);
-      setItemsInKiste(items);
+      setKisteWithItems(item);
     });
     setLoading(false);
   }
@@ -65,9 +29,27 @@ export default function Page({ params }) {
     loadData();
   }, [params.id]);
 
-  if (!kiste) {
+  if (!kisteWithItems) {
     return <Loader />;
   }
+
+  function updateItemAnzahlAfterButtonClick(item, plus = false) {
+    let newKisteWithItems = {
+      ...kisteWithItems,
+      items: kisteWithItems.items.map((i) => {
+        if (i.item_id === item.item_id) {
+          if (plus) {
+            i.anzahl = i.anzahl + 1;
+          } else {
+            i.anzahl = i.anzahl - 1;
+          }
+        }
+        return i;
+      }),
+    };
+    setKisteWithItems(newKisteWithItems);
+  }
+
   return (
     <div>
       <div>
@@ -80,7 +62,7 @@ export default function Page({ params }) {
         </nav>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <h1 style={{ fontSize: '1.75em' }}>{kiste.name}</h1>
+        <h1 style={{ fontSize: '1.75em' }}>{kisteWithItems.name}</h1>
         <h1
           style={{
             fontSize: '1.5em',
@@ -91,55 +73,25 @@ export default function Page({ params }) {
           Items in Chest
         </h1>
         <ul>
-          {itemsInKiste.map((item) => (
-            <li style={{ padding: '0.3125em' }} key={item.id}>
-              <button
-                style={{
-                  borderRadius: '50%',
-                  fontSize: '1em',
-                  width: '2.8125em',
+          {kisteWithItems.items.map((item) => (
+            <li style={{ padding: '0.3125em' }} key={item.item_id}>
+              <PlusOrMinusButton
+                chestId={kisteWithItems.id}
+                itemId={item.item_id}
+                plus={false}
+                callback={() => {
+                  updateItemAnzahlAfterButtonClick(item, false);
                 }}
-                onClick={() => {
-                  removeSingleProductFromKiste(kiste.id, item.id).then(() => {
-                    setItemsInKiste(
-                      itemsInKiste.map((i) => {
-                        if (i.id === item.id) {
-                          i.anzahl = i.anzahl - 1;
-                        }
-                        return i;
-                      })
-                    );
-                  });
+              />
+              {item.item_name}: {item.anzahl}x
+              <PlusOrMinusButton
+                chestId={kisteWithItems.id}
+                itemId={item.item_id}
+                plus={true}
+                callback={() => {
+                  updateItemAnzahlAfterButtonClick(item, true);
                 }}
-              >
-                -
-              </button>
-              {item.name}: {item.anzahl}x
-              <button
-                style={{
-                  borderRadius: '50%',
-                  fontSize: '1em',
-                  width: '2.8125em',
-                }}
-                onClick={() => {
-                  addSingleProductToKiste(kiste.id, item.id)
-                    .then(() => {
-                      setItemsInKiste(
-                        itemsInKiste.map((i) => {
-                          if (i.id === item.id) {
-                            i.anzahl = i.anzahl + 1;
-                          }
-                          return i;
-                        })
-                      );
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                }}
-              >
-                +
-              </button>
+              />
             </li>
           ))}
         </ul>
@@ -156,7 +108,7 @@ export default function Page({ params }) {
           <br></br>
           {showProductOverlay && (
             <ProductSelectionOverlay
-              kiste={kiste}
+              kiste={kisteWithItems}
               setShowProductOverlay={setShowProductOverlay}
               loadData={loadData}
             />

@@ -11,7 +11,7 @@ export default function ItemList({ items }) {
           key={item.id}
           style={{ display: 'flex', justifyContent: 'center' }}
         >
-          <div style={{ marginRight: '1.25em', paddingTop: '0.4em'  }}>
+          <div style={{ marginRight: '1.25em', paddingTop: '0.4em' }}>
             <a href={'/items/' + item.id}>
               <p>{item.name}</p>
               <p>{item.description}</p>
@@ -35,7 +35,7 @@ export default function ItemList({ items }) {
                 method: 'DELETE',
               })
                 .then((res) => {
-                  if (res.status === 409) {
+                  if (res.status !== 204) {
                     alert('Error deleting item. Probably still in a chest.');
                     return;
                   }

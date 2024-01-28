@@ -43,6 +43,7 @@ stages:
         name: '{chest_name:s}'
         items:
           - item_id: !int '{item_id:d}'
+            item_name: '{item_name:s}'
             anzahl: !int '{item_anzahl:d}'
 
   # Get all chests by item id
@@ -58,6 +59,7 @@ stages:
         description: '{item_description:s}'
         chests:
           - kiste_id: !int '{chest_id:d}'
+            kiste_name: '{chest_name:s}'
             anzahl: !int '{item_anzahl:d}'
 
   # Update the quantity of the item in the chest
@@ -155,8 +157,10 @@ stages:
         name: '{chest_name:s}'
         items:
           - item_id: !int '{item_id:d}'
+            item_name: '{item_name:s}'
             anzahl: !int '{item_anzahl_sum:d}'
           - item_id: !int '{second_item_id:d}'
+            item_name: '{second_item_name:s}'
             anzahl: !int '{second_item_anzahl:d}'
 
   # Get all chests by item id
@@ -172,6 +176,7 @@ stages:
         description: '{item_description:s}'
         chests:
           - kiste_id: !int '{chest_id:d}'
+            kiste_name: '{chest_name:s}'
             anzahl: !int '{item_anzahl_sum:d}'
 
   # Add item to second chest
@@ -202,6 +207,7 @@ stages:
         name: '{second_chest_name:s}'
         items:
           - item_id: !int '{item_id:d}'
+            item_name: '{item_name:s}'
             anzahl: !int '{item_anzahl:d}'
 
   # Get all chests by item id
@@ -217,8 +223,10 @@ stages:
         description: '{item_description:s}'
         chests:
           - kiste_id: !int '{chest_id:d}'
+            kiste_name: '{chest_name:s}'
             anzahl: !int '{item_anzahl_sum:d}'
           - kiste_id: !int '{second_chest_id:d}'
+            kiste_name: '{second_chest_name:s}'
             anzahl: !int '{item_anzahl:d}'
 
   # Remove the item from the chest

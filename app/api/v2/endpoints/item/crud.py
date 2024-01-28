@@ -41,4 +41,6 @@ def delete_item_by_id(item_id: int, db: Session):
         
 def get_joined_chests_by_item_id(item_id: int, db: Session):
     chests = db.query(ItemKiste).join(Kiste).filter(ItemKiste.item_id == item_id).all()
+    for chest in chests:
+        chest.kiste_name = chest.kiste.name
     return chests

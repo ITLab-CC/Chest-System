@@ -82,13 +82,19 @@ def get_chest(chest_id: int,
     return chest
 
 
-@router.delete('/{chest_id}', response_model=None, tags=['chest'])
+@router.delete('/{chest_id}', response_model=None, tags=['chest'], status_code=status.HTTP_204_NO_CONTENT)
 def delete_chest(chest_id: int, db: Session = Depends(get_db)):
     chest = chest_crud.get_chest_by_id(chest_id, db)
 
     if not chest:
         logging.error('Delete: Chest {} not found'.format(chest_id))
         raise HTTPException(status_code=404)
+    
+    # Check if chest is empty
+    items = chest_crud.get_joined_items_by_chest_id(chest_id, db)
+    if items:
+        logging.error('Delete: Chest {} not empty'.format(chest_id))
+        raise HTTPException(status_code=409)
 
     chest_crud.delete_chest_by_id(chest_id, db)
     logging.info('Chest {} deleted'.format(chest.name))

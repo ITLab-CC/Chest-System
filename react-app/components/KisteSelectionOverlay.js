@@ -1,30 +1,5 @@
 import { useState, useEffect } from 'react';
-import { apiURL } from '@/utils/constants';
-
-// async function getProducts() {
-//   const res = await fetch(apiURL + '/items');
-//   const data = await res.json();
-//   return data;
-// }
-
-async function getKisten() {
-  const res = await fetch(apiURL + '/kisten');
-  const data = await res.json();
-  return data;
-}
-
-async function addProductToKiste(kisteId, productId, anzahl) {
-  await fetch(
-    apiURL +
-      '/kisten/' +
-      kisteId +
-      '/items?' +
-      new URLSearchParams({ item_id: productId, anzahl: anzahl }),
-    {
-      method: 'POST',
-    }
-  );
-}
+import { addProductToKiste, getKisten } from '@/utils/api';
 
 export default function KisteSelectionOverlay({
   item,
@@ -43,7 +18,15 @@ export default function KisteSelectionOverlay({
 
   return (
     <div>
-      <h2 style={{ fontSize: "1.875em", color: "#19e619", marginBottom: '0.25em' }}>Select Chest</h2>
+      <h2
+        style={{
+          fontSize: '1.875em',
+          color: '#19e619',
+          marginBottom: '0.25em',
+        }}
+      >
+        Select Chest
+      </h2>
       <ul>
         {kisten.map((product) => (
           <li
@@ -66,7 +49,7 @@ export default function KisteSelectionOverlay({
       <h2>Amount</h2>
       <input
         placeholder='amount'
-        style={{padding: '0.625em 1.25em' , marginTop: '1.25em'}}
+        style={{ padding: '0.625em 1.25em', marginTop: '1.25em' }}
         type='number'
         value={anzahl}
         onChange={(e) => {
@@ -74,7 +57,11 @@ export default function KisteSelectionOverlay({
         }}
       />
       <button
-        style={{ color: 'black', padding: '0.625em 1.25em', marginBottom: '1.25em' }}
+        style={{
+          color: 'black',
+          padding: '0.625em 1.25em',
+          marginBottom: '1.25em',
+        }}
         onClick={() => {
           if (selectedKiste) {
             addProductToKiste(selectedKiste.id, item.id, anzahl).then(() => {

@@ -28,13 +28,15 @@ export default function Home() {
 
   async function getData() {
     setLoading(true);
-    const resKisten = await fetch(apiURL + '/kisten');
+    const resKisten = await fetch(apiURL + '/chests');
     const kisten = await resKisten.json();
     setKisten(kisten);
     const res = await fetch(apiURL + '/items');
     const data = await res.json();
     setItems(data);
     setLoading(false);
+    console.log(data);
+    console.log(kisten);
   }
 
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function Home() {
   }
 
   const filteredItems = items.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const filteredKisten = kisten.filter((kiste) =>
     kiste.name.toLowerCase().includes(searchChestTerm.toLowerCase())
@@ -95,13 +97,14 @@ export default function Home() {
               marginBottom: '3.125em',
             }}
             onClick={async () => {
-              // Post to /kisten with query params
-              await fetch(
-                apiURL + '/kisten?' + new URLSearchParams({ name: nameKiste }),
-                {
-                  method: 'POST',
-                }
-              );
+              // Post to /chests with { name: nameKiste}
+              await fetch(apiURL + '/chests', {
+                method: 'POST',
+                body: JSON.stringify({ name: nameKiste }),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
               setNameKiste('');
               getData();
             }}
@@ -144,17 +147,16 @@ export default function Home() {
           <button
             style={{ color: 'black', padding: '0.625em 1.25em' }}
             onClick={async () => {
-              await fetch(
-                apiURL +
-                  '/items?' +
-                  new URLSearchParams({
-                    name: nameGegenstand,
-                    description: descriptionGegenstand,
-                  }),
-                {
-                  method: 'POST',
-                }
-              );
+              await fetch(apiURL + '/items', {
+                method: 'POST',
+                body: JSON.stringify({
+                  name: nameGegenstand,
+                  description: descriptionGegenstand,
+                }),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
               setNameGegenstand('');
               setDescriptionGegenstand('');
               getData();

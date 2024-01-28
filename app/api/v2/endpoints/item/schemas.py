@@ -7,10 +7,21 @@ class ItemBaseSchema(BaseModel):
     
     class Config:
         orm_mode = True
+        json_schema_extra = {
+            "example": {
+                "name": "Item Name",
+                "description": "Item Description"
+            }
+        }
+        
+        
         
 class ItemCreateSchema(ItemBaseSchema):
-    pass
 
+    pass
+    
+    
+    
 class ItemSchema(ItemBaseSchema):
     id: int
     
@@ -34,14 +45,20 @@ class ItemListItemSchema(BaseModel):
         orm_mode = True
 
 class ItemChestQuantityCreateSchema(BaseModel):
-    kiste_id: int        
+    kiste_id: int      
     anzahl: int
 
     class Config:
         orm_mode = True
+        
+class ItemChestQuantitySchema(ItemChestQuantityCreateSchema):
+    kiste_name: str
+    
+    class Config:
+        orm_mode = True
 
 class ItemChestJoinedSchema(ItemSchema):
-    chests: List[ItemChestQuantityCreateSchema]
+    chests: List[ItemChestQuantitySchema]
     
     class Config:
         orm_mode = True
