@@ -59,7 +59,6 @@ engine = create_engine(
 
 
 
-apiPrefix = "/api/v1"
 
 
 @router.get("/")
@@ -68,7 +67,7 @@ async def root():
 
 
 # GetAllKisten
-@router.get(apiPrefix + "/kisten")
+@router.get("/kisten")
 async def getAllKisten():
     with Session(engine) as session:
         kisten = session.query(Kiste).all()
@@ -76,7 +75,7 @@ async def getAllKisten():
 
 
 # GetKisteById
-@router.get(apiPrefix + "/kisten/{id}")
+@router.get("/kisten/{id}")
 async def getKisteById(id: int):
     with Session(engine) as session:
         kiste = session.query(Kiste).filter(Kiste.id == id).first()
@@ -84,7 +83,7 @@ async def getKisteById(id: int):
 
 
 # CreateKiste
-@router.post(apiPrefix + "/kisten")
+@router.post("/kisten")
 async def createKiste(name: str):
     with Session(engine) as session:
         kNeu = Kiste(name=name)
@@ -94,7 +93,7 @@ async def createKiste(name: str):
 
 
 # UpdateKiste
-@router.put(apiPrefix + "/kisten/{id}")
+@router.put("/kisten/{id}")
 async def updateKiste(id: int, name: str):
     with Session(engine) as session:
         kiste = session.query(Kiste).filter(Kiste.id == id).first()
@@ -104,7 +103,7 @@ async def updateKiste(id: int, name: str):
 
 
 # DeleteKiste
-@router.delete(apiPrefix + "/kisten/{id}")
+@router.delete("/kisten/{id}")
 async def deleteKiste(id: int, force: bool = False):
     with Session(engine) as session:
         if force:
@@ -124,7 +123,7 @@ async def deleteKiste(id: int, force: bool = False):
 
 
 # GetAllItems
-@router.get(apiPrefix + "/items")
+@router.get("/items")
 async def getAllItems():
     with Session(engine) as session:
         items = session.query(Item).all()
@@ -132,7 +131,7 @@ async def getAllItems():
 
 
 # GetItemById
-@router.get(apiPrefix + "/items/{id}")
+@router.get("/items/{id}")
 async def getItemById(id: int):
     with Session(engine) as session:
         item = session.query(Item).filter(Item.id == id).first()
@@ -140,7 +139,7 @@ async def getItemById(id: int):
 
 
 # CreateItem description: Optional[str] = None
-@router.post(apiPrefix + "/items")
+@router.post("/items")
 async def createItem(name: str, description: str = None):
     with Session(engine) as session:
         iNeu = Item(name=name, description=description)
@@ -150,7 +149,7 @@ async def createItem(name: str, description: str = None):
 
 
 # UpdateItem
-@router.put(apiPrefix + "/items/{id}")
+@router.put("/items/{id}")
 async def updateItem(id: int, name: str, description: str):
     with Session(engine) as session:
         item = session.query(Item).filter(Item.id == id).first()
@@ -161,7 +160,7 @@ async def updateItem(id: int, name: str, description: str):
 
 
 # DeleteItem
-@router.delete(apiPrefix + "/items/{id}")
+@router.delete("/items/{id}")
 async def deleteItem(id: int, force: bool = False):
     with Session(engine) as session:
         if force:
@@ -183,7 +182,7 @@ async def deleteItem(id: int, force: bool = False):
 
 
 # GetAllItemsInKiste
-@router.get(apiPrefix + "/kisten/{id}/items")
+@router.get("/kisten/{id}/items")
 async def getAllItemsInKiste(id: int):
     with Session(engine) as session:
         # Add Anzahl to Item
@@ -202,7 +201,7 @@ async def getAllItemsInKiste(id: int):
 
 
 # GetAllKistenByItemId
-@router.get(apiPrefix + "/items/{id}/kisten")
+@router.get("/items/{id}/kisten")
 async def getAllKistenByItemId(id: int):
     with Session(engine) as session:
         kisten = (
@@ -221,7 +220,7 @@ async def getAllKistenByItemId(id: int):
 
 
 # AddItemToKiste
-@router.post(apiPrefix + "/kisten/{id}/items")
+@router.post("/kisten/{id}/items")
 async def addItemToKiste(id: int, item_id: int, anzahl: int):
     with Session(engine) as session:
         # Check if Item is already in Kiste
@@ -249,7 +248,7 @@ async def addItemToKiste(id: int, item_id: int, anzahl: int):
 
 
 # RemoveItemFromKiste
-@router.delete(apiPrefix + "/kisten/{id}/items/{item_id}/${anzahl}")
+@router.delete("/kisten/{id}/items/{item_id}/${anzahl}")
 async def removeItemFromKiste(id: int, item_id: int, anzahl: int):
     with Session(engine) as session:
         itemKiste = (
