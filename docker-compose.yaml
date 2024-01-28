@@ -5,11 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_HOST=db
+    env_file:
+      - .env
     depends_on:
       - db
     ports:
@@ -42,11 +39,8 @@ services:
     container_name: pg_container
     image: postgres
     restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      PGUSER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+    env_file:
+      - .env
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
@@ -56,23 +50,16 @@ services:
     image: prodrigestivill/postgres-backup-local
     restart: always
     user: postgres:postgres # Optional: see below
+    ports:
+      - 8080:8080
     volumes:
       - ./pgbackups:/backups
     links:
       - db
     depends_on:
       - db
-    environment:
-      - POSTGRES_HOST=db
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-        #  - POSTGRES_PASSWORD_FILE=/run/secrets/db_password <-- alternative for POSTGRES_PASSWORD (to use with docker secrets)
-      - POSTGRES_EXTRA_OPTS=-Z6 --schema=public --blobs
-      - SCHEDULE=@daily
-      - BACKUP_KEEP_DAYS=7
-      - BACKUP_KEEP_WEEKS=4
-      - BACKUP_KEEP_MONTHS=6
-      - HEALTHCHECK_PORT=8080
+    env_file:
+      - .env
+
 volumes:
   db-data:
