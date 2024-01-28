@@ -3,8 +3,15 @@ test_name: Make sure server implements crud functionality for chest endpoint
 
 includes:
   - !include common.yaml
+  - !include chest_stage.yaml
 
 stages:
+  # Test the default stage
+  - type: ref
+    id: create_chest
+  - type: ref
+    id: delete_chest
+
   - name: Verify that status code equals 201 when we create a new chest and the chest is returned
     # max_retries and delay_after needs to be set in first stage of each stage to wait for uvicorn
     max_retries: 10
@@ -23,7 +30,7 @@ stages:
         json:
           chest_id: id
 
-  - name: Verify that status code equals 303 and we get a redirect to an already existing item, when we create a new chest with a name that already exists
+  - name: Verify that status code equals 303 and we get a redirect to an already existing chest, when we create a new chest with a name that already exists
     request:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
       json:
@@ -64,17 +71,7 @@ stages:
       json: !anylist
         id: !int '{chest_id:d}'
 
-  - name: Update chest
-    request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
-      method: PUT
-      json:
-        <<: *chest
-        description: 'My new description'
-    response:
-      status_code: 204
-
-  - name: Check if a new chest is created when chest gets a new name and name does not already exists
+  - name: Check if a we can update an chest with a new name, and the id stays the same
     request:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id}
       method: PUT
@@ -82,14 +79,41 @@ stages:
         <<: *chest
         name: 'Italian Style'
     response:
-      status_code: 201
+      status_code: 200
       json:
         <<: *chest
-        id: !anything
+        id: !int '{chest_id:d}'
         name: 'Italian Style'
       save:
         json:
           italian_id: id
+
+  # Verify that 1 chest is returned when we get all chests
+  - name: Get list of chests, after we have updated one chest => 1 chest in list
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      method: GET
+    response:
+      status_code: 200
+      json: !anylist
+        id: !int '{italian_id:d}'
+        name: 'Italian Style'
+
+  # Create a second chest
+  - name: Create a second chest, to test that we can not update an chest to an already existing name
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests
+      json: &chest_2
+        name: '{chest_name_2:s}'
+      method: POST
+    response:
+      status_code: 201
+      json:
+        <<: *chest_2
+        id: !anything
+      save:
+        json:
+          chest_id_2: id
 
   - name: Check for status 303 if we update chest to an already existing name
     request:
@@ -97,11 +121,11 @@ stages:
       method: PUT
       json:
         <<: *chest
-        name: 'Italian Style'
+        name: '{chest_name_2:s}'
     response:
       status_code: 303
       headers:
-        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{italian_id}'
+        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id_2}'
 
   - name: Check for status 404 if we update with a non existing id
     request:
@@ -132,7 +156,7 @@ stages:
   #Delete Chest
   - name: Delete second created chest with id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{italian_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/chests/{chest_id_2}
       method: DELETE
     response:
       status_code: 204

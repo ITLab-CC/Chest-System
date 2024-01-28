@@ -55,20 +55,14 @@ def update_chest(
     updated_chest = None
 
     if chest_found:
-        if chest_found.name == changed_chest.name:
-            logging.debug('Chest {} found. Keeping name'.format(chest_id))
-            chest_crud.update_chest(chest_found, changed_chest, db)
-            return Response(status_code=status.HTTP_204_NO_CONTENT)
+        chest_name_found = chest_crud.get_chest_by_name(changed_chest.name, db)
+        if chest_name_found and chest_name_found.id != chest_found.id:
+            logging.warning('Update: Chest {} already exists'.format(changed_chest.name))
+            url = request.url_for('get_chest', chest_id=chest_name_found.id)
+            return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)
         else:
-            chest_name_found = chest_crud.get_chest_by_name(changed_chest.name, db)
-            if chest_name_found:
-                logging.warning('Chest {} already exists'.format(changed_chest.name))
-                url = request.url_for('get_chest', chest_id=chest_name_found.id)
-                return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)
-            else:
-                logging.debug('Chest {} name changed'.format(chest_found.name))
-                updated_chest = chest_crud.create_chest(changed_chest, db)
-                response.status_code = status.HTTP_201_CREATED
+            updated_chest = chest_crud.update_chest(chest_found, changed_chest, db)
+            logging.info('Chest {} updated'.format(chest_id))
     else:
         logging.warning('Update: Chest {} not found'.format(chest_id))
         raise HTTPException(status_code=404)
@@ -151,3 +145,20 @@ def delete_item_from_chest(chest_id: int, item_id: int, db: Session = Depends(ge
     chest_crud.delete_item_from_chest(chest_id, item_id, db)
     logging.info('Item {} deleted from chest {}'.format(item_id, chest_id))
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+@router.put('/{chest_id}/items/{item_id}', response_model=ChestItemCreateSchema, tags=['chest'])
+def update_item_in_chest(chest_id: int, item_id: int, anzahl: int, db: Session = Depends(get_db)):
+    chest = chest_crud.get_chest_by_id(chest_id, db)
+
+    if not chest:
+        logging.error('Put: Chest {} not found'.format(chest_id))
+        raise HTTPException(status_code=404)
+
+    item = chest_crud.get_specific_item_in_chest(chest_id, item_id, db)
+    if not item:
+        logging.error('Put: Item {} not found'.format(item_id))
+        raise HTTPException(status_code=404)
+
+    chest_crud.update_item_in_chest(chest_id, item_id, anzahl, db)
+    logging.info('Item {} in chest {} updated'.format(item_id, chest_id))
+    return item

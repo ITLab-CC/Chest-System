@@ -4,3 +4,5 @@ description: common test information
 
 variables:
   chest_name: 'A chest name'
+
+  chest_name_2: 'A second chest name'

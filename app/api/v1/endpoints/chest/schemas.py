@@ -35,3 +35,6 @@ class ChestItemCreateSchema(ChestItemQuantityBaseSchema):
 
 class JoinedChestItemSchema(ChestBaseSchema, ItemBaseSchema):
     pass
+
+class ChestItemQuantityUpdateSchema(ChestItemQuantityBaseSchema):
+    pass

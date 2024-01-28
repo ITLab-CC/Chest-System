@@ -63,6 +63,16 @@ def test_chest_create_read_delete(db):
     assert items[0].kiste_id == created_chest_id
     assert items[0].item_id == created_item_id
     assert items[0].anzahl == new_item_quantity * 2
+    # Act: Update item quantity in chest
+    new_item_quantity = 3
+    chest_crud.update_item_in_chest(created_chest_id, created_item_id, new_item_quantity, db)
+    # Assert: Correct item was updated in chest
+    items = chest_crud.get_joined_items_by_chest_id(created_chest_id, db)
+    assert len(items) == 1
+    assert items[0].kiste_id == created_chest_id
+    assert items[0].item_id == created_item_id
+    assert items[0].anzahl == new_item_quantity
+    
     # Act: Remove item from chest
     chest_crud.delete_item_from_chest(created_chest_id, created_item_id, db)
     # Assert: Correct item was removed from chest
@@ -78,6 +88,9 @@ def test_chest_create_read_delete(db):
     # Assert: Correct item was deleted from database
     deleted_item = item_crud.get_item_by_id(created_item_id, db)
     assert deleted_item is None
+    # Update chest item quantity for non-existing item
+    result = chest_crud.update_item_in_chest(created_chest_id, created_item_id, new_item_quantity, db)
+    assert result is None
     
     # Update chest
     updated_chest_name = 'test2'

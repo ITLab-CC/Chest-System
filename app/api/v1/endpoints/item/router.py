@@ -54,20 +54,14 @@ def update_item(
     updated_item = None
 
     if item_found:
-        if item_found.name == changed_item.name:
-            logging.debug('Item {} found. Keeping name'.format(item_id))
-            item_crud.update_item(item_found, changed_item, db)
-            return Response(status_code=status.HTTP_204_NO_CONTENT)
+        item_name_found = item_crud.get_item_by_name(changed_item.name, db)
+        if item_name_found and item_name_found.id != item_found.id:
+            logging.warning('Update: Item {} already exists'.format(changed_item.name))
+            url = request.url_for('get_item', item_id=item_name_found.id)
+            return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)
         else:
-            item_name_found = item_crud.get_item_by_name(changed_item.name, db)
-            if item_name_found:
-                logging.warning('Item {} already exists'.format(changed_item.name))
-                url = request.url_for('get_item', item_id=item_name_found.id)
-                return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)
-            else:
-                logging.debug('Item {} name changed'.format(item_found.name))
-                updated_item = item_crud.create_item(changed_item, db)
-                response.status_code = status.HTTP_201_CREATED
+            updated_item = item_crud.update_item(item_found, changed_item, db)
+            logging.info('Item {} updated'.format(item_id))
     else:
         logging.warning('Update: Item {} not found'.format(item_id))
         raise HTTPException(status_code=404)

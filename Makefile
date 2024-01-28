@@ -36,4 +36,6 @@ integration-test:
 
 
 service-test:
-	API_SERVER=localhost API_PORT=8000 PYTHONPATH=. pytest --pspec --verbose --color=yes --junitxml=report_service_tests.xml tests/service/api/v1/chest_items
+	API_SERVER=localhost API_PORT=8000 PYTHONPATH=. pytest --pspec --verbose --color=yes --junitxml=report_service_tests.xml tests/service
+
+test: service-test integration-test

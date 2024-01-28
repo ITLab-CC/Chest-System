@@ -11,6 +11,7 @@ stages:
     id: create_item
   - type: ref
     id: delete_item
+
   - name: Verify that status code equals 201 when we create a new item and the item is returned
     # max_retries and delay_after needs to be set in first stage of each stage to wait for uvicorn
     max_retries: 10
@@ -80,9 +81,9 @@ stages:
         <<: *item
         description: 'My new description'
     response:
-      status_code: 204
+      status_code: 200
 
-  - name: Check if a new item is created when item gets a new name and name does not already exists
+  - name: Check if a we can update an item with a new name, and the id stays the same
     request:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{item_id}
       method: PUT
@@ -90,14 +91,42 @@ stages:
         <<: *item
         name: 'Italian Style'
     response:
-      status_code: 201
+      status_code: 200
       json:
         <<: *item
-        id: !anything
+        id: !int '{item_id:d}'
         name: 'Italian Style'
       save:
         json:
           italian_id: id
+
+  # Verify that 1 item is returned when we get all items
+  - name: Get list of items, after we have updated one item => 1 item in list
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items
+      method: GET
+    response:
+      status_code: 200
+      json: !anylist
+        id: !int '{italian_id:d}'
+        name: 'Italian Style'
+
+  # Create a second item
+  - name: Create a second item, to test that we can not update an item to an already existing name
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items
+      json: &item_2
+        name: '{item_name_2:s}'
+        description: '{item_description_2:s}'
+      method: POST
+    response:
+      status_code: 201
+      json:
+        <<: *item_2
+        id: !anything
+      save:
+        json:
+          item_id_2: id
 
   - name: Check for status 303 if we update item to an already existing name
     request:
@@ -105,11 +134,11 @@ stages:
       method: PUT
       json:
         <<: *item
-        name: 'Italian Style'
+        name: '{item_name_2:s}'
     response:
       status_code: 303
       headers:
-        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{italian_id}'
+        location: 'http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{item_id_2}'
 
   - name: Check for status 404 if we update with a non existing id
     request:
@@ -140,7 +169,7 @@ stages:
   #Delete Item
   - name: Delete second created item with id
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{italian_id}
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/v1/items/{item_id_2}
       method: DELETE
     response:
       status_code: 204

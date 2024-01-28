@@ -71,3 +71,14 @@ def delete_item_from_chest(chest_id: int, item_id: int, db: Session):
     else:
         logging.error('Item {} not found in chest {}'.format(item_id, chest_id))
         return None
+    
+def update_item_in_chest(chest_id: int, item_id: int, quantity: int, db: Session):
+    item = get_specific_item_in_chest(chest_id, item_id, db)
+    if item:
+        item.anzahl = quantity
+        db.commit()
+        logging.debug('Item {} in chest {} updated'.format(item_id, chest_id))
+        return item
+    else:
+        logging.error('Item {} not found in chest {}'.format(item_id, chest_id))
+        return None
