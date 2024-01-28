@@ -42,10 +42,9 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 # Copy the rest of the source files into the image.
 COPY . .
 # # Run the build script.
-RUN NODE_ENV=development npm i
 # ARG NEXT_PUBLIC_API_URL
 # ENV NEXT_PUBLIC_API_URL $NEXT_PUBLIC_API_URL
-RUN NODE_ENV=development npm run build
+RUN npm run build
 
 ################################################################################
 # Create a new stage to run the application with minimal runtime dependencies
