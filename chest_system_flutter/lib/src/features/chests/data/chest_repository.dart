@@ -13,12 +13,18 @@ class ChestRepository {
   ChestRepository({required this.dio});
   final Dio dio;
 
-  String _getUrl({int? id}) {
+  String _getUrl({int? id, bool withItems = false}) {
+    if (withItems && id == null) {
+      throw Error();
+    }
     const path = Api.apiPrefix + Api.chestPath;
     final url =
         Uri(scheme: Api.schema, host: Api.host, port: Api.port, path: path)
             .toString();
     if (id != null) {
+      if (withItems) {
+        return '$url/$id/items';
+      }
       return '$url/$id';
     } else {
       return url;
@@ -56,6 +62,20 @@ class ChestRepository {
       throw ApiException(
         response.statusCode ?? -1,
         'getChest ${response.statusCode}, data=${response.data}',
+      );
+    }
+  }
+
+  Future<Chest> getChestWithItems(int id) async {
+    final url = _getUrl(id: id, withItems: true);
+    final response = await dio.get<Map<String, dynamic>>(url);
+    if (response.statusCode == 200 && response.data != null) {
+      final chest = Chest.fromJson(response.data!);
+      return chest;
+    } else {
+      throw ApiException(
+        response.statusCode ?? -1,
+        'getChestWithItems ${response.statusCode}, data=${response.data}',
       );
     }
   }

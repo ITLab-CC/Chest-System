@@ -1,8 +1,10 @@
 import 'package:chest_system_flutter/src/features/chests/presentation/create_chest_overlay.dart';
+import 'package:chest_system_flutter/src/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:chest_system_flutter/src/common_widgets/async_value_widget.dart';
 import 'package:chest_system_flutter/src/features/chests/presentation/chests_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ChestsScreen extends ConsumerWidget {
   const ChestsScreen({super.key});
@@ -34,6 +36,10 @@ class ChestsScreen extends ConsumerWidget {
               return ListTile(
                 title: Text(chest.name),
                 subtitle: Text(chest.id.toString()),
+                onTap: () {
+                  context.goNamed(SubRoutes.chestDetails.name,
+                      pathParameters: {'id': chest.id.toString()});
+                },
               );
             },
           );
