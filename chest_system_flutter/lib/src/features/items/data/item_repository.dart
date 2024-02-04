@@ -13,12 +13,18 @@ class ItemRepository {
   ItemRepository({required this.dio});
   final Dio dio;
 
-  String _getUrl({int? id}) {
+  String _getUrl({int? id, bool withChests = false}) {
+    if (withChests && id == null) {
+      throw Error();
+    }
     const path = Api.apiPrefix + Api.itemPath;
     final url =
         Uri(scheme: Api.schema, host: Api.host, port: Api.port, path: path)
             .toString();
     if (id != null) {
+      if (withChests) {
+        return '$url/$id/chests';
+      }
       return '$url/$id';
     } else {
       return url;
@@ -101,6 +107,22 @@ class ItemRepository {
       throw ApiException(
         response.statusCode ?? -1,
         'saveItem ${response.statusCode}, data=${response.data}',
+      );
+    }
+  }
+
+  Future<Item> getItemWithChests(int id) async {
+    final url = _getUrl(id: id, withChests: true);
+    final response = await dio.get<String>(url);
+    if (response.statusCode == 200 && response.data != null) {
+      logger.d('getItemWithChests ${response.data}');
+      final item =
+          Item.fromJson(json.decode(response.data!) as Map<String, Object?>);
+      return item;
+    } else {
+      throw ApiException(
+        response.statusCode ?? -1,
+        'getItemWithChests ${response.statusCode}, data=${response.data}',
       );
     }
   }

@@ -12,6 +12,7 @@ class Item with _$Item {
     required String name,
     required String description,
     int? id,
+    List<ChestQuantity>? chests,
     // required String imageUrl,
   }) = _Item;
 
@@ -25,6 +26,18 @@ extension JsonWithoutId on Item {
     map.remove('id');
     return json.encode(map);
   }
+}
+
+@freezed
+class ChestQuantity with _$ChestQuantity {
+  const factory ChestQuantity({
+    @JsonKey(name: 'kiste_id') required int chestId,
+    @JsonKey(name: 'anzahl') required int quantity,
+    @JsonKey(name: 'kiste_name') required String chestName,
+  }) = _ChestQuantity;
+
+  factory ChestQuantity.fromJson(Map<String, Object?> json) =>
+      _$ChestQuantityFromJson(json);
 }
 
 // String toJsonWithoutId(Item p) {
