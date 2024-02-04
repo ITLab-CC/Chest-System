@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'chest.dart';
+part of 'item.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,32 +14,33 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Chest _$ChestFromJson(Map<String, dynamic> json) {
-  return _Chest.fromJson(json);
+Item _$ItemFromJson(Map<String, dynamic> json) {
+  return _Item.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Chest {
+mixin _$Item {
   String get name => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   int? get id => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ChestCopyWith<Chest> get copyWith => throw _privateConstructorUsedError;
+  $ItemCopyWith<Item> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ChestCopyWith<$Res> {
-  factory $ChestCopyWith(Chest value, $Res Function(Chest) then) =
-      _$ChestCopyWithImpl<$Res, Chest>;
+abstract class $ItemCopyWith<$Res> {
+  factory $ItemCopyWith(Item value, $Res Function(Item) then) =
+      _$ItemCopyWithImpl<$Res, Item>;
   @useResult
-  $Res call({String name, int? id});
+  $Res call({String name, String description, int? id});
 }
 
 /// @nodoc
-class _$ChestCopyWithImpl<$Res, $Val extends Chest>
-    implements $ChestCopyWith<$Res> {
-  _$ChestCopyWithImpl(this._value, this._then);
+class _$ItemCopyWithImpl<$Res, $Val extends Item>
+    implements $ItemCopyWith<$Res> {
+  _$ItemCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -50,12 +51,17 @@ class _$ChestCopyWithImpl<$Res, $Val extends Chest>
   @override
   $Res call({
     Object? name = null,
+    Object? description = null,
     Object? id = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       id: freezed == id
           ? _value.id
@@ -66,33 +72,37 @@ class _$ChestCopyWithImpl<$Res, $Val extends Chest>
 }
 
 /// @nodoc
-abstract class _$$ChestImplCopyWith<$Res> implements $ChestCopyWith<$Res> {
-  factory _$$ChestImplCopyWith(
-          _$ChestImpl value, $Res Function(_$ChestImpl) then) =
-      __$$ChestImplCopyWithImpl<$Res>;
+abstract class _$$ItemImplCopyWith<$Res> implements $ItemCopyWith<$Res> {
+  factory _$$ItemImplCopyWith(
+          _$ItemImpl value, $Res Function(_$ItemImpl) then) =
+      __$$ItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, int? id});
+  $Res call({String name, String description, int? id});
 }
 
 /// @nodoc
-class __$$ChestImplCopyWithImpl<$Res>
-    extends _$ChestCopyWithImpl<$Res, _$ChestImpl>
-    implements _$$ChestImplCopyWith<$Res> {
-  __$$ChestImplCopyWithImpl(
-      _$ChestImpl _value, $Res Function(_$ChestImpl) _then)
+class __$$ItemImplCopyWithImpl<$Res>
+    extends _$ItemCopyWithImpl<$Res, _$ItemImpl>
+    implements _$$ItemImplCopyWith<$Res> {
+  __$$ItemImplCopyWithImpl(_$ItemImpl _value, $Res Function(_$ItemImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? name = null,
+    Object? description = null,
     Object? id = freezed,
   }) {
-    return _then(_$ChestImpl(
+    return _then(_$ItemImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       id: freezed == id
           ? _value.id
@@ -104,28 +114,31 @@ class __$$ChestImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ChestImpl with DiagnosticableTreeMixin implements _Chest {
-  const _$ChestImpl({required this.name, this.id});
+class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
+  const _$ItemImpl({required this.name, required this.description, this.id});
 
-  factory _$ChestImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ChestImplFromJson(json);
+  factory _$ItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ItemImplFromJson(json);
 
   @override
   final String name;
+  @override
+  final String description;
   @override
   final int? id;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Chest(name: $name, id: $id)';
+    return 'Item(name: $name, description: $description, id: $id)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'Chest'))
+      ..add(DiagnosticsProperty('type', 'Item'))
       ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('id', id));
   }
 
@@ -133,41 +146,47 @@ class _$ChestImpl with DiagnosticableTreeMixin implements _Chest {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChestImpl &&
+            other is _$ItemImpl &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, id);
+  int get hashCode => Object.hash(runtimeType, name, description, id);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ChestImplCopyWith<_$ChestImpl> get copyWith =>
-      __$$ChestImplCopyWithImpl<_$ChestImpl>(this, _$identity);
+  _$$ItemImplCopyWith<_$ItemImpl> get copyWith =>
+      __$$ItemImplCopyWithImpl<_$ItemImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ChestImplToJson(
+    return _$$ItemImplToJson(
       this,
     );
   }
 }
 
-abstract class _Chest implements Chest {
-  const factory _Chest({required final String name, final int? id}) =
-      _$ChestImpl;
+abstract class _Item implements Item {
+  const factory _Item(
+      {required final String name,
+      required final String description,
+      final int? id}) = _$ItemImpl;
 
-  factory _Chest.fromJson(Map<String, dynamic> json) = _$ChestImpl.fromJson;
+  factory _Item.fromJson(Map<String, dynamic> json) = _$ItemImpl.fromJson;
 
   @override
   String get name;
   @override
+  String get description;
+  @override
   int? get id;
   @override
   @JsonKey(ignore: true)
-  _$$ChestImplCopyWith<_$ChestImpl> get copyWith =>
+  _$$ItemImplCopyWith<_$ItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

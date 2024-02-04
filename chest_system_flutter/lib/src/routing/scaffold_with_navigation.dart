@@ -13,8 +13,8 @@ class NavigationItem {
 }
 
 final _navigationList = (
-  people: NavigationItem(icon: Icons.cabin_outlined, selectedIcon: Icons.cabin),
-  counter: NavigationItem(
+  chests: NavigationItem(icon: Icons.cabin_outlined, selectedIcon: Icons.cabin),
+  items: NavigationItem(
     icon: Icons.plus_one_outlined,
     selectedIcon: Icons.plus_one,
   ),
@@ -72,14 +72,14 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
         selectedIndex: currentIndex,
         destinations: [
           NavigationDestination(
-            icon: Icon(_navigationList.people.icon),
-            selectedIcon: Icon(_navigationList.people.selectedIcon),
-            label: context.loc.home,
+            icon: Icon(_navigationList.chests.icon),
+            selectedIcon: Icon(_navigationList.chests.selectedIcon),
+            label: context.loc.chests,
           ),
           NavigationDestination(
-            icon: Icon(_navigationList.counter.icon),
-            selectedIcon: Icon(_navigationList.counter.selectedIcon),
-            label: context.loc.counter,
+            icon: Icon(_navigationList.items.icon),
+            selectedIcon: Icon(_navigationList.items.selectedIcon),
+            label: context.loc.items,
           ),
         ],
         onDestinationSelected: onDestinationSelected,
@@ -110,14 +110,14 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
             labelType: NavigationRailLabelType.all,
             destinations: <NavigationRailDestination>[
               NavigationRailDestination(
-                icon: Icon(_navigationList.people.icon),
-                selectedIcon: Icon(_navigationList.people.selectedIcon),
-                label: Text(context.loc.home),
+                icon: Icon(_navigationList.chests.icon),
+                selectedIcon: Icon(_navigationList.chests.selectedIcon),
+                label: Text(context.loc.chests),
               ),
               NavigationRailDestination(
-                icon: Icon(_navigationList.counter.icon),
-                selectedIcon: Icon(_navigationList.counter.selectedIcon),
-                label: Text(context.loc.counter),
+                icon: Icon(_navigationList.items.icon),
+                selectedIcon: Icon(_navigationList.items.selectedIcon),
+                label: Text(context.loc.items),
               ),
             ],
           ),

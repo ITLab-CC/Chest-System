@@ -1,3 +1,4 @@
+import 'package:chest_system_flutter/src/features/chests/presentation/create_chest_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:chest_system_flutter/src/common_widgets/async_value_widget.dart';
 import 'package:chest_system_flutter/src/features/chests/presentation/chests_controller.dart';
@@ -8,8 +9,19 @@ class ChestsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Center(
-      child: AsyncValueWidget(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Chests'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              CreateChestOverlay(context: context, ref: ref).displayDialog();
+            },
+          ),
+        ],
+      ),
+      body: AsyncValueWidget(
         value: ref.watch(chestsControllerProvider),
         data: (state) {
           if (state == null) {

@@ -15,6 +15,12 @@
   "counterLabel": "Du hast den Button sooft gedrückt:",
   "fabMainTooltip": "erhöhen",
   "placeholder": "placeholder",
-  "home": "Start",
-  "counter": "Zähler"
+  "chests": "Kisten",
+  "items": "Gegenstände",
+  "createBtn": "Erstellen",
+  "createItem": "Gegenstand erstellen",
+  "itemName": "Gegenstandname",
+  "itemDescription": "Gegenstandsbeschreibung",
+  "createChest": "Kiste erstellen",
+  "chestName": "Kistenname"
 }

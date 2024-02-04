@@ -20,8 +20,14 @@
   "labelName": "Name",
   "labelImageUrl": "Url of an image",
   "delete": "Delete",
-  "home": "Home",
-  "counter": "Counter",
+  "chests": "Chests",
+  "items": "Items",
   "details": "Details",
-  "noItems": "Sorry, no items."
+  "noItems": "Sorry, no items.",
+  "createBtn": "Create",
+  "createItem": "Create item",
+  "itemName": "Item name",
+  "itemDescription": "Item description",
+  "createChest": "Create chest",
+  "chestName": "Chest name"
 }

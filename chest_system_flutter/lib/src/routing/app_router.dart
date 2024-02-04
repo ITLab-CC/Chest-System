@@ -1,3 +1,6 @@
+import 'package:chest_system_flutter/src/features/chests/presentation/details/chest_details_screen.dart';
+import 'package:chest_system_flutter/src/features/items/presentation/details/item_details_screen.dart';
+import 'package:chest_system_flutter/src/features/items/presentation/items_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,18 +15,20 @@ part 'app_router.g.dart';
 
 // shell routes, appear in the bottom navigation
 // see https://pub.dev/documentation/go_router/latest/go_router/ShellRoute-class.html
-enum TopLevelDestinations { chests, counter }
+enum TopLevelDestinations { chests, items }
 
 // GlobalKey is a factory, hence each call creates a key
 //this is root, even if it navigates to people, it needs a separate key!!!
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _chestsNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: TopLevelDestinations.chests.name);
+final _itemsNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: TopLevelDestinations.items.name);
 // final _counterNavigatorKey =
 //     GlobalKey<NavigatorState>(debugLabel: TopLevelDestinations.counter.name);
 
 // other destinations, reachable from a top level destination
-enum SubRoutes { details }
+enum SubRoutes { itemDetails, chestDetails }
 
 enum Parameter { id }
 
@@ -54,38 +59,47 @@ GoRouter goRouter(GoRouterRef ref) {
                   key: state.pageKey,
                   child: const ChestsScreen(),
                 ),
-                // routes: <RouteBase>[
-                // The details screen to display stacked on navigator of the
-                // first tab. This will cover screen A but not the application
-                // shell (bottom navigation bar).
-                // GoRoute(
-                //   path: '${SubRoutes.details.name}/:${Parameter.id.name}',
-                //   name: SubRoutes.details.name,
-                //   builder: (BuildContext context, GoRouterState state) {
-                //     // alternatively use https://pub.dev/documentation/go_router/latest/topics/Type-safe%20routes-topic.html
-                //     final id =
-                //         int.parse(state.pathParameters[Parameter.id.name]!);
-                //     final person = _extractPersonFromExtra(state.extra);
-                //     return DetailsScreen(id: id, person: person);
-                //   },
-                // ),
-                // ],
+                routes: [
+                  GoRoute(
+                    path:
+                        '${SubRoutes.chestDetails.name}/:${Parameter.id.name}',
+                    name: SubRoutes.chestDetails.name,
+                    builder: (BuildContext context, GoRouterState state) {
+                      final id =
+                          int.parse(state.pathParameters[Parameter.id.name]!);
+                      return ChestDetailsScreen(id: id);
+                      // final person = _extractPersonFromExtra(state.extra);
+                      // return DetailsScreen(id: id, person: person);
+                    },
+                  ),
+                ],
               ),
             ],
           ),
-          // StatefulShellBranch(
-          //   navigatorKey: _counterNavigatorKey,
-          //   routes: [
-          //     GoRoute(
-          //       path: '/${TopLevelDestinations.counter.name}',
-          //       name: TopLevelDestinations.counter.name,
-          //       pageBuilder: (context, state) => NoTransitionPage(
-          //         key: state.pageKey,
-          //         child: const CounterScreen(),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          StatefulShellBranch(
+            navigatorKey: _itemsNavigatorKey,
+            routes: [
+              GoRoute(
+                path: '/${TopLevelDestinations.items.name}',
+                name: TopLevelDestinations.items.name,
+                pageBuilder: (context, state) => NoTransitionPage(
+                  key: state.pageKey,
+                  child: const ItemsScreen(),
+                ),
+                routes: [
+                  GoRoute(
+                    path: '${SubRoutes.itemDetails.name}/:${Parameter.id.name}',
+                    name: SubRoutes.itemDetails.name,
+                    builder: (BuildContext context, GoRouterState state) {
+                      final id =
+                          int.parse(state.pathParameters[Parameter.id.name]!);
+                      return ItemDetailsScreen(id: id);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
       ),
     ],

@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'chests_controller.dart';
+part of 'items_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chestsControllerHash() => r'47ab2d7491288fb44d7f68edcc0c545a1a1dfbab';
+String _$itemsControllerHash() => r'89cf721b79e7eb83a652812489d6cc7db7230cb5';
 
-/// See also [ChestsController].
-@ProviderFor(ChestsController)
-final chestsControllerProvider = AutoDisposeAsyncNotifierProvider<
-    ChestsController, ControllerState?>.internal(
-  ChestsController.new,
-  name: r'chestsControllerProvider',
+/// See also [ItemsController].
+@ProviderFor(ItemsController)
+final itemsControllerProvider = AutoDisposeAsyncNotifierProvider<
+    ItemsController, ControllerState?>.internal(
+  ItemsController.new,
+  name: r'itemsControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$chestsControllerHash,
+      : _$itemsControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ChestsController = AutoDisposeAsyncNotifier<ControllerState?>;
+typedef _$ItemsController = AutoDisposeAsyncNotifier<ControllerState?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -4,5 +4,6 @@ abstract class Api {
   static const String host = 'localhost';
   static const int port = 8000;
   static const String apiPrefix = 'api/v2/';
-  static const String chestPath = 'chests/';
+  static const String chestPath = 'chests';
+  static const String itemPath = 'items';
 }

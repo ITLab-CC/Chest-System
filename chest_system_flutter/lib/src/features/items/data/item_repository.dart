@@ -6,15 +6,15 @@ import '../../../constants/api.dart';
 import '../../../exceptions/api_exception.dart';
 import '../../../utils/dio_provider.dart';
 import '../../../utils/logger.dart';
-import '../domain/chest.dart';
-part 'chest_repository.g.dart';
+import '../domain/item.dart';
+part 'item_repository.g.dart';
 
-class ChestRepository {
-  ChestRepository({required this.dio});
+class ItemRepository {
+  ItemRepository({required this.dio});
   final Dio dio;
 
   String _getUrl({int? id}) {
-    const path = Api.apiPrefix + Api.chestPath;
+    const path = Api.apiPrefix + Api.itemPath;
     final url =
         Uri(scheme: Api.schema, host: Api.host, port: Api.port, path: path)
             .toString();
@@ -25,48 +25,48 @@ class ChestRepository {
     }
   }
 
-  Future<Chest> getChestById({required int id}) async {
+  Future<Item> getItemById({required int id}) async {
     final url = _getUrl(id: id);
     // ignore: inference_failure_on_function_invocation
     final response = await dio.get<String>(url);
     if (response.statusCode == 200 && response.data != null) {
-      final chest =
-          Chest.fromJson(json.decode(response.data!) as Map<String, Object?>);
-      return chest;
+      final item =
+          Item.fromJson(json.decode(response.data!) as Map<String, Object?>);
+      return item;
     } else {
       throw ApiException(
         response.statusCode ?? -1,
-        'getChestById ${response.statusCode}, data=${response.data}',
+        'getItemById ${response.statusCode}, data=${response.data}',
       );
     }
   }
 
-  Future<List<Chest>> getChest() async {
-    logger.d('chest_repository.getChest');
+  Future<List<Item>> getItem() async {
+    logger.d('item_repository.getItem');
     final url = _getUrl();
     final response = await dio.get<List<dynamic>>(url);
     if (response.statusCode == 200 && response.data != null) {
       final dataList = response.data!;
       return dataList
           .map(
-            (chestJson) => Chest.fromJson(chestJson as Map<String, Object?>),
+            (itemJson) => Item.fromJson(itemJson as Map<String, Object?>),
           )
           .toList();
     } else {
       throw ApiException(
         response.statusCode ?? -1,
-        'getChest ${response.statusCode}, data=${response.data}',
+        'getItem ${response.statusCode}, data=${response.data}',
       );
     }
   }
 
-  Future<Chest> updateChest({required Chest chest}) async {
-    final url = _getUrl(id: chest.id);
-    final response = await dio.put<String>(url, data: chest.toJson());
+  Future<Item> updateItem({required Item item}) async {
+    final url = _getUrl(id: item.id);
+    final response = await dio.put<String>(url, data: item.toJson());
     if (response.statusCode == 200 && response.data != null) {
-      final chestUpdated =
-          Chest.fromJson(json.decode(response.data!) as Map<String, Object?>);
-      return chestUpdated;
+      final itemUpdated =
+          Item.fromJson(json.decode(response.data!) as Map<String, Object?>);
+      return itemUpdated;
     } else {
       throw ApiException(
         response.statusCode ?? -1,
@@ -75,7 +75,7 @@ class ChestRepository {
     }
   }
 
-  Future<bool> deleteChest(int id) async {
+  Future<bool> deleteItem(int id) async {
     final url = _getUrl(id: id);
     final response = await dio.delete<String>(url);
     if (response.statusCode == 200) {
@@ -83,43 +83,43 @@ class ChestRepository {
     } else {
       throw ApiException(
         response.statusCode ?? -1,
-        'deleteChest ${response.statusCode}, data=${response.data}',
+        'deleteItem ${response.statusCode}, data=${response.data}',
       );
     }
   }
 
-  Future<Chest> createChest(Chest chest) async {
+  Future<Item> createItem(Item item) async {
     final url = _getUrl();
     // this api uses the id if it exists, hence in case of a post
     // we make sure, there is no id
-    final response = await dio.post<String>(url, data: chest.toJsonWithoutId());
+    final response = await dio.post<String>(url, data: item.toJsonWithoutId());
     if (response.statusCode == 201 && response.data != null) {
-      final newChest =
-          Chest.fromJson(json.decode(response.data!) as Map<String, Object?>);
-      return newChest;
+      final newItem =
+          Item.fromJson(json.decode(response.data!) as Map<String, Object?>);
+      return newItem;
     } else {
       throw ApiException(
         response.statusCode ?? -1,
-        'saveChest ${response.statusCode}, data=${response.data}',
+        'saveItem ${response.statusCode}, data=${response.data}',
       );
     }
   }
 }
 
 @riverpod
-ChestRepository chestRepository(ChestRepositoryRef ref) =>
-    ChestRepository(dio: ref.read(dioProvider));
+ItemRepository itemRepository(ItemRepositoryRef ref) =>
+    ItemRepository(dio: ref.read(dioProvider));
 
 // @riverpod
-// Future<List<Chest>> fetchChest(FetchChestRef ref) async {
-//   logger.d('chest_repository.fetchChest');
-//   final repo = ref.read(chestRepositoryProvider);
-//   return repo.getChest();
+// Future<List<Item>> fetchItem(FetchItemRef ref) async {
+//   logger.d('item_repository.fetchItem');
+//   final repo = ref.read(itemRepositoryProvider);
+//   return repo.getItem();
 // }
 
 // @riverpod
-// Future<Chest> fetchChestById(FetchChestByIdRef ref, int id) async {
-//   final repo = ref.read(chestRepositoryProvider);
-//   return repo.getChestById(id: id);
+// Future<Item> fetchItemById(FetchItemByIdRef ref, int id) async {
+//   final repo = ref.read(itemRepositoryProvider);
+//   return repo.getItemById(id: id);
 // }
 

@@ -9,9 +9,8 @@ part 'chest.g.dart';
 @freezed
 class Chest with _$Chest {
   const factory Chest({
-    required int id,
     required String name,
-    // required String imageUrl,
+    int? id,
   }) = _Chest;
 
   factory Chest.fromJson(Map<String, Object?> json) => _$ChestFromJson(json);

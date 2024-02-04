@@ -21,27 +21,24 @@ class ChestsController extends _$ChestsController {
     return null;
   }
 
-  // void getChests() async {
-  //   state = const AsyncLoading();
-  //   try {
-  //     final chests = await ref.read(chestRepositoryProvider).getChest();
-  //     state = AsyncData(chests);
-  //   } catch (e, s) {
-  //     logger.e('getChests', e, s);
-  //     state = AsyncError(e);
-  //   }
-  // }
-
   Future<void> reloadController() async {
     state = const AsyncLoading<ControllerState?>();
     try {
       final chests = await ref.read(chestRepositoryProvider).getChest();
       state = AsyncData(ControllerState(chests));
-    } catch (e, s) {
-      logger
-        ..e('reloadController')
-        ..e(e)
-        ..e(s);
+    } catch (e) {
+      logger.e('reloadController error $e');
+      state = AsyncError(e, StackTrace.current);
+    }
+  }
+
+  Future<void> createChest(String name) async {
+    try {
+      final Chest chest = Chest(name: name);
+      await ref.read(chestRepositoryProvider).createChest(chest);
+      await reloadController();
+    } catch (e) {
+      logger.e('createChest error $e');
       state = AsyncError(e, StackTrace.current);
     }
   }

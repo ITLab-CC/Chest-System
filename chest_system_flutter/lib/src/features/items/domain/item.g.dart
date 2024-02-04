@@ -1,18 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'chest.dart';
+part of 'item.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ChestImpl _$$ChestImplFromJson(Map<String, dynamic> json) => _$ChestImpl(
+_$ItemImpl _$$ItemImplFromJson(Map<String, dynamic> json) => _$ItemImpl(
       name: json['name'] as String,
+      description: json['description'] as String,
       id: json['id'] as int?,
     );
 
-Map<String, dynamic> _$$ChestImplToJson(_$ChestImpl instance) =>
+Map<String, dynamic> _$$ItemImplToJson(_$ItemImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
+      'description': instance.description,
       'id': instance.id,
     };
