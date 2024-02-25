@@ -45,6 +45,16 @@ sudo usermod -aG docker ${USER}
 
 ## Dev
 
+### NEW: Just start the Docker-Dev
+
+The dev-docker target will start the dev database and phpmyadmin and the dev server.
+
+```bash
+make dev-docker
+```
+
+Now you can access the Docs at http://127.0.0.1:8000/api/docs
+
 ### Use a python virtual environment
 
 ```bash
