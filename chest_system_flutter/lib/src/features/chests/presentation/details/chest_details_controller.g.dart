@@ -7,7 +7,7 @@ part of 'chest_details_controller.dart';
 // **************************************************************************
 
 String _$chestDetailControllerHash() =>
-    r'f924ae2399805e733307e188790fac62a62e4475';
+    r'ef9fbe4eb44770ffafd5422d87878f7a7c069a4e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,10 @@ class _SystemHash {
 }
 
 abstract class _$ChestDetailController
-    extends BuildlessAutoDisposeAsyncNotifier<Chest?> {
+    extends BuildlessAsyncNotifier<ChestDetailState?> {
   late final int id;
 
-  FutureOr<Chest?> build(
+  FutureOr<ChestDetailState?> build(
     int id,
   );
 }
@@ -44,7 +44,8 @@ abstract class _$ChestDetailController
 const chestDetailControllerProvider = ChestDetailControllerFamily();
 
 /// See also [ChestDetailController].
-class ChestDetailControllerFamily extends Family<AsyncValue<Chest?>> {
+class ChestDetailControllerFamily
+    extends Family<AsyncValue<ChestDetailState?>> {
   /// See also [ChestDetailController].
   const ChestDetailControllerFamily();
 
@@ -82,9 +83,8 @@ class ChestDetailControllerFamily extends Family<AsyncValue<Chest?>> {
 }
 
 /// See also [ChestDetailController].
-class ChestDetailControllerProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<ChestDetailController,
-        Chest?> {
+class ChestDetailControllerProvider extends AsyncNotifierProviderImpl<
+    ChestDetailController, ChestDetailState?> {
   /// See also [ChestDetailController].
   ChestDetailControllerProvider(
     int id,
@@ -115,7 +115,7 @@ class ChestDetailControllerProvider
   final int id;
 
   @override
-  FutureOr<Chest?> runNotifierBuild(
+  FutureOr<ChestDetailState?> runNotifierBuild(
     covariant ChestDetailController notifier,
   ) {
     return notifier.build(
@@ -140,7 +140,7 @@ class ChestDetailControllerProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<ChestDetailController, Chest?>
+  AsyncNotifierProviderElement<ChestDetailController, ChestDetailState?>
       createElement() {
     return _ChestDetailControllerProviderElement(this);
   }
@@ -159,14 +159,14 @@ class ChestDetailControllerProvider
   }
 }
 
-mixin ChestDetailControllerRef on AutoDisposeAsyncNotifierProviderRef<Chest?> {
+mixin ChestDetailControllerRef on AsyncNotifierProviderRef<ChestDetailState?> {
   /// The parameter `id` of this provider.
   int get id;
 }
 
 class _ChestDetailControllerProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<ChestDetailController,
-        Chest?> with ChestDetailControllerRef {
+    extends AsyncNotifierProviderElement<ChestDetailController,
+        ChestDetailState?> with ChestDetailControllerRef {
   _ChestDetailControllerProviderElement(super.provider);
 
   @override

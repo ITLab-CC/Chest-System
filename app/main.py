@@ -23,7 +23,10 @@ tags_metadata = [
     },
 ]
 
-app = FastAPI(openapi_tags=tags_metadata)
+app = FastAPI(openapi_tags=tags_metadata,
+              openapi_url='/api/openapi.json',
+                docs_url='/api/docs',
+                redoc_url='/api/redoc')
 
 origins = [
     'http://localhost',

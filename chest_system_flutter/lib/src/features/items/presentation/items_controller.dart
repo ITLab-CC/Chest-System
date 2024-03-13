@@ -35,7 +35,7 @@ class ItemsController extends _$ItemsController {
   Future<void> reloadController() async {
     state = const AsyncLoading<ControllerState?>();
     try {
-      final items = await ref.read(itemRepositoryProvider).getItem();
+      final items = await ref.read(itemRepositoryProvider).getItems();
       state = AsyncData(ControllerState(items));
     } catch (e) {
       logger.e('reloadController error $e');

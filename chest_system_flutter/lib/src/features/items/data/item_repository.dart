@@ -47,8 +47,8 @@ class ItemRepository {
     }
   }
 
-  Future<List<Item>> getItem() async {
-    logger.d('item_repository.getItem');
+  Future<List<Item>> getItems() async {
+    logger.d('item_repository.getItems');
     final url = _getUrl();
     final response = await dio.get<List<dynamic>>(url);
     if (response.statusCode == 200 && response.data != null) {

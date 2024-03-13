@@ -124,6 +124,25 @@ class ChestRepository {
       );
     }
   }
+
+  Future<bool> addItemToChest(int chestId, int itemId, int quantity) async {
+    final url = _getUrl(id: chestId, withItems: true);
+    final response = await dio.post<String>(
+      url,
+      data: json.encode({
+        'item_id': itemId,
+        'anzahl': quantity,
+      }),
+    );
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      throw ApiException(
+        response.statusCode ?? -1,
+        'addItemToChest ${response.statusCode}, data=${response.data}',
+      );
+    }
+  }
 }
 
 @riverpod
