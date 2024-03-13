@@ -13,6 +13,7 @@ export default function Home() {
   const [nameGegenstand, setNameGegenstand] = useState('');
   const [descriptionGegenstand, setDescriptionGegenstand] = useState('');
   const [nameKiste, setNameKiste] = useState('');
+  const [locationKiste, setLocationKiste] = useState('');
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(''); //Suche möglich
   const [searchChestTerm, setSearchChestTerm] = useState(''); //Suche Kisten möglich
@@ -90,6 +91,13 @@ export default function Home() {
             value={nameKiste}
             onChange={(e) => setNameKiste(e.target.value)}
           />
+          <input
+            placeholder='chestLocation'
+            style={{ padding: '0.625em 1.25em' }}
+            type='text'
+            value={locationKiste}
+            onChange={(e) => setLocationKiste(e.target.value)}
+          />
           <button
             style={{
               color: 'black',
@@ -100,7 +108,10 @@ export default function Home() {
               // Post to /chests with { name: nameKiste}
               await fetch(apiURL + '/chests', {
                 method: 'POST',
-                body: JSON.stringify({ name: nameKiste }),
+                body: JSON.stringify({
+                  name: nameKiste,
+                  location: locationKiste,
+                }),
                 headers: {
                   'Content-Type': 'application/json',
                 },

@@ -3,3 +3,4 @@ env/
 minikube-config.yaml
 py-env/
 pgbackups/*
+.venv/

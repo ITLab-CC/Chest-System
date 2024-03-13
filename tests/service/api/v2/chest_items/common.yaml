@@ -4,6 +4,7 @@ description: common test information
 
 variables:
   chest_name: 'Whole Grain'
+  chest_location: 'A chest location'
   item_name: 'A item name'
   item_description: 'A item description'
   item_anzahl: 1
@@ -14,3 +15,4 @@ variables:
   second_item_description: 'A second item description'
   second_item_anzahl: 1
   second_chest_name: 'A second chest name'
+  second_chest_location: 'A second chest location'

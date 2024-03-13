@@ -4,12 +4,14 @@ from typing import List
 
 class ChestBaseSchema(BaseModel):
     name: str
-
+    location: str
+    
     class Config:
         orm_mode = True
         json_schema_extra = {
             "example": {
-                "name": "Chest Name"
+                "name": "Chest Name",
+                "location": "Left side of the room"
             }
         }
         

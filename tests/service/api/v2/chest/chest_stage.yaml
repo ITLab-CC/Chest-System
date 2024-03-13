@@ -13,6 +13,7 @@ stages:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests
       json: &chest
         name: '{chest_name:s}'
+        location: 'A chest location'
       method: POST
     response:
       status_code: 201

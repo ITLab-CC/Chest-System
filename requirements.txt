@@ -6,3 +6,5 @@ alembic
 pytest
 coverage
 pytest-cov
+tavern
+pytest-pspec

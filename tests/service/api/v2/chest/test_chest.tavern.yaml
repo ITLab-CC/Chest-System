@@ -20,6 +20,7 @@ stages:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests
       json: &chest
         name: '{chest_name:s}'
+        location: '{chest_location:s}'
       method: POST
     response:
       status_code: 201
@@ -35,6 +36,7 @@ stages:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests
       json:
         name: '{chest_name:s}'
+        location: '{chest_location:s}'
       method: POST
     response:
       status_code: 303
@@ -78,12 +80,14 @@ stages:
       json:
         <<: *chest
         name: 'Italian Style'
+        location: 'A chest location'
     response:
       status_code: 200
       json:
         <<: *chest
         id: !int '{chest_id:d}'
         name: 'Italian Style'
+        location: 'A chest location'
       save:
         json:
           italian_id: id
@@ -98,6 +102,7 @@ stages:
       json: !anylist
         id: !int '{italian_id:d}'
         name: 'Italian Style'
+        location: 'A chest location'
 
   # Create a second chest
   - name: Create a second chest, to test that we can not update an chest to an already existing name
@@ -105,6 +110,7 @@ stages:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests
       json: &chest_2
         name: '{chest_name_2:s}'
+        location: '{chest_location_2:s}'
       method: POST
     response:
       status_code: 201
@@ -122,6 +128,7 @@ stages:
       json:
         <<: *chest
         name: '{chest_name_2:s}'
+        location: '{chest_location:s}'
     response:
       status_code: 303
       headers:
@@ -134,6 +141,7 @@ stages:
       json:
         <<: *chest
         name: 'Italian Style'
+        location: 'A chest location'
     response:
       status_code: 404
 

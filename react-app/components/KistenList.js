@@ -14,6 +14,7 @@ export default function KistenList({ kisten }) {
           <div style={{ marginRight: '1.25em', paddingTop: '0.4em' }}>
             <a href={'/kisten/' + kiste.id}>
               <p>{kiste.name}</p>
+              <small style={{ color: 'grey' }}>{kiste.location}</small>
             </a>
           </div>
           <button

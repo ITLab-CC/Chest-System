@@ -63,6 +63,10 @@ export default function Page({ params }) {
       </div>
       <div style={{ textAlign: 'center' }}>
         <h1 style={{ fontSize: '1.75em' }}>{kisteWithItems.name}</h1>
+        <h2 style={{ color: 'grey', marginBottom: '1em' }}>
+          {kisteWithItems.location}
+        </h2>
+
         <h1
           style={{
             fontSize: '1.5em',

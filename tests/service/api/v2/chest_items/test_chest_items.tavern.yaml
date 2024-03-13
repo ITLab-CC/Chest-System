@@ -41,6 +41,7 @@ stages:
       json:
         id: !int '{chest_id:d}'
         name: '{chest_name:s}'
+        location: '{chest_location:s}'
         items:
           - item_id: !int '{item_id:d}'
             item_name: '{item_name:s}'
@@ -133,11 +134,13 @@ stages:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v2/chests
       json:
         name: '{second_chest_name:s}'
+        location: '{second_chest_location:s}'
       method: POST
     response:
       status_code: 201
       json:
         name: '{second_chest_name:s}'
+        location: '{second_chest_location:s}'
         id: !anything
       save:
         json:
@@ -155,6 +158,7 @@ stages:
       json:
         id: !int '{chest_id:d}'
         name: '{chest_name:s}'
+        location: '{chest_location:s}'
         items:
           - item_id: !int '{item_id:d}'
             item_name: '{item_name:s}'
@@ -205,6 +209,7 @@ stages:
       json:
         id: !int '{second_chest_id:d}'
         name: '{second_chest_name:s}'
+        location: '{second_chest_location:s}'
         items:
           - item_id: !int '{item_id:d}'
             item_name: '{item_name:s}'

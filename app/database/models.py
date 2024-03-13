@@ -30,6 +30,7 @@ class Kiste(Base):
     __tablename__ = "kiste"
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column()
+    location: Mapped[str] = mapped_column(default="unknown")
     items: Mapped[List["ItemKiste"]] = relationship(back_populates="kiste")
 
 

@@ -18,9 +18,10 @@ def db():
         
 def test_chest_create_read_delete(db):
     new_chest_name = 'test'
+    new_chest_location = 'test_location'
     number_of_chests_before = len(chest_crud.get_all_chests(db))
     # Arrange: Instantiate a new chest object
-    chest = ChestCreateSchema(name=new_chest_name)
+    chest = ChestCreateSchema(name=new_chest_name, location=new_chest_location)
     # Act: Add chest to database
     db_chest = chest_crud.create_chest(chest, db)
     created_chest_id = db_chest.id
@@ -32,11 +33,13 @@ def test_chest_create_read_delete(db):
     # Assert: Correct chest was stored in database
     assert read_chest.id == created_chest_id
     assert read_chest.name == new_chest_name
+    assert read_chest.location == new_chest_location
     # Act: Re-read by name
     read_chest = chest_crud.get_chest_by_name(new_chest_name, db)
     # Assert: Correct chest was stored in database
     assert read_chest.id == created_chest_id
     assert read_chest.name == new_chest_name
+    assert read_chest.location == new_chest_location
     
     # Add item to chest
     # Arrange: Instantiate a new item object
@@ -94,14 +97,15 @@ def test_chest_create_read_delete(db):
     
     # Update chest
     updated_chest_name = 'test2'
+    updated_chest_location = 'test_location2'
     # Act: Update chest
-    updated_chest = ChestCreateSchema(name=updated_chest_name)
+    updated_chest = ChestCreateSchema(name=updated_chest_name, location=updated_chest_location)
     chest_crud.update_chest(read_chest, updated_chest, db)
     # Assert: Correct chest was updated in database
     updated_chest = chest_crud.get_chest_by_id(created_chest_id, db)
     assert updated_chest.id == created_chest_id
     assert updated_chest.name == updated_chest_name
-    
+    assert updated_chest.location == updated_chest_location
     
     
     # Act: Delete chest

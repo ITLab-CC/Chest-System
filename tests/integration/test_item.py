@@ -50,9 +50,10 @@ def test_item_create_read_delete(db):
     assert updated_item.description == updated_item_description
     # Arrange: Instantiate a new chest object
     new_chest_name = 'test_chest'
+    new_chest_location = 'test_location'
     new_item_in_chest_anzahl = 10
     # Act: Add chest to database
-    chest = ChestCreateSchema(name=new_chest_name)
+    chest = ChestCreateSchema(name=new_chest_name, location=new_chest_location)
     db_chest = chest_crud.create_chest(chest, db)
     created_chest_id = db_chest.id
     # Act: Add item to chest
