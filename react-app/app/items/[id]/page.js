@@ -16,6 +16,7 @@ export default function Page({ params }) {
   // const [kisten, setKisten] = useState([]);
   const [showKisteOverlay, setShowKisteOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [editMode, setEditMode] = useState(false);
 
   async function loadData() {
     setLoading(true);
@@ -60,12 +61,75 @@ export default function Page({ params }) {
         </ul>
       </nav>
       <div style={{ textAlign: 'center' }}>
-        <h1
-          style={{ fontSize: '3.125em', color: 'red', marginBottom: '0.25em' }}
-        >
-          {itemJoined.name}
-        </h1>
-        <p>{itemJoined.description}</p>
+        <section style={{ textAlign: 'center' }}>
+          {editMode === false ? (
+            <div>
+              <h1 style={{ fontSize: '3.125em', color: 'red' }}>
+                {itemJoined.name}
+              </h1>
+              <h2 style={{ color: 'grey', marginBottom: '1em' }}>
+                {itemJoined.description}
+              </h2>
+            </div>
+          ) : (
+            <div>
+              <input
+                style={{
+                  padding: '0.625em 1.25em',
+                  marginBottom: '1.25em',
+                }}
+                type='text'
+                value={itemJoined.name}
+                onChange={(e) => {
+                  setItemJoined({ ...itemJoined, name: e.target.value });
+                }}
+              />
+              <input
+                style={{
+                  padding: '0.625em 1.25em',
+                  marginBottom: '1.25em',
+                }}
+                type='text'
+                value={itemJoined.description}
+                onChange={(e) => {
+                  setItemJoined({ ...itemJoined, description: e.target.value });
+                }}
+              />
+            </div>
+          )}
+          {/* Edit Mode Button */}
+          <button
+            style={{
+              color: 'black',
+              padding: '0.625em 1.25em',
+              marginBottom: '1.25em',
+            }}
+            onClick={async () => {
+              if (editMode === false) {
+                setEditMode(true);
+              }
+              if (editMode === true) {
+                setEditMode(false);
+                // Save changes
+                await fetch(apiURL + '/items/' + itemJoined.id, {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(itemJoined),
+                }).then((res) => {
+                  if (res.status !== 200) {
+                    alert('Error updating item.');
+                    return;
+                  }
+                  loadData();
+                });
+              }
+            }}
+          >
+            {editMode === false ? 'Edit' : 'Save'}
+          </button>
+        </section>
         <h1
           style={{
             fontSize: '1.875em',

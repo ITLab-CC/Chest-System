@@ -15,6 +15,7 @@ export default function Page({ params }) {
   const [kisteWithItems, setKisteWithItems] = useState(null);
   const [showProductOverlay, setShowProductOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [editMode, setEditMode] = useState(false);
 
   async function loadData() {
     setLoading(true);
@@ -62,10 +63,85 @@ export default function Page({ params }) {
         </nav>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <h1 style={{ fontSize: '1.75em' }}>{kisteWithItems.name}</h1>
+        <section style={{ textAlign: 'center' }}>
+          {editMode === false ? (
+            <div>
+              <h1 style={{ fontSize: '1.75em' }}>{kisteWithItems.name}</h1>
+              <h2 style={{ color: 'grey', marginBottom: '1em' }}>
+                {kisteWithItems.location}
+              </h2>
+            </div>
+          ) : (
+            <div>
+              <input
+                style={{
+                  padding: '0.625em 1.25em',
+                  marginBottom: '1.25em',
+                }}
+                type='text'
+                value={kisteWithItems.name}
+                onChange={(e) => {
+                  setKisteWithItems({
+                    ...kisteWithItems,
+                    name: e.target.value,
+                  });
+                }}
+              />
+              <input
+                style={{
+                  padding: '0.625em 1.25em',
+                  marginBottom: '1.25em',
+                }}
+                type='text'
+                value={kisteWithItems.location}
+                onChange={(e) => {
+                  setKisteWithItems({
+                    ...kisteWithItems,
+                    location: e.target.value,
+                  });
+                }}
+              />
+            </div>
+          )}
+        </section>
+        <button
+          style={{
+            padding: '0.625em 1.25em',
+            marginBottom: '1.25em',
+          }}
+          onClick={async () => {
+            if (editMode === false) {
+              setEditMode(true);
+            }
+            if (editMode === true) {
+              setEditMode(false);
+              // Save changes
+              await fetch(apiURL + '/chests/' + kisteWithItems.id, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  name: kisteWithItems.name,
+                  location: kisteWithItems.location,
+                }),
+              }).then((res) => {
+                if (res.status !== 200) {
+                  alert('Error updating chest');
+                  return;
+                }
+                loadData();
+              });
+            }
+          }}
+        >
+          {editMode === false ? 'Edit' : 'Save'}
+        </button>
+
+        {/* <h1 style={{ fontSize: '1.75em' }}>{kisteWithItems.name}</h1>
         <h2 style={{ color: 'grey', marginBottom: '1em' }}>
           {kisteWithItems.location}
-        </h2>
+        </h2> */}
 
         <h1
           style={{
