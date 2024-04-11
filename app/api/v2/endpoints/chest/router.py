@@ -117,6 +117,22 @@ def get_chest_items(chest_id: int, db: Session = Depends(get_db)):
     chest.items = kistenItems
     return chest
 
+@router.get('/items/all',
+            response_model=List[ChestItemJoinedSchema],
+            tags=['chest-items'])
+def get_all_chest_items(db: Session = Depends(get_db)):
+    # Get all chests
+    all_chests = []
+    chests = chest_crud.get_all_chests(db)
+    logging.info('Get: All chests: {}'.format(chests))
+    # Get all items for each chest
+    for chest in chests:
+        kistenItems = chest_crud.get_joined_items_by_chest_id(chest.id, db)
+        logging.info('Get: Items in chest {}: {}'.format(chest.id, kistenItems))
+        chest.items = kistenItems
+        all_chests.append(chest)
+    return all_chests
+
 @router.post('/{chest_id}/items', response_model=ChestItemQuantityCreateSchema,
              status_code=status.HTTP_201_CREATED, tags=['chest-items'])
 def add_item_to_chest(chest_id: int, item: ChestItemQuantityCreateSchema, db: Session = Depends(get_db)):
