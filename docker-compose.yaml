@@ -11,6 +11,7 @@ services:
       - db
     ports:
       - 127.0.0.1:8000:8000
+    restart: always
 
   # CLIENT
   client:
@@ -22,6 +23,7 @@ services:
       NODE_ENV: production
     ports:
       - 127.0.0.1:3000:3000
+    restart: always
 
   proxy:
     image: skyface753/chest-system-proxy:latest
@@ -38,14 +40,14 @@ services:
   # DATENBANK
   db:
     container_name: pg_container
-    image: postgres
+    image: postgres:15.4
     restart: always
     env_file:
       - .env
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
-      - 127.0.0.1:5432:5432
+      - 5432:5432
 
   pgbackups:
     image: prodrigestivill/postgres-backup-local

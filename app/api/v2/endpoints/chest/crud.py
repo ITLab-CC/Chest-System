@@ -21,7 +21,7 @@ def get_chest_by_name(chest_name: str, db: Session):
     return entity
 
 def get_all_chests(db: Session):
-    return db.query(Kiste).all()
+    return db.query(Kiste).order_by(Kiste.name).all()
 
 def update_chest(chest: Kiste, changed_chest: ChestCreateSchema, db: Session):
     for key, value in changed_chest.dict().items():
