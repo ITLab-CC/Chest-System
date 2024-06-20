@@ -51,9 +51,19 @@ The dev-docker target will start the dev database and phpmyadmin and the dev ser
 
 ```bash
 make dev-docker
+make migrate-db
 ```
 
 Now you can access the Docs at http://127.0.0.1:8000/api/docs
+
+#### Start the frontend
+
+```bash
+cd react-app
+npm install
+npm run dev # Linux/Mac
+npm run dev-marcel # Windows
+```
 
 ### Use a python virtual environment
 
