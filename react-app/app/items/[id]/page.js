@@ -144,13 +144,13 @@ export default function Page({ params }) {
             <li key={kiste.kiste_id}>
               <PlusOrMinusButton
                 itemId={itemJoined.id}
-                chestId={kiste.kiste_id}
+                chestId={kiste.kiste_id} 
                 plus={false}
                 callback={() => {
                   updateItemAnzahlAfterButtonClick(kiste, false);
                 }}
-              />
-              {kiste.anzahl}x | {kiste.kiste_name}
+              /> 
+              {kiste.anzahl}x | <a className='chest-item-link' href={"/kisten/" + kiste.kiste_id}>{kiste.kiste_name}</a>
               <PlusOrMinusButton
                 itemId={itemJoined.id}
                 chestId={kiste.kiste_id}
