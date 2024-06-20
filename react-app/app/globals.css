@@ -267,3 +267,6 @@ summary {
   cursor: pointer;
   list-style: none;
 }
+.chest-item-link{
+  text-decoration: underline;
+}

@@ -163,7 +163,7 @@ export default function Page({ params }) {
                   updateItemAnzahlAfterButtonClick(item, false);
                 }}
               />
-              {item.item_name}: {item.anzahl}x
+               <a className='chest-item-link' href={"/items/" + item.item_id}>{item.item_name}</a>: {item.anzahl}x
               <PlusOrMinusButton
                 chestId={kisteWithItems.id}
                 itemId={item.item_id}
