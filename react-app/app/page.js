@@ -20,13 +20,16 @@ export default function Home() {
 
   const [scrollToEnd, setScrollToEnd] = useState(false);
 
-  useEffect(() => {
-    if (scrollToEnd) {
-      window.scrollTo(0, document.body.scrollHeight);
-      setScrollToEnd(false);
-    }
-  }, [scrollToEnd]);
+  const [offset, setOffset] = useState(0);
 
+  useEffect(() => {
+      const onScroll = () => setOffset(window.scrollY);
+      // clean up code
+      window.removeEventListener('scroll', onScroll);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  
   async function getData() {
     setLoading(true);
     const resKisten = await fetch(apiURL + '/chests');
@@ -185,10 +188,15 @@ export default function Home() {
               color: 'white',
             }}
             onClick={() => {
-              setScrollToEnd(true);
+              if(window.innerHeight + window.scrollY >= document.body.scrollHeight - 10) {
+                window.scrollTo(0, 0);
+              } else {
+                window.scrollTo(0, document.body.scrollHeight);
+              }
             }}
           >
-            Scroll To End
+
+            {window.innerHeight + offset >= document.body.scrollHeight - 10 ? "Scroll To Top" : "Scroll To End"}
           </button>
         </div>
       </div>
