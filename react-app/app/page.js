@@ -29,7 +29,7 @@ export default function Home() {
       window.addEventListener('scroll', onScroll, { passive: true });
       return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  
+
   async function getData() {
     setLoading(true);
     const resKisten = await fetch(apiURL + '/chests');
@@ -188,15 +188,15 @@ export default function Home() {
               color: 'white',
             }}
             onClick={() => {
-              if(window.innerHeight + window.scrollY >= document.body.scrollHeight - 10) {
+              if(window.innerHeight + window.scrollY>= document.body.scrollHeight - 70) {
                 window.scrollTo(0, 0);
               } else {
                 window.scrollTo(0, document.body.scrollHeight);
               }
             }}
           >
-
-            {window.innerHeight + offset >= document.body.scrollHeight - 10 ? "Scroll To Top" : "Scroll To End"}
+            
+            {(document.body.scrollHeight - 70 >= window.innerHeight + offset || offset == 0) ? "Scroll To End" : "Scroll To Top"}
           </button>
         </div>
       </div>
