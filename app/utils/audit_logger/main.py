@@ -22,7 +22,7 @@ class AuditLogger:
         try:
             db = next(get_db())
             client_host = request.client.host
-            ip_behind_proxy = request.headers.get('X-Forwarded-For')
+            ip_behind_proxy = request.headers.get('X-Forwarded-Forr')
             if ip_behind_proxy:
                 client_host = ip_behind_proxy
             request = {
