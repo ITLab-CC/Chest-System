@@ -40,3 +40,13 @@ class Item(Base):
     name: Mapped[str] = mapped_column()
     description: Mapped[Optional[str]] = mapped_column()
     kistes: Mapped[List["ItemKiste"]] = relationship(back_populates="item")
+    
+class AuditLog(Base):
+    __tablename__ = "auditlog"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    timestamp: Mapped[str] = mapped_column()
+    request: Mapped[str] = mapped_column()
+    response: Mapped[str] = mapped_column()
+    user: Mapped[str] = mapped_column()
+    ip: Mapped[str] = mapped_column()
+    status_code: Mapped[int] = mapped_column()

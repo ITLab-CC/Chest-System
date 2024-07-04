@@ -3,8 +3,10 @@ services:
   server:
     image: skyface753/chest-system-server:latest
     build:
-      context: git@github.com:ITLab-CC/Chest-System.git#:.
+      context: https://github.com/ITLab-CC/Chest-System.git#:.
       dockerfile: app/Dockerfile
+      # context: .
+      # dockerfile: app/Dockerfile
     env_file:
       - .env
     depends_on:
@@ -17,7 +19,7 @@ services:
   client:
     image: skyface753/chest-system-client:latest
     build:
-      context: git@github.com:ITLab-CC/Chest-System.git#:react-app
+      context: https://github.com/ITLab-CC/Chest-System.git#:react-app
       dockerfile: Dockerfile
     environment:
       NODE_ENV: production
@@ -28,8 +30,10 @@ services:
   proxy:
     image: skyface753/chest-system-proxy:latest
     build:
-      context: git@github.com:ITLab-CC/Chest-System.git#:proxy
+      context: https://github.com/ITLab-CC/Chest-System.git#:proxy
       dockerfile: Dockerfile
+      # context: proxy
+      # dockerfile: Dockerfile
     ports:
       - 81:80
     restart: always
