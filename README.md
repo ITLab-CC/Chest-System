@@ -98,6 +98,13 @@ uvicorn 'main:app' --host=127.0.0.1 --port=8000 --reload
 
 Now you can access the server at http://127.0.0.1:8000
 
+### Migrate the database
+
+```bash
+alembic revision --autogenerate -m "Added account table"
+alembic upgrade head
+```
+
 ## Prod Build
 
 The Images need to be in a public registry for the minikube to be able to pull them.

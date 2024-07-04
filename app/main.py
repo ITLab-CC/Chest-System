@@ -7,6 +7,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from app.api.v1.router import router as api_v1_router
 from app.api.v2.router import router as api_v2_router
+from app.utils.audit_logger.main import AuditLogger
 
 logging.basicConfig(format='%(asctime)s:%(levelname)s:%(message)s', level=logging.DEBUG)  # NOSONAR
 
@@ -43,6 +44,16 @@ app.add_middleware(
     allow_headers=['*'],
     expose_headers=[],
 )
+
+audit_logger = AuditLogger()
+
+# Simple audit-log middleware
+@app.middleware('http')
+async def audit_log_middleware(request: Request, call_next):
+    response = await call_next(request)
+    await audit_logger.log_request(request, response)
+    return response
+
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
