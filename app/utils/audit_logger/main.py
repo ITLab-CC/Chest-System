@@ -25,7 +25,7 @@ class AuditLogger:
             ip_behind_proxy_1 = request.headers.get('X-Forwarded-For') # The proxy in this Project
             if ip_behind_proxy_1:
                 client_host = ip_behind_proxy_1
-            ip_behind_proxy_2 = request.headers.get('X-Real-IP') # Maybe another proxy (Like Traefik)
+            ip_behind_proxy_2 = request.headers.get('X-Forwarded-Forr') # Maybe another proxy (Like Traefik)
             if ip_behind_proxy_2:
                 client_host = ip_behind_proxy_2
             request = {
