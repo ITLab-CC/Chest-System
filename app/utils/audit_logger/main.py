@@ -22,9 +22,12 @@ class AuditLogger:
         try:
             db = next(get_db())
             client_host = request.client.host
-            ip_behind_proxy = request.headers.get('X-Forwarded-Forr')
-            if ip_behind_proxy:
-                client_host = ip_behind_proxy
+            ip_behind_proxy_1 = request.headers.get('X-Forwarded-For') # The proxy in this Project
+            if ip_behind_proxy_1:
+                client_host = ip_behind_proxy_1
+            ip_behind_proxy_2 = request.headers.get('X-Real-IP') # Maybe another proxy (Like Traefik)
+            if ip_behind_proxy_2:
+                client_host = ip_behind_proxy_2
             request = {
                 'method': request.method,
                 'url': request.url._url,
