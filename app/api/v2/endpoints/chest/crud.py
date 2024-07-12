@@ -90,3 +90,20 @@ def update_item_in_chest(chest_id: int, item_id: int, quantity: int, db: Session
     else:
         logging.error('Item {} not found in chest {}'.format(item_id, chest_id))
         return None
+    
+def get_specific_cupboard_in_chest(cupboard_id: int, chest_id: int, db: Session):
+    cupboard = db.query(Kiste).filter(Kiste.id == chest_id, Kiste.cupboard_id == cupboard_id).first()
+    return cupboard
+
+def delete_cupboard_from_chest(cupboard_id: int, chest_id: int, db: Session):
+    chest = get_specific_cupboard_in_chest(cupboard_id, chest_id, db)
+    if chest:
+        # db.delete(chest.cupboard_id)
+        chest.cupboard_id = None
+        db.commit()
+        logging.debug('Cupboard {} deleted from chest {}'.format(cupboard_id, chest_id))
+        return chest
+    else:
+        logging.error('Cupboard {} not found in chest {}'.format(cupboard_id, chest_id))
+        return None
+        

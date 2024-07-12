@@ -1,17 +1,16 @@
-
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 class ChestBaseSchema(BaseModel):
     name: str
-    location: str
+    cupboard_id: int | None = None # Optional
     
     class Config:
         orm_mode = True
         json_schema_extra = {
             "example": {
                 "name": "Chest Name",
-                "location": "Left side of the room"
+                "cupboard_id": None
             }
         }
         
