@@ -59,6 +59,9 @@ export default function Page({ params }) {
             <li>
               <a href='/'>Home</a>
             </li>
+            <li>
+              <a href='/cupboards'>Cupboards</a>
+            </li>
           </ul>
         </nav>
       </div>

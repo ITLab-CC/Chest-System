@@ -65,6 +65,9 @@ export default function Home() {
           <li>
             <a href='/'>Home</a>
           </li>
+          <li>
+            <a href='/cupboards'>Cupboards</a>
+          </li>
         </ul>
       </nav>
 
